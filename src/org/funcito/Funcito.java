@@ -30,19 +30,19 @@ public class Funcito {
     }
 
     /**
-     * Optional "fluent" syntax
+     * Alias for "fluent" syntax
      */
-    public static <T> T callTo(Class<T> clazz) {
+    public static <T> T callsTo(Class<T> clazz) {
         return stub(clazz);
     }
 
-    public static <T,V> Function<T,V> funcFrom(V ignoredRetVal) {
-        final Invokable invokable = invocationManager.extractInvokable("Guava Function");
+    public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
+        final Invokable<T,V> invokable = invocationManager.extractInvokable("Guava Function");
         return new MethodFunction<T, V>(invokable);
     }
 
-    public static <T> Predicate<T> predFrom(Boolean ignoredRetVal) {
-        final Invokable invokable = invocationManager.extractInvokable("Guava Predicate");
+    public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
+        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable("Guava Predicate");
         return new MethodPredicate<T>(invokable);
     }
 

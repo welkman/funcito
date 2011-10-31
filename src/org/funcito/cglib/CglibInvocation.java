@@ -22,7 +22,7 @@ import org.funcito.StubInvocation;
 
 import java.lang.reflect.Method;
 
-@GwtIncompatible(value="true")
+@GwtIncompatible(value="Depends on CGLib bytecode generation library")
 public class CglibInvocation<T,V> implements StubInvocation<T,V> {
     private Object stub;
     private Method method;

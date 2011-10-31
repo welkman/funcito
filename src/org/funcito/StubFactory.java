@@ -1,7 +1,3 @@
-package org.funcito;
-
-import org.funcito.cglib.CglibStubFactory;
-
 /**
  * Copyright 2011 Project Funcito Contributors
  * <p/>
@@ -17,6 +13,11 @@ import org.funcito.cglib.CglibStubFactory;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.funcito;
+
+import org.funcito.cglib.CglibStubFactory;
+
 public abstract class StubFactory {
     private static StubFactory instance = defaultFactory();
 

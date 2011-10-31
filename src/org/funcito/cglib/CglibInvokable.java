@@ -15,14 +15,19 @@
  */
 package org.funcito.cglib;
 
+import com.google.common.annotations.GwtIncompatible;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.Invokable;
 
+@GwtIncompatible(value="Depends on CGLib bytecode generation library")
 public class CglibInvokable<T,V> implements Invokable<T,V> {
+
     private MethodProxy methodProxy;
     public CglibInvokable(MethodProxy methodProxy) {
         this.methodProxy = methodProxy;
     }
+
+    @SuppressWarnings({"unchecked"})
     public V invoke(T from, Object... args) throws Throwable {
         return (V)methodProxy.invoke(from, args);
     }

@@ -18,17 +18,17 @@ public class CompareFunctionWrappers {
     private static class StringThing {
         protected String myString;
         public StringThing(String myString) { this.myString = myString; }
-        public Integer size() { return Integer.valueOf(myString.length()); }
+        public Integer size() { return myString.length(); }
         // NOTE: I could have returned the primitive itself, but that means that all Function solutions
         // would have the overhead of autoboxing, making the comparison to non-functional unfair
     }
 
 
     // Example 1 with FunkyJFunctional
-    static class F extends Func<StringThing, Integer> {{ out = in.size(); }};
+    static class F extends Func<StringThing, Integer> {{ out = in.size(); }}
     static Function<StringThing, Integer> funky = withFunc(F.class);
 
-    static class Fx2 extends Func<StringThing, Integer> {{ out = in.size()*2; }};
+    static class Fx2 extends Func<StringThing, Integer> {{ out = in.size()*2; }}
     static Function<StringThing, Integer> funky2 = withFunc(Fx2.class);
 
 
@@ -50,13 +50,13 @@ public class CompareFunctionWrappers {
 
     // Example 4 Funcito (CGLib)
     static StringThing cglibStringThingStub = stub(StringThing.class);
-    static Function<StringThing, Integer> cglibbyX = funcFrom(cglibStringThingStub.size());
+    static Function<StringThing, Integer> cglibbyX = functionFor(cglibStringThingStub.size());
     // Below compiles but doesn't behave as expected (i.e., unlike FunkyJFunctional)
     // Currently it doesn't run at all, due to null return value somewhere?
-//    static Function<StringThing, Integer> cglibby2 = funcFrom(cglibStringThingStub.size() * 2);
+//    static Function<StringThing, Integer> cglibby2 = functionFor(cglibStringThingStub.size() * 2);
 
     // alternative shortened 1-line notation
-    static Function<StringThing, Integer> cglibby = funcFrom(callTo(StringThing.class).size());
+    static Function<StringThing, Integer> cglibby = functionFor(callsTo(StringThing.class).size());
     // alternate possible API???: makeFunc(forCallTo(...)  makeFunc(onCalls(...)  makeFuncFrom(stubbedCall
 
     private static long timeManny = 0L;
@@ -110,9 +110,9 @@ public class CompareFunctionWrappers {
 
     @Test
     public void testLibby_validateImproperStubCallsOutsideOfWrap() {
-        cglibStringThingStub.size(); // should detect calling stub outside of a wrap call
+        cglibStringThingStub.size(); // should detect calling stubbedCallsTo outside of a wrap call
         try {
-            Function<StringThing,Integer> attempt = Funcito.funcFrom(cglibStringThingStub.size());
+            Function<StringThing,Integer> attempt = Funcito.functionFor(cglibStringThingStub.size());
             fail("Should not have succeeded");
         } catch (Exception e) {
             // happy path
@@ -123,14 +123,14 @@ public class CompareFunctionWrappers {
     class OtherThing { // does NOT extend BooleanThing or implement common interface, but they look identical
         private String myString;
         public OtherThing(String myString) { this.myString = myString; }
-        public Integer size() { return Integer.valueOf(myString.length()); }
+        public Integer size() { return myString.length(); }
     }
 
     @Test
     public void testLibby_detectMismatchOfSourceType() {
         OtherThing otherThingStub = Funcito.stub(OtherThing.class);
         try {
-            Function<StringThing, Integer> func = Funcito.funcFrom(otherThingStub.size());
+            Function<StringThing, Integer> func = Funcito.functionFor(otherThingStub.size());
             fail("Should not have allowed wrapping an OtherThing method as a StringThing function");
         } catch (Exception e) {
             // Happy Path
@@ -140,12 +140,12 @@ public class CompareFunctionWrappers {
     @Test
     public void testLibby_assignToFuncWithSourceSuperType() {
         Function<StringThing, Integer> superType;
-        superType = funcFrom(callTo(StringThing2.class).size());
+        superType = functionFor(callsTo(StringThing2.class).size());
     }
 
     @Test
     public void testLibby_assignToFuncWithTargetSuperType() {
-        Function<StringThing,? extends Number> superType = funcFrom(callTo(StringThing.class).size());
+        Function<StringThing,? extends Number> superType = functionFor(callsTo(StringThing.class).size());
         StringThing thing = new StringThing("123456");
         Number n = superType.apply(thing);
         assertEquals(6,n);
@@ -177,7 +177,7 @@ public class CompareFunctionWrappers {
 
     @Test
     public void testFunky_detectMismatchOfSourceType() {
-        class F3 extends Func<OtherThing, Integer> {{ out = in.size(); }};
+        class F3 extends Func<OtherThing, Integer> {{ out = in.size(); }}
         try {
             // This has static (compile-time) safety, so test passes by virtue of static source type safety
 //            Function<BooleanThing, Integer> funky2 = withFunc(F3.class);

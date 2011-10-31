@@ -1,12 +1,3 @@
-package org.funcito.cglib;
-
-import com.google.common.collect.Maps;
-import net.sf.cglib.proxy.Enhancer;
-import org.funcito.StubFactory;
-
-import java.lang.reflect.Constructor;
-import java.util.Map;
-
 /**
  * Copyright 2011 Project Funcito Contributors
  * <p/>
@@ -22,13 +13,25 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.funcito.cglib;
+
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.collect.Maps;
+import net.sf.cglib.proxy.Enhancer;
+import org.funcito.StubFactory;
+
+import java.lang.reflect.Constructor;
+import java.util.Map;
+
+@GwtIncompatible(value="Depends on CGLib bytecode generation library")
 public class CglibStubFactory extends StubFactory {
 
-    private Map<Class, Object> stubsMap = Maps.newHashMap();
+    private Map<Class, Object> stubsCache = Maps.newHashMap();
 
     public <T> T stub(Class<T> clazz) {
-        if (stubsMap.containsKey(clazz)) {
-            return (T)stubsMap.get(clazz);
+        if (stubsCache.containsKey(clazz)) {
+            return (T) stubsCache.get(clazz);
         }
         // TODO: investigate, enhancer may have its own cache, see enhancer.setUseCache(boolean)
         Enhancer enhancer = new Enhancer();
@@ -52,7 +55,7 @@ public class CglibStubFactory extends StubFactory {
         } catch (Exception e2) {
             throw new RuntimeException("error stubbing class " + clazz.getName(), e2);
         }
-        stubsMap.put(clazz, stub);
+        stubsCache.put(clazz, stub);
         return stub;
     }
 

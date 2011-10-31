@@ -19,17 +19,18 @@ import com.google.common.base.Function;
 import org.funcito.Invokable;
 
 public class MethodFunction<T, V> implements Function<T,V> {
-    private Invokable invokable;
+    private Invokable<T,V> invokable;
 
-    public MethodFunction(Invokable invokable) {
+    public MethodFunction(Invokable<T,V> invokable) {
         this.invokable = invokable;
     }
 
     public V apply(T from) {
         try {
-            return (V) invokable.invoke(from, null); //no arguments are passed, because this s/b a no-arg method
+            return invokable.invoke(from, (Object[])null); //no arguments are passed, because this s/b a no-arg method
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -18,16 +18,20 @@ package org.funcito.exampleUsage;
 import com.google.common.base.Function;
 import org.funcito.Funcito;
 
+import static org.funcito.Funcito.*;
+
 public class MyClass {
 
     private String myString;
     private Integer other;
 
-    public static final MyClass stub = Funcito.stub(MyClass.class);
+    public static final MyClass stubbedCallsTo = stub(MyClass.class);
 
-    public static final Function<MyClass, String> getMyString = Funcito.funcFrom(stub.getMyString());
-    public static final Function<MyClass, String> getMyStringF2 = Funcito.funcFrom(stub.getMyString());
-    public static final Function<MyClass, Integer> getOther = Funcito.funcFrom(stub.getOther());
+    public static final Function<MyClass, String> getMyString = functionFor(stubbedCallsTo.getMyString());
+    public static final Function<MyClass, Integer> getOther =   functionFor(stubbedCallsTo.getOther());
+
+    // alternative single line syntax
+    public static final Function<MyClass, String> getMyStringF2 = functionFor(callsTo(MyClass.class).getMyString());
 
     public String getMyString() {
         return myString;

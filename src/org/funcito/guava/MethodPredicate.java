@@ -27,7 +27,7 @@ public class MethodPredicate<T> implements Predicate<T> {
 
     public boolean apply(T from) {
         try {
-            return (Boolean)invokable.invoke(from, null); //no arguments are passed, because this s/b a no-arg method
+            return invokable.invoke(from, (Object[])null); //no arguments are passed, because this s/b a no-arg method
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
