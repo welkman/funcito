@@ -2,12 +2,9 @@ import static ch.lambdaj.Lambda.closure;
 import static ch.lambdaj.Lambda.of;
 import static info.piwai.funkyjfunctional.guava.FunkyGuava.*;
 import static org.funcito.Funcito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import ch.lambdaj.function.closure.Closure1;
-import org.funcito.Funcito;
 import com.google.common.base.Function;
 import info.piwai.funkyjfunctional.guava.Func;
 import org.junit.BeforeClass;
@@ -42,22 +39,14 @@ public class CompareFunctionWrappers {
     static Function<StringThing, Integer> manual = new Function<StringThing, Integer>() {
           public Integer apply(StringThing arg0) { return arg0.size(); }
     };
-
     static Function<StringThing, Integer> manualX2 = new Function<StringThing, Integer>() {
         public Integer apply(StringThing arg0) { return arg0.size()*2; }
     };
 
 
     // Example 4 Funcito (CGLib)
-    static StringThing cglibStringThingStub = stub(StringThing.class);
-    static Function<StringThing, Integer> cglibbyX = functionFor(cglibStringThingStub.size());
-    // Below compiles but doesn't behave as expected (i.e., unlike FunkyJFunctional)
-    // Currently it doesn't run at all, due to null return value somewhere?
-//    static Function<StringThing, Integer> cglibby2 = functionFor(cglibStringThingStub.size() * 2);
-
-    // alternative shortened 1-line notation
     static Function<StringThing, Integer> cglibby = functionFor(callsTo(StringThing.class).size());
-    // alternate possible API???: makeFunc(forCallTo(...)  makeFunc(onCalls(...)  makeFuncFrom(stubbedCall
+
 
     private static long timeManny = 0L;
     @BeforeClass
@@ -69,10 +58,10 @@ public class CompareFunctionWrappers {
     }
 
     @Test
-    public void testLibbySpeed() {
-        long libbyTime = apply(cglibby);
-        System.out.println("Funcito (CGLib) = " + libbyTime);
-        assertTrue(10L * timeManny > libbyTime);
+    public void testCgLibbySpeed() {
+        long cglibbyTime = apply(cglibby);
+        System.out.println("Funcito (CGLib) = " + cglibbyTime);
+        assertTrue(10L * timeManny > cglibbyTime);
     }
 
     @Test
@@ -108,47 +97,10 @@ public class CompareFunctionWrappers {
         assertTrue(10L * timeManny > lammyTime);
     }
 
-    @Test
-    public void testLibby_validateImproperStubCallsOutsideOfWrap() {
-        cglibStringThingStub.size(); // should detect calling stubbedCallsTo outside of a wrap call
-        try {
-            Function<StringThing,Integer> attempt = Funcito.functionFor(cglibStringThingStub.size());
-            fail("Should not have succeeded");
-        } catch (Exception e) {
-            // happy path
-            assertTrue(e.getMessage().contains("Multiple method calls"));
-        }
-    }
-
     class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
         private String myString;
         public OtherThing(String myString) { this.myString = myString; }
         public Integer size() { return myString.length(); }
-    }
-
-    @Test
-    public void testLibby_detectMismatchOfSourceType() {
-        OtherThing otherThingStub = Funcito.stub(OtherThing.class);
-        try {
-            Function<StringThing, Integer> func = Funcito.functionFor(otherThingStub.size());
-            fail("Should not have allowed wrapping an OtherThing method as a StringThing function");
-        } catch (Exception e) {
-            // Happy Path
-        }
-    }
-
-    @Test
-    public void testLibby_assignToFuncWithSourceSuperType() {
-        Function<StringThing, Integer> superType;
-        superType = functionFor(callsTo(StringThing2.class).size());
-    }
-
-    @Test
-    public void testLibby_assignToFuncWithTargetSuperType() {
-        Function<StringThing,? extends Number> superType = functionFor(callsTo(StringThing.class).size());
-        StringThing thing = new StringThing("123456");
-        Number n = superType.apply(thing);
-        assertEquals(6,n);
     }
 
     @Test

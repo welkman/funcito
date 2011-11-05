@@ -37,7 +37,6 @@ public class ComparePredicateWrappers {
     static Predicate<BooleanThing> manual = new Predicate<BooleanThing>() {
         public boolean apply(BooleanThing arg0) { return arg0.getVal(); }
     };
-
     static Predicate<BooleanThing> manualX2 = new Predicate<BooleanThing>() {
         public boolean apply(BooleanThing arg0) { return !arg0.getVal(); }
     };
@@ -78,33 +77,10 @@ public class ComparePredicateWrappers {
         assertTrue(10L * timeManny > funkyTime);
     }
 
-    @Test
-    public void testLibby_validateImproperStubCallsOutsideOfWrap() {
-        cglibBooleanThingStub.getVal(); // should detect calling stubbedCallsTo outside of a wrap call
-        try {
-            Predicate<BooleanThing> attempt = Funcito.predicateFor(cglibBooleanThingStub.getVal());
-            fail("Should not have succeeded");
-        } catch (Exception e) {
-            // happy path
-            assertTrue(e.getMessage().contains("Multiple method calls"));
-        }
-    }
-
     class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
         private Boolean value;
         public OtherThing(Boolean value) { this.value = value; }
         public Boolean getVal() { return value; }
-    }
-
-    @Test
-    public void testLibby_mismatchOfSourceType() {
-        OtherThing otherThingStub = Funcito.stub(OtherThing.class);
-        try {
-            Predicate<BooleanThing> func = Funcito.predicateFor(otherThingStub.getVal());
-            fail("Should not have allowed this");
-        } catch (Exception e) {
-            // Happy Path
-        }
     }
 
     @Test
