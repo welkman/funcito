@@ -120,7 +120,7 @@ public class CompareFunctionWrappers {
         }
     }
 
-    class OtherThing { // does NOT extend BooleanThing or implement common interface, but they look identical
+    class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
         private String myString;
         public OtherThing(String myString) { this.myString = myString; }
         public Integer size() { return myString.length(); }

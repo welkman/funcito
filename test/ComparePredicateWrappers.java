@@ -90,7 +90,7 @@ public class ComparePredicateWrappers {
         }
     }
 
-    class OtherThing { // does NOT extend BooleanThing or implement common interface, but they look identical
+    class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
         private Boolean value;
         public OtherThing(Boolean value) { this.value = value; }
         public Boolean getVal() { return value; }
