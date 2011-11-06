@@ -17,15 +17,10 @@ public class FuncitoGuavaFunction_UT {
     }
 
 
-    static StringThing cglibStringThingStub = stub(StringThing.class);
-    static Function<StringThing, Integer> cglibbyX = functionFor(cglibStringThingStub.size());
+    static StringThing stringThingStub = stub(StringThing.class);
     // Below compiles but doesn't behave as expected (i.e., unlike FunkyJFunctional)
     // Currently it doesn't run at all, due to null return value somewhere?
-//    static Function<StringThing, Integer> cglibby2 = functionFor(cglibStringThingStub.size() * 2);
-
-    // alternative shortened 1-line notation
-    static Function<StringThing, Integer> cglibby = functionFor(callsTo(StringThing.class).size());
-    // alternate possible API???: makeFunc(forCallTo(...)  makeFunc(onCalls(...)  makeFuncFrom(stubbedCall
+//    static Function<StringThing, Integer> cglibby_x_2 = functionFor(callsTo.size() * 2);
 
     public static class StringThing2 extends StringThing {
         // include a no-arg ctor
@@ -33,42 +28,42 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testLibby_validateImproperStubCallsOutsideOfWrap() {
-        cglibStringThingStub.size(); // should detect calling stubbedCallsTo outside of a wrap call
+    public void testValidateImproperStubCallsOutsideOfWrap() {
+        stringThingStub.size(); // should detect calling stringThingStub outside of a wrap call
         try {
-            Function<StringThing,Integer> attempt = Funcito.functionFor(cglibStringThingStub.size());
+            Function<StringThing,Integer> attempt = functionFor(stringThingStub.size());
             fail("Should not have succeeded");
-        } catch (Exception e) {
+        } catch (FuncitoException e) {
             // happy path
             assertTrue(e.getMessage().contains("Multiple method calls"));
         }
     }
 
-    class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
+    private class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
         private String myString;
         public OtherThing(String myString) { this.myString = myString; }
         public Integer size() { return myString.length(); }
     }
 
     @Test
-    public void testLibby_detectMismatchOfSourceType() {
+    public void testDetectMismatchOfSourceType() {
         OtherThing otherThingStub = Funcito.stub(OtherThing.class);
         try {
-            Function<StringThing, Integer> func = Funcito.functionFor(otherThingStub.size());
+            Function<StringThing, Integer> func = functionFor(otherThingStub.size());
             fail("Should not have allowed wrapping an OtherThing method as a StringThing function");
-        } catch (Exception e) {
+        } catch (FuncitoException e) {
             // Happy Path
         }
     }
 
     @Test
-    public void testLibby_assignToFuncWithSourceSuperType() {
+    public void testAssignToFuncWithSourceSuperType() {
         Function<StringThing, Integer> superType;
         superType = functionFor(callsTo(StringThing2.class).size());
     }
 
     @Test
-    public void testLibby_assignToFuncWithTargetSuperType() {
+    public void testAssignToFuncWithTargetSuperType() {
         Function<StringThing,? extends Number> superType = functionFor(callsTo(StringThing.class).size());
         StringThing thing = new StringThing("123456");
         Number n = superType.apply(thing);

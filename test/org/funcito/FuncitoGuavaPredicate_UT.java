@@ -1,15 +1,10 @@
 package org.funcito;
 
 import com.google.common.base.Predicate;
-import info.piwai.funkyjfunctional.guava.Pred;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static info.piwai.funkyjfunctional.guava.FunkyGuava.withPred;
-import static org.funcito.Funcito.predicateFor;
-import static org.funcito.Funcito.stub;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.funcito.Funcito.*;
+import static org.junit.Assert.*;
 
 public class FuncitoGuavaPredicate_UT {
 
@@ -20,18 +15,17 @@ public class FuncitoGuavaPredicate_UT {
     }
 
 
-    BooleanThing cglibBooleanThingStub = stub(BooleanThing.class);
-    Predicate<BooleanThing> cglibby = predicateFor(cglibBooleanThingStub.getVal());
-//    Predicate<BooleanThing> cglibby2 = predicateFor(cglibBooleanThingStub.getVal() * 2);
+    BooleanThing booleanThingStub = stub(BooleanThing.class);
+//    Predicate<BooleanThing> pred2 = predicateFor(booleanThingStub.getVal() * 2);
 
 
     @Test
-    public void testLibby_validateImproperStubCallsOutsideOfWrap() {
-        cglibBooleanThingStub.getVal(); // should detect calling stubbedCallsTo outside of a wrap call
+    public void testValidateImproperStubCallsOutsideOfWrap() {
+        booleanThingStub.getVal(); // should detect calling stubbedCallsTo outside of a wrap call
         try {
-            Predicate<BooleanThing> attempt = Funcito.predicateFor(cglibBooleanThingStub.getVal());
+            Predicate<BooleanThing> attempt = predicateFor(booleanThingStub.getVal());
             fail("Should not have succeeded");
-        } catch (Exception e) {
+        } catch (FuncitoException e) {
             // happy path
             assertTrue(e.getMessage().contains("Multiple method calls"));
         }
@@ -44,12 +38,12 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testLibby_mismatchOfSourceType() {
-        OtherThing otherThingStub = Funcito.stub(OtherThing.class);
+    public void test_detectMismatchOfSourceType() {
+        OtherThing otherThingStub = stub(OtherThing.class);
         try {
-            Predicate<BooleanThing> func = Funcito.predicateFor(otherThingStub.getVal());
+            Predicate<BooleanThing> pred = predicateFor(otherThingStub.getVal());
             fail("Should not have allowed this");
-        } catch (Exception e) {
+        } catch (FuncitoException e) {
             // Happy Path
         }
     }

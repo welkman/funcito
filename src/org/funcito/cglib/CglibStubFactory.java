@@ -19,6 +19,7 @@ package org.funcito.cglib;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import net.sf.cglib.proxy.Enhancer;
+import org.funcito.FuncitoException;
 import org.funcito.StubFactory;
 
 import java.lang.reflect.Constructor;
@@ -53,7 +54,7 @@ public class CglibStubFactory extends StubFactory {
                 stub = (T)enhancer.create(parmTypes, args);
             }
         } catch (Exception e2) {
-            throw new RuntimeException("error stubbing class " + clazz.getName(), e2);
+            throw new FuncitoException("error stubbing class " + clazz.getName(), e2);
         }
         stubsCache.put(clazz, stub);
         return stub;

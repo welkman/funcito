@@ -1,3 +1,5 @@
+package org.funcito;
+
 /**
  * Copyright 2011 Project Funcito Contributors
  * <p/>
@@ -13,20 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.funcito;
-
-import org.funcito.cglib.CglibStubFactory;
-
-public abstract class StubFactory {
-    private static StubFactory instance = null;
-
-    public static StubFactory instance() {
-        if (instance==null) {
-            instance = new CglibStubFactory();
-        }
-        return instance;
+public class FuncitoException extends RuntimeException {
+    public FuncitoException(String message) {
+        super(message);
     }
 
-    public abstract <T> T stub(Class<T> clazz);
+    public FuncitoException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

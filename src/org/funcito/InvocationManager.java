@@ -30,18 +30,18 @@ public class InvocationManager {
         final Invokable invokable = queuedInvocations.pop().getInvokable();
         clearInvocations();
         if (invokable.getArgumentsLength() != 0) {
-            throw new RuntimeException("Failed to create a " + wrapperType  + ".  Method call on Funcito.stubbedCallsTo() had arguments, when only no-arg methods are wrappable.");
+            throw new FuncitoException("Failed to create a " + wrapperType  + ".  Method call on Funcito.stubbedCallsTo() had arguments, when only no-arg methods are wrappable.");
         }
         return invokable;
     }
 
     private  void validateInvocationsCount(String wrapperType) {
         if (isInvocationsEmpty()) {
-            throw new RuntimeException("Failed to create a " + wrapperType + ".  No call to a Funcito.stubbedCallsTo() object was registered.");
+            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito.stubbedCallsTo() object was registered.");
         }
         if (queuedInvocations.size() > 1) {
             clearInvocations();
-            throw new RuntimeException("Failed to create a " + wrapperType + ".  Multiple method calls to a Funcito.stubbedCallsTo() object were registered during call to wrapAsMethod, when only one is allowed.  This may happen if you attempt to invoke methods on the stubbedCallsTo outside of a Funcito.wrapAsMethod() call");
+            throw new FuncitoException("Failed to create a " + wrapperType + ".  Multiple method calls to a Funcito.stubbedCallsTo() object were registered during call to wrapAsMethod, when only one is allowed.  This may happen if you attempt to invoke methods on the stubbedCallsTo outside of a Funcito.wrapAsMethod() call");
         }
     }
 
