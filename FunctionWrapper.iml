@@ -6,9 +6,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/olderExperimentsTest" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/olderExperimentsTest" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/olderExperiments2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/olderExperimentsSrc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/oldExperimentSrc" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />

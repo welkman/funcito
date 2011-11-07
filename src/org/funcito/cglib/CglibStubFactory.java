@@ -42,12 +42,12 @@ public class CglibStubFactory extends StubFactory {
         try {
             // check for interface or no-arg constructor
             try {
-                if (clazz.isInterface() || clazz.getConstructor()!=null) {
+                if (clazz.isInterface() || clazz.getDeclaredConstructor()!=null) {
                     stub  = (T)enhancer.create();
                 }
             // failure to find no-arg constructor will throw exception, forcing search for other constructors
             } catch (Exception e) {
-                Constructor<T> ctor = (Constructor<T>)clazz.getConstructors()[0];
+                Constructor<T> ctor = (Constructor<T>)clazz.getDeclaredConstructors()[0];
                 Class<?>[] parmTypes = ctor.getParameterTypes();
                 Object[] args = new Object[parmTypes.length];
                 // TODO: this may not work when the particular CTOR requires 1 or more non-null args

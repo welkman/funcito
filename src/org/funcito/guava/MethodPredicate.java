@@ -16,6 +16,7 @@
 package org.funcito.guava;
 
 import com.google.common.base.Predicate;
+import org.funcito.FuncitoException;
 import org.funcito.Invokable;
 
 public class MethodPredicate<T> implements Predicate<T> {
@@ -29,7 +30,7 @@ public class MethodPredicate<T> implements Predicate<T> {
         try {
             return invokable.invoke(from, (Object[])null); //no arguments are passed, because this s/b a no-arg method
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            throw new FuncitoException("error trying to invoke", e);
         }
     }
 }
