@@ -1,6 +1,5 @@
 import com.google.common.base.Predicate;
 import info.piwai.funkyjfunctional.guava.Pred;
-import org.funcito.Funcito;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,13 +23,13 @@ public class ComparePredicateWrappers {
     Predicate<BooleanThing> funky = withPred(F.class);
 
     class Fx2 extends Pred<BooleanThing> {{ out = !in.getVal(); }}
-    Predicate<BooleanThing> funky2 = withPred(Fx2.class);
+    Predicate<BooleanThing> funkyNot = withPred(Fx2.class);
 
 
     // Example 2 with my Mockito/mock-based type
-    BooleanThing mockyStub = mockStubs.MethodWrapper.stubbed(BooleanThing.class);
-    Predicate<BooleanThing> mocky = mockStubs.MethodWrapper.makePred(mockyStub.getVal());
-    Predicate<BooleanThing> mockyX2 = mockStubs.MethodWrapper.makePred(!mockyStub.getVal());
+    BooleanThing mockitoStub = mockStubs.MethodWrapper.stubbed(BooleanThing.class);
+    Predicate<BooleanThing> mockitoPred = mockStubs.MethodWrapper.makePred(mockitoStub.getVal());
+    Predicate<BooleanThing> mockitoPredNot = mockStubs.MethodWrapper.makePred(!mockitoStub.getVal());
 
 
     // Example 3 with normal manual definition of Predicate
@@ -43,38 +42,37 @@ public class ComparePredicateWrappers {
 
 
     // Example 4 Funcito (CGLib)
-    BooleanThing cglibBooleanThingStub = stub(BooleanThing.class);
-    Predicate<BooleanThing> cglibby = predicateFor(cglibBooleanThingStub.getVal());
-//    Predicate<BooleanThing> cglibby2 = predicateFor(cglibBooleanThingStub.getVal() * 2);
+    BooleanThing funcitoBooleanThingStub = stub(BooleanThing.class);
+    Predicate<BooleanThing> funcitoPred = predicateFor(funcitoBooleanThingStub.getVal());
 
-    private static long timeManny = 0L;
+    private static long timeManual = 0L;
     @BeforeClass
     public static void setupOnce() {
         long timeDirect = invoke();
         System.out.println("direct" + " = " + timeDirect);
-        timeManny = apply(manual);
-        System.out.println("manual" + " = " + timeManny);
+        timeManual = apply(manual);
+        System.out.println("manual" + " = " + timeManual);
     }
 
     @Test
-    public void testLibbySpeed() {
-        long libbyTime = apply(cglibby);
-        System.out.println("CGLib" + " = " + libbyTime);
-        assertTrue(10L * timeManny > libbyTime);
+    public void testFuncitoSpeed() {
+        long funcitoTime = apply(funcitoPred);
+        System.out.println("Funcito (CGLib)" + " = " + funcitoTime);
+        assertTrue(10L * timeManual > funcitoTime);
     }
 
     @Test
-    public void testMockySpeed() {
-        long mockyTime = apply(mocky);
-        System.out.println("MyMockito-based" + " = " + mockyTime);
-        assertTrue(10L * timeManny > mockyTime);
+    public void testMockitoSpeed() {
+        long mockitoTime = apply(mockitoPred);
+        System.out.println("MyMockito-based" + " = " + mockitoTime);
+        assertTrue(10L * timeManual > mockitoTime);
     }
 
     @Test
     public void testFunkySpeed() {
         long funkyTime = apply(funky);
         System.out.println("FunkyJFunctional" + " = " + funkyTime);
-        assertTrue(10L * timeManny > funkyTime);
+        assertTrue(10L * timeManual > funkyTime);
     }
 
     class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
@@ -84,10 +82,10 @@ public class ComparePredicateWrappers {
     }
 
     @Test
-    public void testMocky_mismatchOfSourceType() {
+    public void testMockito_mismatchOfSourceType() {
         OtherThing otherThingStub = mockStubs.MethodWrapper.stubbed(OtherThing.class);
         try {
-            Predicate<BooleanThing> func = mockStubs.MethodWrapper.makePred(otherThingStub.getVal());
+            Predicate<BooleanThing> pred = mockStubs.MethodWrapper.makePred(otherThingStub.getVal());
             fail("Should not have allowed this");
         } catch (Exception e) {
             // Happy Path

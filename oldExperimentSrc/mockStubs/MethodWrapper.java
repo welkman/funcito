@@ -10,9 +10,9 @@ import java.util.Queue;
 
 public class MethodWrapper {
     private static MethodWrapper instance = new MethodWrapper();
-    public static MethodWrapper instance() { return instance(); }
+    public static MethodWrapper instance() { return instance; }
 
-    private MethodWrapper() {};
+    private MethodWrapper() {}
 
     static final private Queue<Method> queuedMethods = new LinkedList<Method>();
 
@@ -38,7 +38,7 @@ public class MethodWrapper {
         return new Predicate<T>() {
             public boolean apply(T from) {
                 try {
-                    return ((Boolean)method.invoke(from)).booleanValue();
+                    return (Boolean)method.invoke(from);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

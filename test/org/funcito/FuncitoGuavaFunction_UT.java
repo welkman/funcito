@@ -51,7 +51,7 @@ public class FuncitoGuavaFunction_UT {
     @Test
     public void testFunctionFor_MethodHasPrimitiveWrapperRetType() {
         class IntegerWrapperRet {
-            public Integer getVal() { return Integer.valueOf(123); }
+            public Integer getVal() { return 123; }
         }
         Function<IntegerWrapperRet,Integer> wrapperIntFunc = functionFor(callsTo(IntegerWrapperRet.class).getVal());
         assertEquals(123, wrapperIntFunc.apply(new IntegerWrapperRet()).intValue());

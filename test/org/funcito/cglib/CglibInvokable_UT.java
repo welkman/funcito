@@ -39,7 +39,7 @@ public class CglibInvokable_UT {
         class Thing1 { public String getVal() {return "abc";} }
         class Thing2 { public String getVal() {return "abc";} } // same signature but not a subclass
 
-        Thing1 thing1Proxy = (Thing1)ClassImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
+        Thing1 thing1Proxy = ClassImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
         thing1Proxy.getVal(); // proxy call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1

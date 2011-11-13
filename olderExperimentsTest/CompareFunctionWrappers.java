@@ -22,66 +22,66 @@ public class CompareFunctionWrappers {
 
 
     // Example 1 with FunkyJFunctional
-    static class F extends Func<StringThing, Integer> {{ out = in.size(); }}
-    static Function<StringThing, Integer> funky = withFunc(F.class);
+    static private class F extends Func<StringThing, Integer> {{ out = in.size(); }}
+    static private Function<StringThing, Integer> funkyFunc = withFunc(F.class);
 
-    static class Fx2 extends Func<StringThing, Integer> {{ out = in.size()*2; }}
-    static Function<StringThing, Integer> funky2 = withFunc(Fx2.class);
+    private static class Fx2 extends Func<StringThing, Integer> {{ out = in.size()*2; }}
+    private static Function<StringThing, Integer> funkyFuncX2 = withFunc(Fx2.class);
 
 
     // Example 2 with my Mockito/mock-based type
-    StringThing mockyStub = mockStubs.MethodWrapper.stubbed(StringThing.class);
-    Function<StringThing, Integer> mocky = mockStubs.MethodWrapper.makeFunc(mockyStub.size());
-    Function<StringThing, Integer> mockyX2 = mockStubs.MethodWrapper.makeFunc(mockyStub.size() * 2);
+    private StringThing mockitoStub = mockStubs.MethodWrapper.stubbed(StringThing.class);
+    private Function<StringThing, Integer> mockitoFunc = mockStubs.MethodWrapper.makeFunc(mockitoStub.size());
+    private Function<StringThing, Integer> mockitoFuncX2 = mockStubs.MethodWrapper.makeFunc(mockitoStub.size() * 2);
 
 
     // Example 3 with normal manual definition of Function
-    static Function<StringThing, Integer> manual = new Function<StringThing, Integer>() {
+    private static Function<StringThing, Integer> manual = new Function<StringThing, Integer>() {
           public Integer apply(StringThing arg0) { return arg0.size(); }
     };
-    static Function<StringThing, Integer> manualX2 = new Function<StringThing, Integer>() {
+    private static Function<StringThing, Integer> manualX2 = new Function<StringThing, Integer>() {
         public Integer apply(StringThing arg0) { return arg0.size()*2; }
     };
 
 
     // Example 4 Funcito (CGLib)
-    static Function<StringThing, Integer> cglibby = functionFor(callsTo(StringThing.class).size());
+    private static Function<StringThing, Integer> funcitoFunc = functionFor(callsTo(StringThing.class).size());
 
+    private static long timeManual = 0L;
 
-    private static long timeManny = 0L;
     @BeforeClass
     public static void setupOnce() {
         long timeDirect = invoke();
         System.out.println("direct = " + timeDirect);
-        timeManny = apply(manual);
-        System.out.println("manual = " + timeManny);
+        timeManual = apply(manual);
+        System.out.println("manual = " + timeManual);
     }
 
     @Test
-    public void testCgLibbySpeed() {
-        long cglibbyTime = apply(cglibby);
-        System.out.println("Funcito (CGLib) = " + cglibbyTime);
-        assertTrue(10L * timeManny > cglibbyTime);
+    public void testFuncitoSpeed() {
+        long funcitoTime = apply(funcitoFunc);
+        System.out.println("Funcito (CGLib) = " + funcitoTime);
+        assertTrue(10L * timeManual > funcitoTime);
     }
 
     @Test
-    public void testMockySpeed() {
-        long mockyTime = apply(mocky);
-        System.out.println("MyMockito-based = " + mockyTime);
-        assertTrue(10L * timeManny > mockyTime);
+    public void testMockitoSpeed() {
+        long mockitoTime = apply(mockitoFunc);
+        System.out.println("MyMockito-based = " + mockitoTime);
+        assertTrue(10L * timeManual > mockitoTime);
     }
 
     @Test
-    public void testFunkySpeed() {
-        long funkyTime = apply(funky);
+    public void testFunkyJFunctionalSpeed() {
+        long funkyTime = apply(funkyFunc);
         System.out.println("FunkyJFunctional = " + funkyTime);
-        assertTrue(10L * timeManny > funkyTime);
+        assertTrue(10L * timeManual > funkyTime);
     }
 
     @Test
-    public void testLammy_ClassWithoutNoArgCtor() {
+    public void testLambdaJ_ClassWithoutNoArgCtor() {
         // This does not run because StringThing does not have no-arg constructor
-        Closure1<StringThing> lammy = closure(StringThing.class); {of(StringThing.class).size();}
+        Closure1<StringThing> lambdaClosure = closure(StringThing.class); {of(StringThing.class).size();}
     }
 
     public static class StringThing2 extends StringThing {
@@ -90,11 +90,11 @@ public class CompareFunctionWrappers {
     }
 
     @Test
-    public void testLammySpeed() {
-        Closure1<StringThing2> lammy = closure(StringThing2.class); {of(StringThing2.class).size();}
-        long lammyTime = applyLamdaJ(lammy);
-        System.out.println("LambdaJ native = " + lammyTime);
-        assertTrue(10L * timeManny > lammyTime);
+    public void testLambdaJSpeed() {
+        Closure1<StringThing2> lambdaClosure = closure(StringThing2.class); {of(StringThing2.class).size();}
+        long lambdaJTime = applyLambdaJ(lambdaClosure);
+        System.out.println("LambdaJ native = " + lambdaJTime);
+        assertTrue(10L * timeManual > lambdaJTime);
     }
 
     class OtherThing { // does NOT extend BooleanThing or implement common.common interface, but they look identical
@@ -104,7 +104,7 @@ public class CompareFunctionWrappers {
     }
 
     @Test
-    public void testMocky_detectMismatchOfSourceType() {
+    public void testMockito_detectMismatchOfSourceType() {
         OtherThing otherThingStub = mockStubs.MethodWrapper.stubbed(OtherThing.class);
         try {
             Function<StringThing, Integer> func = mockStubs.MethodWrapper.makeFunc(otherThingStub.size());
@@ -115,12 +115,12 @@ public class CompareFunctionWrappers {
     }
 
     @Test
-    public void testLammy_detectMismatchOfSourceType() {
+    public void testLambdaJ_detectMismatchOfSourceType() {
         class OtherThing2 extends OtherThing { // needed a class with no-arg ctor
             public OtherThing2(String myString) {super("123456");}
         }
         try {
-            Closure1<StringThing> lammy = closure(StringThing.class); {of(OtherThing2.class).size();}
+            Closure1<StringThing> lambdaClosure = closure(StringThing.class); {of(OtherThing2.class).size();}
             fail("Should not have allowed wrapping an OtherThing2 method as a StringThing Closure");
         } catch (Exception e) {
             // Happy Path
@@ -128,7 +128,7 @@ public class CompareFunctionWrappers {
     }
 
     @Test
-    public void testFunky_detectMismatchOfSourceType() {
+    public void testFunkyJFunctional_detectMismatchOfSourceType() {
         class F3 extends Func<OtherThing, Integer> {{ out = in.size(); }}
         try {
             // This has static (compile-time) safety, so test passes by virtue of static source type safety
@@ -141,11 +141,11 @@ public class CompareFunctionWrappers {
 
     //----------------- HELPER METHODS ------------------------------
 
-    private long applyLamdaJ(Closure1<StringThing2> lammy) {
+    private long applyLambdaJ(Closure1<StringThing2> lambdaClosure) {
         StringThing2 stringThing2 = new StringThing2();
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 10000000; i++) {
-            lammy.apply(stringThing2);
+            lambdaClosure.apply(stringThing2);
         }
         long duration = System.currentTimeMillis() - startTime;
         return duration;
