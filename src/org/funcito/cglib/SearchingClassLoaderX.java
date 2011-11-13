@@ -29,10 +29,10 @@ import java.util.List;
 /**
  * Thanks to Mockito guys and jMock guys for this ClassLoader.
  */
-public class SearchingClassLoader extends ClassLoader {
+public class SearchingClassLoaderX extends ClassLoader {
     private final ClassLoader nextToSearch;
     
-    public SearchingClassLoader(ClassLoader parent, ClassLoader nextToSearch) {
+    public SearchingClassLoaderX(ClassLoader parent, ClassLoader nextToSearch) {
         super(parent);
         this.nextToSearch = nextToSearch;
     }
@@ -54,7 +54,7 @@ public class SearchingClassLoader extends ClassLoader {
         // but in the class loader of the plug-in.
         //
         // Note: I've been unable to reproduce the error in jMock's test suite.
-        addIfNewElement(loaders, SearchingClassLoader.class.getClassLoader());
+        addIfNewElement(loaders, SearchingClassLoaderX.class.getClassLoader());
         
         // To support the Maven Surefire plugin.
         // Note: I've been unable to reproduce the error in jMock's test suite.
@@ -70,7 +70,7 @@ public class SearchingClassLoader extends ClassLoader {
         ClassLoader loader = parentLoaders.get(parentLoaders.size()-1);
         
         for (int i = parentLoaders.size()-2; i >= 0; i--) {
-            loader = new SearchingClassLoader(parentLoaders.get(i), loader);
+            loader = new SearchingClassLoaderX(parentLoaders.get(i), loader);
         }
         
         return loader;
