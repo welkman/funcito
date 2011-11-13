@@ -17,6 +17,8 @@ package org.funcito;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import fj.F;
+import org.funcito.functionaljava.MethodF;
 import org.funcito.guava.MethodFunction;
 import org.funcito.guava.MethodPredicate;
 
@@ -36,6 +38,8 @@ public class Funcito {
         return stub(clazz);
     }
 
+    //--------------------        static calls for Google Guava      -------------------------
+
     public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
         final Invokable<T,V> invokable = invocationManager.extractInvokable("Guava Function");
         return new MethodFunction<T, V>(invokable);
@@ -44,6 +48,13 @@ public class Funcito {
     public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
         final Invokable<T,Boolean> invokable = invocationManager.extractInvokable("Guava Predicate");
         return new MethodPredicate<T>(invokable);
+    }
+
+    //--------------------        static calls for Functional Java    -------------------------
+
+    public static <T,V> F<T,V> fFor(V ignoredRetVal) {
+        final Invokable<T,V> invokable = invocationManager.extractInvokable("Functional Java F (function)");
+        return new MethodF<T, V>(invokable);
     }
 
 }

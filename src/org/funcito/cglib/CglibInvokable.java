@@ -23,6 +23,7 @@ import org.funcito.Invokable;
 public class CglibInvokable<T,V> implements Invokable<T,V> {
 
     private MethodProxy methodProxy;
+
     public CglibInvokable(MethodProxy methodProxy) {
         this.methodProxy = methodProxy;
     }
@@ -33,4 +34,5 @@ public class CglibInvokable<T,V> implements Invokable<T,V> {
     }
 
     public int getArgumentsLength() { return methodProxy.getSignature().getArgumentTypes().length; }
+    public String getMethodName() { return methodProxy.getSignature().getName(); }
 }

@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.guava;
+package org.funcito.cglib;
 
-import com.google.common.base.Predicate;
-import org.funcito.Invoker;
-import org.funcito.Invokable;
+import net.sf.cglib.core.DefaultNamingPolicy;
 
-public class MethodPredicate<T> implements Predicate<T> {
-    private Invoker<T,Boolean> invoker;
-
-
-    public MethodPredicate(Invokable<T,Boolean> invokable) {
-        this.invoker = new Invoker<T, Boolean>(invokable);
-    }
-
-    public boolean apply(T from) {
-        return invoker.apply(from);
+public class FuncitoNamingPolicy extends DefaultNamingPolicy {
+    
+    public static final FuncitoNamingPolicy INSTANCE = new FuncitoNamingPolicy();
+    
+    @Override
+    protected String getTag() {
+        return "ByFuncitoWithCGLIB";
     }
 }

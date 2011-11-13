@@ -18,11 +18,9 @@ package org.funcito.cglib;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
-import net.sf.cglib.proxy.Enhancer;
 import org.funcito.FuncitoException;
 import org.funcito.StubFactory;
 
-import java.lang.reflect.Constructor;
 import java.util.Map;
 
 @GwtIncompatible(value="Depends on CGLib bytecode generation library")
@@ -31,32 +29,15 @@ public class CglibStubFactory extends StubFactory {
     private Map<Class, Object> stubsCache = Maps.newHashMap();
 
     public <T> T stub(Class<T> clazz) {
-        if (stubsCache.containsKey(clazz)) {
-            return (T) stubsCache.get(clazz);
-        }
-        // TODO: investigate, enhancer may have its own cache, see enhancer.setUseCache(boolean)
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
-        enhancer.setCallback(new CglibQueingInterceptor());
-        T stub = null;
-        try {
-            // check for interface or no-arg constructor
-            try {
-                if (clazz.isInterface() || clazz.getDeclaredConstructor()!=null) {
-                    stub  = (T)enhancer.create();
-                }
-            // failure to find no-arg constructor will throw exception, forcing search for other constructors
-            } catch (Exception e) {
-                Constructor<T> ctor = (Constructor<T>)clazz.getDeclaredConstructors()[0];
-                Class<?>[] parmTypes = ctor.getParameterTypes();
-                Object[] args = new Object[parmTypes.length];
-                // TODO: this may not work when the particular CTOR requires 1 or more non-null args
-                stub = (T)enhancer.create(parmTypes, args);
+        T stub = (T)stubsCache.get(clazz);
+        if (stub == null) {
+            ClassImposterizer imposterizer = ClassImposterizer.INSTANCE;
+            if (!imposterizer.canImposterise(clazz)) {
+                throw new FuncitoException("Cannot mock this class");
             }
-        } catch (Exception e2) {
-            throw new FuncitoException("error stubbing class " + clazz.getName(), e2);
+            stub = imposterizer.imposterise(new CglibQueingInterceptor(), clazz);
+            stubsCache.put(clazz, stub);
         }
-        stubsCache.put(clazz, stub);
         return stub;
     }
 

@@ -20,7 +20,7 @@ public class FuncitoGuavaFunction_UT {
 //    static Function<StringThing, Integer> cglibby_x_2 = functionFor(callsTo.size() * 2);
 
     @Test
-    public void testValidateImproperCallOnStubOutsideOf_functionFor() {
+    public void testFunctionFor_ValidateImproperCallOnStubOutsideOf_functionFor() {
         StringThing stringThingStub = stub(StringThing.class);
         stringThingStub.size(); // It is not caught here
         try {
@@ -35,29 +35,13 @@ public class FuncitoGuavaFunction_UT {
 
 
     @Test
-    public void testDetectMismatchOfSourceType() {
-        class OtherThing { // does NOT extend StringThing nor implement a common interface, but their methods ("size()") look identical
-            public Integer size() { return 123; }
-        }
-        OtherThing otherThingStub = Funcito.stub(OtherThing.class);
-        try {
-            // cannot catch mismatch at compile time or in building the Function
-            Function<StringThing, Integer> func = functionFor(otherThingStub.size());
-            // but does catch it at runtime when you try to apply it
-            func.apply(new StringThing("ABCD"));
-        } catch (FuncitoException e) {
-            // Happy Path
-        }
-    }
-
-    @Test
-    public void testAssignToFunctionWithSourceSuperType() {
+    public void testFunctionFor_AssignToFunctionWithSourceSuperType() {
         Function<Object, Integer>  superTypeRet = functionFor(callsTo(StringThing.class).size());
         assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
     }
 
     @Test
-    public void testAssignToFuncWithTargetSuperType() {
+    public void testFunctionFor_AssignToFuncWithTargetSuperType() {
         Function<StringThing,? extends Number> superType = functionFor(callsTo(StringThing.class).size());
         StringThing thing = new StringThing("123456");
         Number n = superType.apply(thing);
@@ -65,7 +49,7 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testMethodHasPrimitiveWrapperRetType() {
+    public void testFunctionFor_MethodHasPrimitiveWrapperRetType() {
         class IntegerWrapperRet {
             public Integer getVal() { return Integer.valueOf(123); }
         }
@@ -74,7 +58,7 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testMethodHasPrimitiveRetType() {
+    public void testFunctionFor_MethodHasPrimitiveRetType() {
         class PrimitiveIntRet {
             public int getVal() { return 123; }
         }
@@ -83,19 +67,7 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testWorksWithPrivateNoArgCtor() {
-        Function<HasPrivateCtor0ForGF,Integer> func = functionFor(callsTo(HasPrivateCtor0ForGF.class).getVal());
-        assertEquals(123, func.apply(HasPrivateCtor0ForGF.instance).intValue());
-    }
-
-    @Test
-    public void testSourceTypeHasPrivateCtorWithArgs() {
-        Function<HasPrivateCtor1ForGF,Integer> func = functionFor(callsTo(HasPrivateCtor1ForGF.class).getVal());
-        assertEquals(123, func.apply(HasPrivateCtor1ForGF.instance).intValue());
-    }
-
-    @Test
-    public void testValidateDetectsMismatchedGenericTypes() {
+    public void testFunctionFor_ValidateDetectsMismatchedGenericTypes() {
         class Generic<T> {
             public Integer getVal() {return 123;}
         }
@@ -107,7 +79,7 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testAllowUpcastToExtensionGenericType() {
+    public void testFunctionFor_AllowUpcastToExtensionGenericType() {
         class Generic<T> {
             public Integer getVal() {return 123;}
         }
@@ -118,14 +90,3 @@ public class FuncitoGuavaFunction_UT {
     }
 }
 
-class HasPrivateCtor0ForGF {
-    static HasPrivateCtor0ForGF instance = new HasPrivateCtor0ForGF();
-    public Integer getVal() { return 123; }
-}
-
-class HasPrivateCtor1ForGF {
-    static HasPrivateCtor1ForGF instance = new HasPrivateCtor1ForGF(123);
-    private Integer value;
-    private HasPrivateCtor1ForGF(Integer value) { this.value = value; }
-    public Integer getVal() { return value; }
-}

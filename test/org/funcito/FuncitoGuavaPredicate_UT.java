@@ -15,7 +15,7 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testValidateImproperCallToStubOutsideOf_predicateFor() {
+    public void testPredicateFor_ValidateImproperCallToStubOutsideOf_predicateFor() {
         BooleanThing booleanThingStub = stub(BooleanThing.class);
         booleanThingStub.getVal(); // It is not caught here
 
@@ -30,31 +30,13 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testDetectMismatchOfSourceType() {
-        class MismatchClass { // does NOT extend BooleanThing nor implement a common interface, but their methods ("getVal()") look identical
-            private Boolean value = true;
-            public Boolean getVal() { return value; }
-        }
-        MismatchClass otherThingStub = stub(MismatchClass.class);
-        try {
-            // cannot catch mismatch at compile time or in building the Predicate
-            Predicate<BooleanThing> pred = predicateFor(otherThingStub.getVal());
-            // but does catch it at runtime when you try to apply it
-            pred.apply(new BooleanThing(true));
-        } catch (FuncitoException e) {
-            // Happy Path
-            assertTrue(e.getMessage().contains("error trying to invoke"));
-        }
-    }
-
-    @Test
-    public void testAssignToPredicateWithSourceSuperType() {
+    public void testPredicateFor_AssignToPredicateWithSourceSuperType() {
         Predicate<Object>  superTypeRet = predicateFor(callsTo(BooleanThing.class).getVal());
         assertTrue(superTypeRet.apply(new BooleanThing(true)));
     }
 
     @Test
-    public void testMethodHasBooleanWrapperRetType() {
+    public void testPredicateFor_MethodHasBooleanWrapperRetType() {
         class BooleanWrapperRet {
             public Boolean getBoolWrap() { return Boolean.TRUE; }
         }
@@ -63,7 +45,7 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testMethodHasPrimitiveBooleanRetType() {
+    public void testPredicateFor_MethodHasPrimitiveBooleanRetType() {
         class PrimitiveBoolRet {
             public boolean getPrimBool() { return true; }
         }
@@ -72,19 +54,7 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testSourceTypeHasPrivateNoArgCtor() {
-        Predicate<HasPrivateCtor0ForGP> pred = predicateFor(callsTo(HasPrivateCtor0ForGP.class).getVal());
-        assertTrue(pred.apply(HasPrivateCtor0ForGP.instance));
-    }
-
-    @Test
-    public void testSourceTypeHasPrivateCtorWithArgs() {
-        Predicate<HasPrivateCtor1ForGP> pred = predicateFor(callsTo(HasPrivateCtor1ForGP.class).getVal());
-        assertTrue(pred.apply(HasPrivateCtor1ForGP.instance));
-    }
-
-    @Test
-    public void testValidateDetectsMismatchedGenericTypes() {
+    public void testPredicateFor_ValidateDetectsMismatchedGenericTypes() {
         class Generic<T> {
             public boolean getVal() {return true;}
         }
@@ -108,14 +78,3 @@ public class FuncitoGuavaPredicate_UT {
 
 }
 
-class HasPrivateCtor0ForGP {
-    static HasPrivateCtor0ForGP instance = new HasPrivateCtor0ForGP();
-    public boolean getVal() { return true; }
-}
-
-class HasPrivateCtor1ForGP {
-    static HasPrivateCtor1ForGP instance = new HasPrivateCtor1ForGP(true);
-    private boolean value;
-    private HasPrivateCtor1ForGP(boolean value) { this.value = value; }
-    public boolean getVal() { return value; }
-}
