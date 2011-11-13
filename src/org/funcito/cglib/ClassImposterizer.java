@@ -90,7 +90,7 @@ public class ClassImposterizer  {
                 // Don't filter
             }
         };
-        enhancer.setClassLoader(SearchingClassLoaderX.combineLoadersOf(mockedType));
+        enhancer.setClassLoader(SearchingClassLoader.combineLoadersOf(mockedType));
         enhancer.setUseFactory(true);
         if (mockedType.isInterface()) {
             enhancer.setSuperclass(Object.class);
