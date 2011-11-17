@@ -1,0 +1,24 @@
+
+Prerequisites:
+
+gradle 1.0-milestone-5
+available here: http://www.gradle.org/
+
+- set GRADLE_HOME
+- add GRADLE_HOME/bin to PATH
+- set perms on GRADLE_HOME/bin/*
+- add GRADLE_HOME/lib to CLASSPATH
+
+Commands:
+
+gradle tasks
+    - task similar to Ant target
+    - this is analogous to ant -p
+gradle compileJava 
+    - builds src
+    - writes classes to 'build/classes/main' dir
+gradle compileTestJava 
+    - builds test
+    - writes classes to 'build/classes/test' dir
+gradle test 
+    - runs tests, writes reports to 'build/reports' dir
