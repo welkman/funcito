@@ -22,3 +22,6 @@ gradle compileTestJava
     - writes classes to 'build/classes/test' dir
 gradle test 
     - runs tests, writes reports to 'build/reports' dir
+gradle jar
+    - uses build/classes/main to create build/lib/funcito.jar
+
