@@ -23,15 +23,15 @@ import org.funcito.StubFactory;
 
 import java.util.Map;
 
-@GwtIncompatible(value="Depends on CGLib bytecode generation library")
+@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 public class CglibStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();
 
     public <T> T stub(Class<T> clazz) {
-        T stub = (T)stubsCache.get(clazz);
+        T stub = (T) stubsCache.get(clazz);
         if (stub == null) {
-            ClassImposterizer imposterizer = ClassImposterizer.INSTANCE;
+            CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }

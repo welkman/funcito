@@ -17,10 +17,10 @@ package org.funcito.cglib;
 
 import net.sf.cglib.core.DefaultNamingPolicy;
 
-public class FuncitoNamingPolicy extends DefaultNamingPolicy {
-    
-    public static final FuncitoNamingPolicy INSTANCE = new FuncitoNamingPolicy();
-    
+public class CglibNamingPolicy extends DefaultNamingPolicy {
+
+    public static final CglibNamingPolicy INSTANCE = new CglibNamingPolicy();
+
     @Override
     protected String getTag() {
         return "ByFuncitoWithCGLIB";
