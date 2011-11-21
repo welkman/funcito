@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.funcito.cglib;
+package org.funcito.javassist;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
@@ -23,19 +23,20 @@ import org.funcito.StubFactory;
 
 import java.util.Map;
 
-@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
-public class CglibStubFactory extends StubFactory {
+@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
+public class JavassistStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();
 
     public <T> T stub(Class<T> clazz) {
         T stub = clazz.cast(stubsCache.get(clazz));
         if (stub == null) {
-            CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
+
+            JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(new CglibQueingInterceptor(), clazz);
+            stub = imposterizer.imposterise(new JavassistQueingInterceptor(), clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;
