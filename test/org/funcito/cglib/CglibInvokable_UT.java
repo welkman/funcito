@@ -30,7 +30,6 @@ public class CglibInvokable_UT {
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         final MethodProxy[] proxy = new MethodProxy[1];
         class Interceptor implements MethodInterceptor {
-            @Override
             public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
                 proxy[0] = methodProxy;
                 return null;

@@ -15,42 +15,40 @@
  */
 package org.funcito;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 public class InvocationManager {
-    final private Deque<StubInvocation> queuedInvocations = new ArrayDeque<StubInvocation>();
+    final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();
 
-    public void pushInvocation(StubInvocation invocation) {
-        queuedInvocations.push(invocation);
+    public void pushInvokable(Invokable invokable) {
+        if (!isInvocationsEmpty()) {
+            clearInvocations();
+            throw new FuncitoException("A method call to a Funcito stub was detected outside of acceptable scope.  This usually means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
+        }
+        if (invokable.getArgumentsLength() != 0) {
+            clearInvocations();
+            throw new FuncitoException("Failed to wrap method invocation.  Signature of method call on Funcito stub has arguments, when only no-arg methods are wrappable.");
+        }
+        queuedInvokables.push(invokable);
     }
 
     public Invokable extractInvokable(String wrapperType) {
         validateInvocationsCount(wrapperType);
-        final Invokable invokable = queuedInvocations.pop().getInvokable();
-        clearInvocations();
-        if (invokable.getArgumentsLength() != 0) {
-            throw new FuncitoException("Failed to create a " + wrapperType  + ".  Method call on Funcito.stubbedCallsTo() had arguments, when only no-arg methods are wrappable.");
-        }
-        return invokable;
+        return queuedInvokables.pop();
     }
 
-    private  void validateInvocationsCount(String wrapperType) {
+    private void validateInvocationsCount(String wrapperType) {
         if (isInvocationsEmpty()) {
-            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito.stubbedCallsTo() object was registered.");
-        }
-        if (queuedInvocations.size() > 1) {
-            clearInvocations();
-            throw new FuncitoException("Failed to create a " + wrapperType + ".  Multiple method calls to a Funcito.stubbedCallsTo() object were registered during call to wrapAsMethod, when only one is allowed.  This may happen if you attempt to invoke methods on the stubbedCallsTo outside of a Funcito.wrapAsMethod() call");
+            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
         }
     }
 
     private void clearInvocations() {
-        queuedInvocations.clear();
+        queuedInvokables.clear();
     }
 
     private boolean isInvocationsEmpty() {
-        return queuedInvocations.isEmpty();
+        return queuedInvokables.isEmpty();
     }
 
 }

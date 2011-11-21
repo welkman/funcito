@@ -22,10 +22,11 @@ import org.funcito.Funcito;
 
 import java.lang.reflect.Method;
 
-@GwtIncompatible(value="Depends on CGLib bytecode generation library")
+@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 public class CglibQueingInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-        Funcito.getInvocationManager().pushInvocation(new CglibInvocation(o, method, objects, methodProxy));
+        CglibInvokable invokable = new CglibInvokable(methodProxy);
+        Funcito.getInvocationManager().pushInvokable(invokable);
         return null;
     }
 
