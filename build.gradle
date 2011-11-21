@@ -17,6 +17,7 @@ dependencies {
     compile group: 'cglib', name: 'cglib', version: '2.2'
     compile group: 'cglib', name: 'cglib-asm', version: '1.0'
     compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
+    compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
 
     // test
     testCompile group: 'junit', name: 'junit', version: '4.8.2'
