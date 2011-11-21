@@ -36,7 +36,8 @@ import java.util.List;
 /**
  * Thanks to Mockito guys and jMock guys for this handy class that wraps all the cglib magic.
  */
-public class CglibImposterizer {
+/* default */ 
+class CglibImposterizer {
 
     public static final CglibImposterizer INSTANCE = new CglibImposterizer();
 

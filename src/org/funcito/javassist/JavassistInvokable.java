@@ -21,7 +21,8 @@ import org.funcito.Invokable;
 import java.lang.reflect.Method;
 
 @GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-public class JavassistInvokable<T, V> implements Invokable<T, V> {
+/* default */ 
+class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     private Method method;
 

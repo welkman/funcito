@@ -23,7 +23,8 @@ import org.funcito.Funcito;
 import java.lang.reflect.Method;
 
 @GwtIncompatible(value = "Depends on CGLib bytecode generation library")
-public class CglibQueingInterceptor implements MethodInterceptor {
+/* default */ 
+class CglibQueingInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         CglibInvokable invokable = new CglibInvokable(methodProxy);
         Funcito.getInvocationManager().pushInvokable(invokable);

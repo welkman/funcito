@@ -23,7 +23,8 @@ import org.funcito.google.guava.common.base.Defaults;
 import java.lang.reflect.Method;
 
 @GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-public class JavassistQueingInterceptor implements MethodHandler {
+/* default */ 
+class JavassistQueingInterceptor implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
         Funcito.getInvocationManager().pushInvokable(new JavassistInvokable(method));

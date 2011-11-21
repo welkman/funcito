@@ -32,7 +32,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class JavassistImposterizer {
+/* default */ 
+class JavassistImposterizer {
 
     public static final JavassistImposterizer INSTANCE = new JavassistImposterizer();
 
