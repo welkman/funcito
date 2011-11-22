@@ -1,8 +1,30 @@
 
 apply plugin: 'java'
 
+version=0.1
+
 sourceSets.main.java.srcDirs 'src'
 sourceSets.test.java.srcDirs 'test'
+
+task srcJar(type: Jar) {
+    baseName = "${project.name}-src"
+
+    from(sourceSets.main.java.srcDirs) {
+        include '**/*.java'
+    }
+}
+
+jar.dependsOn(srcJar)
+
+jar {
+    from { 
+        configurations.compile.each { 
+            if ( it =~ /objenesis/ ) {
+                // zipTree(it)
+            }
+        } 
+    }
+}
 
 repositories {
     mavenCentral()
