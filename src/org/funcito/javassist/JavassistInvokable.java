@@ -16,6 +16,7 @@
 package org.funcito.javassist;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.funcito.FuncitoException;
 import org.funcito.Invokable;
 
 import java.lang.reflect.Method;
@@ -25,15 +26,26 @@ import java.lang.reflect.Method;
 class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     private Method method;
+    private Class declaringClass;
 
     public JavassistInvokable(Method method) {
         method.setAccessible(true);
         this.method = method;
+        this.declaringClass = method.getDeclaringClass();
     }
 
     @SuppressWarnings({"unchecked"})
-    public V invoke(T from, Object... args) throws Throwable {
-        return (V) method.invoke(from, args);
+    public V invoke(T from, Object... args) {
+        if (!declaringClass.isAssignableFrom(from.getClass())) {
+            throw new FuncitoException("ClassCastException while invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()");
+        }
+        try {
+            return (V) method.invoke(from, args);
+        } catch (Throwable e2) {
+            throw new FuncitoException("error invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e2);
+        }
     }
 
     public int getArgumentsLength() {

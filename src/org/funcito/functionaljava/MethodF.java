@@ -1,7 +1,6 @@
 package org.funcito.functionaljava;
 
 import fj.F;
-import org.funcito.Invoker;
 import org.funcito.Invokable;
 
 /**
@@ -20,14 +19,14 @@ import org.funcito.Invokable;
  * limitations under the License.
  */
 public class MethodF<T,V> extends F<T,V> {
-    private Invoker<T,V> invoker;
+    private Invokable<T,V> invokable;
 
     public MethodF(Invokable<T,V> invokable) {
-        this.invoker = new Invoker<T, V>(invokable);
+        this.invokable = invokable;
     }
 
     @Override
     public V f(T from) {
-        return invoker.apply(from);
+        return invokable.invoke(from);
     }
 }

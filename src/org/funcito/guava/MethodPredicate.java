@@ -16,18 +16,17 @@
 package org.funcito.guava;
 
 import com.google.common.base.Predicate;
-import org.funcito.Invoker;
 import org.funcito.Invokable;
 
 public class MethodPredicate<T> implements Predicate<T> {
-    private Invoker<T,Boolean> invoker;
+    private Invokable<T,Boolean> invokable;
 
 
     public MethodPredicate(Invokable<T,Boolean> invokable) {
-        this.invoker = new Invoker<T, Boolean>(invokable);
+        this.invokable = invokable;
     }
 
     public boolean apply(T from) {
-        return invoker.apply(from);
+        return invokable.invoke(from);
     }
 }

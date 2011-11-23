@@ -17,6 +17,7 @@ package org.funcito.cglib;
 
 import com.google.common.annotations.GwtIncompatible;
 import net.sf.cglib.proxy.MethodProxy;
+import org.funcito.FuncitoException;
 import org.funcito.Invokable;
 
 @GwtIncompatible(value="Depends on CGLib bytecode generation library")
@@ -29,8 +30,16 @@ public class CglibInvokable<T,V> implements Invokable<T,V> {
     }
 
     @SuppressWarnings({"unchecked"})
-    public V invoke(T from, Object... args) throws Throwable {
-        return (V)methodProxy.invoke(from, args);
+    public V invoke(T from, Object... args) {
+        try {
+            return (V)methodProxy.invoke(from, args);
+        } catch (ClassCastException e) {
+            throw new FuncitoException("ClassCastException while invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
+        } catch (Throwable e2) {
+            throw new FuncitoException("error invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e2);
+        }
     }
 
     public int getArgumentsLength() { return methodProxy.getSignature().getArgumentTypes().length; }

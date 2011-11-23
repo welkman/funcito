@@ -17,7 +17,7 @@ package org.funcito;
 
 public interface Invokable<T,V> {
 
-    V invoke(T from, Object... args) throws Throwable;
+    V invoke(T from, Object... args);
 
     int getArgumentsLength();
 

@@ -12,13 +12,9 @@ public class FuncitoGuavaPredicate_UT {
     private static class BooleanThing {
         private Boolean myVal;
 
-        public BooleanThing(Boolean myVal) {
-            this.myVal = myVal;
-        }
+        public BooleanThing(Boolean myVal) { this.myVal = myVal; }
 
-        public Boolean getVal() {
-            return myVal;
-        }
+        public Boolean getVal() { return myVal; }
     }
 
     @Test
@@ -30,9 +26,7 @@ public class FuncitoGuavaPredicate_UT {
     @Test
     public void testPredicateFor_MethodHasBooleanWrapperRetType() {
         class BooleanWrapperRet {
-            public Boolean getBoolWrap() {
-                return Boolean.TRUE;
-            }
+            public Boolean getBoolWrap() { return Boolean.TRUE; }
         }
         Predicate<BooleanWrapperRet> wrapBoolPred = predicateFor(callsTo(BooleanWrapperRet.class).getBoolWrap());
         assertTrue(wrapBoolPred.apply(new BooleanWrapperRet()));
@@ -41,9 +35,7 @@ public class FuncitoGuavaPredicate_UT {
     @Test
     public void testPredicateFor_MethodHasPrimitiveBooleanRetType() {
         class PrimitiveBoolRet {
-            public boolean getPrimBool() {
-                return true;
-            }
+            public boolean getPrimBool() { return true; }
         }
         Predicate<PrimitiveBoolRet> primBoolPred = predicateFor(callsTo(PrimitiveBoolRet.class).getPrimBool());
         assertTrue(primBoolPred.apply(new PrimitiveBoolRet()));
@@ -51,13 +43,8 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testPredicateFor_ValidateDetectsMismatchedGenericTypes() {
-        class Generic<T> {
-            public boolean getVal() {
-                return true;
-            }
-        }
-        Predicate<Generic<String>> stringPred = predicateFor(callsTo(Generic.class).getVal());
-        Generic<Integer> integerGeneric = new Generic<Integer>();
+        Predicate<PrimitiveBoolRetGeneric<String>> stringPred = predicateFor(callsTo(PrimitiveBoolRetGeneric.class).getVal());
+        PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
 
         // The below can't actually be compiled, which proves the test passes: compile time mismatch detection
 //        stringPred.apply(integerGeneric);
@@ -65,16 +52,22 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testAllowUpcastToExtensionGenericType() {
-        class Generic<T> {
-            public boolean getVal() {
-                return true;
-            }
-        }
-        Predicate<Generic<? extends Object>> stringPred = predicateFor(callsTo(Generic.class).getVal());
-        Generic<Integer> integerGeneric = new Generic<Integer>();
+        Predicate<PrimitiveBoolRetGeneric<?>> stringPred = predicateFor(callsTo(PrimitiveBoolRetGeneric.class).getVal());
+        PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
 
         assertTrue(stringPred.apply(integerGeneric));
     }
 
+    // TODO: I have not defined a policy for the below yet, currently throws NPE
+//    @Test
+//    public void testApply_ReturnNullBooleanWrapper() {
+//        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
+//        BooleanThing nullThing = new BooleanThing(null);
+//        pred.apply(nullThing);
+//    }
+
+    class PrimitiveBoolRetGeneric<T> {
+        public boolean getVal() { return true; }
+    }
 }
 

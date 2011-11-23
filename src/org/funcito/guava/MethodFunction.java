@@ -16,17 +16,16 @@
 package org.funcito.guava;
 
 import com.google.common.base.Function;
-import org.funcito.Invoker;
 import org.funcito.Invokable;
 
 public class MethodFunction<T, V> implements Function<T,V> {
-    private Invoker<T,V> invoker;
+    private Invokable<T,V> invokable;
 
     public MethodFunction(Invokable<T,V> invokable) {
-        this.invoker = new Invoker<T, V>(invokable);
+        this.invokable = invokable;
     }
 
     public V apply(T from) {
-        return invoker.apply(from);
+        return invokable.invoke(from);
     }
 }
