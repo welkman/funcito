@@ -44,19 +44,22 @@ public class FuncitoDelegate {
     //--------------------        static calls for Google Guava      -------------------------
 
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable("Guava Function");
+    	String wrapperType = WrapperType.GUAVA_FUNCTION.toString();
+        final Invokable<T,V> invokable = invocationManager.extractInvokable(wrapperType);
         return new MethodFunction<T, V>(invokable);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable("Guava Predicate");
+    	String wrapperType = WrapperType.GUAVA_PREDICATE.toString();
+        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable(wrapperType);
         return new MethodPredicate<T>(invokable);
     }
 
     //--------------------        static calls for Functional Java    -------------------------
 
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable("Functional Java F (function)");
+    	String wrapperType = WrapperType.FJ_F.toString();
+        final Invokable<T,V> invokable = invocationManager.extractInvokable(wrapperType);
         return new MethodF<T, V>(invokable);
     }
 
