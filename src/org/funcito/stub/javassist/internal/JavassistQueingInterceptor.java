@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.javassist;
+package org.funcito.stub.javassist.internal;
 
 import java.lang.reflect.Method;
 
@@ -25,8 +25,7 @@ import org.funcito.internal.FuncitoDelegate;
 import com.google.common.annotations.GwtIncompatible;
 
 @GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-/* default */ 
-class JavassistQueingInterceptor implements MethodHandler {
+public class JavassistQueingInterceptor implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
         FuncitoDelegate.getInvocationManager().pushInvokable(new JavassistInvokable(method));

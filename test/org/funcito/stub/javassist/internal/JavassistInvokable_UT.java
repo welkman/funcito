@@ -1,15 +1,16 @@
-package org.funcito.cglib;
+package org.funcito.stub.javassist.internal;
 
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-import org.funcito.FuncitoException;
-import org.funcito.stub.cglib.internal.CglibImposterizer;
-import org.funcito.stub.cglib.internal.CglibInvokable;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import javassist.util.proxy.MethodHandler;
+
+import org.funcito.FuncitoException;
+import org.funcito.stub.javassist.internal.JavassistImposterizer;
+import org.junit.Test;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -26,15 +27,15 @@ import static org.junit.Assert.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class CglibInvokable_UT {
+public class JavassistInvokable_UT {
 
     @Test
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
-        final MethodProxy[] proxy = new MethodProxy[1];
-        class Interceptor implements MethodInterceptor {
-            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                proxy[0] = methodProxy;
-                return null;
+        final Method[] methodCalled = new Method[1];
+        class Interceptor implements MethodHandler {
+            public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
+                methodCalled[0] = method;
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
         }
         class Thing1 {
@@ -44,11 +45,11 @@ public class CglibInvokable_UT {
             public String getVal() { return "abc"; }
         } // same signature but not a subclass
 
-        Thing1 thing1Proxy = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
+        Thing1 thing1Proxy = JavassistImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
         thing1Proxy.getVal(); // proxy call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1
-        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0]);
+        JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(methodCalled[0]);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));

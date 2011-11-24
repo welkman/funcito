@@ -1,4 +1,4 @@
-package org.funcito.cglib;
+package org.funcito.stub.javassist.internal;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -16,16 +16,10 @@ package org.funcito.cglib;
  * limitations under the License.
  */
 
-/* Copied in large part from project Mockito, with the following license:
- * Copyright (c) 2007 Mockito contributors
- * This program is made available under the terms of the MIT License.
- */
+import javassist.util.proxy.MethodHandler;
+import javassist.util.proxy.ProxyObject;
 
-import net.sf.cglib.proxy.Factory;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-
-import org.funcito.stub.cglib.internal.CglibImposterizer;
+import org.funcito.stub.javassist.internal.JavassistImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -33,12 +27,12 @@ import java.lang.reflect.Method;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("unchecked")
-public class CglibImposterizer_UT {
-    private CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
+public class JavassistImposterizer_UT {
+    private JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
 
     @Test
     public void shouldCreateMockFromInterface() throws Exception {
-        SomeInterface proxy = imposterizer.imposterise(new MethodInterceptorStub(), SomeInterface.class);
+        SomeInterface proxy = imposterizer.imposterise(new MethodHandlerStub(), SomeInterface.class);
 
         Class superClass = proxy.getClass().getSuperclass();
         assertEquals(Object.class, superClass);
@@ -46,7 +40,7 @@ public class CglibImposterizer_UT {
 
     @Test
     public void shouldCreateMockFromClass() throws Exception {
-        ClassWithoutConstructor proxy = imposterizer.imposterise(new MethodInterceptorStub(), ClassWithoutConstructor.class);
+        ClassWithoutConstructor proxy = imposterizer.imposterise(new MethodHandlerStub(), ClassWithoutConstructor.class);
 
         Class superClass = proxy.getClass().getSuperclass();
         assertEquals(ClassWithoutConstructor.class, superClass);
@@ -55,7 +49,7 @@ public class CglibImposterizer_UT {
     @Test
     public void shouldCreateMockFromClassThatRequiresNonNollConstructorArg() throws Exception {
         ClassWithConstructorThatNeedsNonNullArg proxy = imposterizer.imposterise(
-                new MethodInterceptorStub(), ClassWithConstructorThatNeedsNonNullArg.class);
+                new MethodHandlerStub(), ClassWithConstructorThatNeedsNonNullArg.class);
 
         Class superClass = proxy.getClass().getSuperclass();
         assertEquals(ClassWithConstructorThatNeedsNonNullArg.class, superClass);
@@ -69,19 +63,19 @@ public class CglibImposterizer_UT {
         } catch (Exception e) {
         }
 
-        ClassWithDodgyConstructor mock = imposterizer.imposterise(new MethodInterceptorStub(), ClassWithDodgyConstructor.class);
+        ClassWithDodgyConstructor mock = imposterizer.imposterise(new MethodHandlerStub(), ClassWithDodgyConstructor.class);
         assertNotNull(mock);
     }
 
     @Test
     public void shouldMocksHaveDifferentInterceptors() throws Exception {
-        SomeClass mockOne = imposterizer.imposterise(new MethodInterceptorStub(), SomeClass.class);
-        SomeClass mockTwo = imposterizer.imposterise(new MethodInterceptorStub(), SomeClass.class);
+        SomeClass mockOne = imposterizer.imposterise(new MethodHandlerStub(), SomeClass.class);
+        SomeClass mockTwo = imposterizer.imposterise(new MethodHandlerStub(), SomeClass.class);
 
-        Factory cglibFactoryOne = (Factory) mockOne;
-        Factory cglibFactoryTwo = (Factory) mockTwo;
+        ProxyObject cglibFactoryOne = (ProxyObject) mockOne;
+        ProxyObject cglibFactoryTwo = (ProxyObject) mockTwo;
 
-        assertNotSame(cglibFactoryOne.getCallback(0), cglibFactoryTwo.getCallback(0));
+        assertNotSame(cglibFactoryOne.getHandler(), cglibFactoryTwo.getHandler());
     }
 
     final class FinalClass {
@@ -90,7 +84,7 @@ public class CglibImposterizer_UT {
     class SomeClass {
     }
 
-    interface SomeInterface {
+    protected interface SomeInterface {
     }
 
     @Test
@@ -118,9 +112,8 @@ public class CglibImposterizer_UT {
         }
     }
 
-    private final class MethodInterceptorStub implements MethodInterceptor {
-
-        public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+    private final class MethodHandlerStub implements MethodHandler {
+        public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
             return null;
         }
     }

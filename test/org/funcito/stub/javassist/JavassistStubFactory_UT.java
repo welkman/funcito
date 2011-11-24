@@ -1,7 +1,8 @@
-package org.funcito.javassist;
+package org.funcito.stub.javassist;
 
 import org.funcito.FuncitoException;
 import org.funcito.stub.cglib.CglibStubFactory;
+import org.funcito.stub.javassist.JavassistStubFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertSame;

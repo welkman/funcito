@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.funcito.javassist;
+package org.funcito.stub.javassist;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
 import org.funcito.stub.StubFactory;
+import org.funcito.stub.javassist.internal.JavassistImposterizer;
+import org.funcito.stub.javassist.internal.JavassistQueingInterceptor;
 
 import java.util.Map;
 

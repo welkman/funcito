@@ -17,8 +17,8 @@
 package org.funcito.stub;
 
 import org.funcito.FuncitoException;
-import org.funcito.javassist.JavassistStubFactory;
 import org.funcito.stub.cglib.CglibStubFactory;
+import org.funcito.stub.javassist.JavassistStubFactory;
 
 public abstract class StubFactory {
     private static StubFactory instance = null;

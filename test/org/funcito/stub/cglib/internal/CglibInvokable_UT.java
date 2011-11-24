@@ -1,7 +1,10 @@
-package org.funcito.javassist;
+package org.funcito.stub.cglib.internal;
 
-import javassist.util.proxy.MethodHandler;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
+import org.funcito.stub.cglib.internal.CglibImposterizer;
+import org.funcito.stub.cglib.internal.CglibInvokable;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -23,15 +26,15 @@ import static org.junit.Assert.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class JavassistInvokable_UT {
+public class CglibInvokable_UT {
 
     @Test
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
-        final Method[] methodCalled = new Method[1];
-        class Interceptor implements MethodHandler {
-            public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-                methodCalled[0] = method;
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+        final MethodProxy[] proxy = new MethodProxy[1];
+        class Interceptor implements MethodInterceptor {
+            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+                proxy[0] = methodProxy;
+                return null;
             }
         }
         class Thing1 {
@@ -41,11 +44,11 @@ public class JavassistInvokable_UT {
             public String getVal() { return "abc"; }
         } // same signature but not a subclass
 
-        Thing1 thing1Proxy = JavassistImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
+        Thing1 thing1Proxy = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
         thing1Proxy.getVal(); // proxy call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1
-        JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(methodCalled[0]);
+        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0]);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));

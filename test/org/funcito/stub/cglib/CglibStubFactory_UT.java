@@ -1,4 +1,4 @@
-package org.funcito.cglib;
+package org.funcito.stub.cglib;
 
 import org.funcito.FuncitoException;
 import org.funcito.stub.cglib.CglibStubFactory;

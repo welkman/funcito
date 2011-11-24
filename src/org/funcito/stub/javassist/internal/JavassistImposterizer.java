@@ -19,7 +19,7 @@
  * This program is made available under the terms of the MIT License.
  */
 
-package org.funcito.javassist;
+package org.funcito.stub.javassist.internal;
 
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
@@ -32,8 +32,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-/* default */ 
-class JavassistImposterizer {
+public class JavassistImposterizer {
 
     public static final JavassistImposterizer INSTANCE = new JavassistImposterizer();
 

@@ -16,14 +16,15 @@
 
 package org.funcito.stub.cglib;
 
-import com.google.common.annotations.GwtIncompatible;
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.funcito.FuncitoException;
 import org.funcito.stub.StubFactory;
 import org.funcito.stub.cglib.internal.CglibImposterizer;
 import org.funcito.stub.cglib.internal.CglibQueingInterceptor;
 
-import java.util.Map;
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.collect.Maps;
 
 @GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 public class CglibStubFactory extends StubFactory {
