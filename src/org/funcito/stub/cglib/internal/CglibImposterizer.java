@@ -19,7 +19,7 @@
  * This program is made available under the terms of the MIT License.
  */
 
-package org.funcito.cglib;
+package org.funcito.stub.cglib.internal;
 
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.core.NamingPolicy;
@@ -36,8 +36,7 @@ import java.util.List;
 /**
  * Thanks to Mockito guys and jMock guys for this handy class that wraps all the cglib magic.
  */
-/* default */ 
-class CglibImposterizer {
+public class CglibImposterizer {
 
     public static final CglibImposterizer INSTANCE = new CglibImposterizer();
 

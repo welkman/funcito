@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.funcito;
+package org.funcito.stub;
 
-import org.funcito.cglib.CglibStubFactory;
+import org.funcito.FuncitoException;
 import org.funcito.javassist.JavassistStubFactory;
+import org.funcito.stub.cglib.CglibStubFactory;
 
 public abstract class StubFactory {
     private static StubFactory instance = null;

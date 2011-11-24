@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.funcito.cglib;
+package org.funcito.stub.cglib;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
-import org.funcito.StubFactory;
+import org.funcito.stub.StubFactory;
+import org.funcito.stub.cglib.internal.CglibImposterizer;
+import org.funcito.stub.cglib.internal.CglibQueingInterceptor;
 
 import java.util.Map;
 

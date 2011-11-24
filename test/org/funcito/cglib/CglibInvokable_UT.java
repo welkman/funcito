@@ -3,6 +3,8 @@ package org.funcito.cglib;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
+import org.funcito.stub.cglib.internal.CglibImposterizer;
+import org.funcito.stub.cglib.internal.CglibInvokable;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.cglib;
+package org.funcito.stub.cglib.internal;
 
 import java.lang.reflect.Method;
 
@@ -25,8 +25,7 @@ import org.funcito.internal.FuncitoDelegate;
 import com.google.common.annotations.GwtIncompatible;
 
 @GwtIncompatible(value = "Depends on CGLib bytecode generation library")
-/* default */ 
-class CglibQueingInterceptor implements MethodInterceptor {
+public class CglibQueingInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         CglibInvokable invokable = new CglibInvokable(methodProxy);
         FuncitoDelegate.getInvocationManager().pushInvokable(invokable);

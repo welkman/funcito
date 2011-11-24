@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.cglib;
+package org.funcito.stub.cglib.internal;
 
 import net.sf.cglib.core.DefaultNamingPolicy;
 

@@ -15,10 +15,10 @@
  */
 package org.funcito.internal;
 
-import org.funcito.StubFactory;
 import org.funcito.functionaljava.MethodF;
 import org.funcito.guava.MethodFunction;
 import org.funcito.guava.MethodPredicate;
+import org.funcito.stub.StubFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;

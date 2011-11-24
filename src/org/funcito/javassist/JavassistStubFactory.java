@@ -19,7 +19,7 @@ package org.funcito.javassist;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
-import org.funcito.StubFactory;
+import org.funcito.stub.StubFactory;
 
 import java.util.Map;
 
