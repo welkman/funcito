@@ -15,10 +15,11 @@
  */
 package org.funcito.exampleUsage;
 
-import com.google.common.base.Function;
-import org.funcito.Funcito;
+import static org.funcito.Funcito.callsTo;
+import static org.funcito.Funcito.functionFor;
+import static org.funcito.Funcito.stub;
 
-import static org.funcito.Funcito.*;
+import com.google.common.base.Function;
 
 public class MyClass {
 

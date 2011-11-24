@@ -16,7 +16,8 @@
 package org.funcito.guava;
 
 import com.google.common.base.Function;
-import org.funcito.Invokable;
+
+import org.funcito.internal.Invokable;
 
 public class MethodFunction<T, V> implements Function<T,V> {
     private Invokable<T,V> invokable;

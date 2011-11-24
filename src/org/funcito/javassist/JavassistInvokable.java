@@ -17,7 +17,7 @@ package org.funcito.javassist;
 
 import com.google.common.annotations.GwtIncompatible;
 import org.funcito.FuncitoException;
-import org.funcito.Invokable;
+import org.funcito.internal.Invokable;
 
 import java.lang.reflect.Method;
 

@@ -15,19 +15,21 @@
  */
 package org.funcito.cglib;
 
-import com.google.common.annotations.GwtIncompatible;
+import java.lang.reflect.Method;
+
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.funcito.Funcito;
 
-import java.lang.reflect.Method;
+import org.funcito.internal.FuncitoDelegate;
+
+import com.google.common.annotations.GwtIncompatible;
 
 @GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 /* default */ 
 class CglibQueingInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         CglibInvokable invokable = new CglibInvokable(methodProxy);
-        Funcito.getInvocationManager().pushInvokable(invokable);
+        FuncitoDelegate.getInvocationManager().pushInvokable(invokable);
         return null;
     }
 

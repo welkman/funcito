@@ -16,7 +16,8 @@
 package org.funcito.guava;
 
 import com.google.common.base.Predicate;
-import org.funcito.Invokable;
+
+import org.funcito.internal.Invokable;
 
 public class MethodPredicate<T> implements Predicate<T> {
     private Invokable<T,Boolean> invokable;

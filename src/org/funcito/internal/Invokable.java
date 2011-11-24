@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito;
+package org.funcito.internal;
 
 public interface Invokable<T,V> {
 

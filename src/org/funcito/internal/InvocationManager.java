@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito;
+package org.funcito.internal;
 
 import java.util.Stack;
+
+import org.funcito.FuncitoException;
 
 public class InvocationManager {
     final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();

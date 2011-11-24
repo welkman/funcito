@@ -3,6 +3,7 @@ package org.funcito;
 import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.cglib.CglibInvokable;
+import org.funcito.internal.InvocationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

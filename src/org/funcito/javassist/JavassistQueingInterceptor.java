@@ -15,19 +15,21 @@
  */
 package org.funcito.javassist;
 
-import com.google.common.annotations.GwtIncompatible;
-import javassist.util.proxy.MethodHandler;
-import org.funcito.Funcito;
-import org.funcito.google.guava.common.base.Defaults;
-
 import java.lang.reflect.Method;
+
+import javassist.util.proxy.MethodHandler;
+
+import org.funcito.google.guava.common.base.Defaults;
+import org.funcito.internal.FuncitoDelegate;
+
+import com.google.common.annotations.GwtIncompatible;
 
 @GwtIncompatible(value = "Depends on Javassist bytecode generation library")
 /* default */ 
 class JavassistQueingInterceptor implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-        Funcito.getInvocationManager().pushInvokable(new JavassistInvokable(method));
+        FuncitoDelegate.getInvocationManager().pushInvokable(new JavassistInvokable(method));
         return Defaults.defaultValue(method.getReturnType());
     }
 }

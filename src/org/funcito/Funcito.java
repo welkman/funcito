@@ -15,20 +15,16 @@
  */
 package org.funcito;
 
+import org.funcito.internal.FuncitoDelegate;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+
 import fj.F;
-import org.funcito.functionaljava.MethodF;
-import org.funcito.guava.MethodFunction;
-import org.funcito.guava.MethodPredicate;
 
 public class Funcito {
-    private static final InvocationManager invocationManager = new InvocationManager();
-
-    public static InvocationManager getInvocationManager() { return invocationManager; }
-
     public static <T> T stub(Class<T> clazz) {
-        return StubFactory.instance().stub(clazz);
+        return new FuncitoDelegate().stub(clazz);
     }
 
     /**
@@ -41,20 +37,17 @@ public class Funcito {
     //--------------------        static calls for Google Guava      -------------------------
 
     public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable("Guava Function");
-        return new MethodFunction<T, V>(invokable);
+    	return new FuncitoDelegate().functionFor(ignoredRetVal);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable("Guava Predicate");
-        return new MethodPredicate<T>(invokable);
+    	return new FuncitoDelegate().predicateFor(ignoredRetVal);
     }
 
     //--------------------        static calls for Functional Java    -------------------------
 
     public static <T,V> F<T,V> fFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable("Functional Java F (function)");
-        return new MethodF<T, V>(invokable);
+    	return new FuncitoDelegate().fFor(ignoredRetVal);
     }
 
 }
