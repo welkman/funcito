@@ -34,13 +34,6 @@ public class FuncitoDelegate {
         return StubFactory.instance().stub(clazz);
     }
 
-    /**
-     * Alias for "fluent" syntax
-     */
-    public <T> T callsTo(Class<T> clazz) {
-        return stub(clazz);
-    }
-
     //--------------------        static calls for Google Guava      -------------------------
 
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
