@@ -26,6 +26,10 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class FuncitoDelegate {
+	private static final String GUAVA_FUNCTION = WrapperType.GUAVA_FUNCTION.toString();
+	private static final String GUAVA_PREDICATE = WrapperType.GUAVA_PREDICATE.toString();
+	private static final String FJ_F = WrapperType.FJ_F.toString();
+	
     private static final InvocationManager invocationManager = new InvocationManager();
 
     public static InvocationManager getInvocationManager() { return invocationManager; }
@@ -34,25 +38,22 @@ public class FuncitoDelegate {
         return StubFactory.instance().stub(clazz);
     }
 
-    //--------------------        static calls for Google Guava      -------------------------
+    //-------------------- Google Guava -------------------------
 
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-    	String wrapperType = WrapperType.GUAVA_FUNCTION.toString();
-        final Invokable<T,V> invokable = invocationManager.extractInvokable(wrapperType);
+        final Invokable<T,V> invokable = invocationManager.extractInvokable(GUAVA_FUNCTION);
         return new MethodFunction<T, V>(invokable);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-    	String wrapperType = WrapperType.GUAVA_PREDICATE.toString();
-        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable(wrapperType);
+        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable(GUAVA_PREDICATE);
         return new MethodPredicate<T>(invokable);
     }
 
-    //--------------------        static calls for Functional Java    -------------------------
+    //-------------------- Functional Java -------------------------
 
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
-    	String wrapperType = WrapperType.FJ_F.toString();
-        final Invokable<T,V> invokable = invocationManager.extractInvokable(wrapperType);
+        final Invokable<T,V> invokable = invocationManager.extractInvokable(FJ_F);
         return new MethodF<T, V>(invokable);
     }
 
