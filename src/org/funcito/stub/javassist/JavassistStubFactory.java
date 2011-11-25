@@ -21,7 +21,7 @@ import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
 import org.funcito.stub.StubFactory;
 import org.funcito.stub.javassist.internal.JavassistImposterizer;
-import org.funcito.stub.javassist.internal.JavassistQueingInterceptor;
+import org.funcito.stub.javassist.internal.JavassistMethodHandler;
 
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class JavassistStubFactory extends StubFactory {
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(new JavassistQueingInterceptor(), clazz);
+            stub = imposterizer.imposterise(new JavassistMethodHandler(), clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;

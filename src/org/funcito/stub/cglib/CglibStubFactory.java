@@ -21,7 +21,7 @@ import java.util.Map;
 import org.funcito.FuncitoException;
 import org.funcito.stub.StubFactory;
 import org.funcito.stub.cglib.internal.CglibImposterizer;
-import org.funcito.stub.cglib.internal.CglibQueingInterceptor;
+import org.funcito.stub.cglib.internal.CglibMethodInterceptor;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
@@ -38,7 +38,7 @@ public class CglibStubFactory extends StubFactory {
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(new CglibQueingInterceptor(), clazz);
+            stub = imposterizer.imposterise(new CglibMethodInterceptor(), clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;
