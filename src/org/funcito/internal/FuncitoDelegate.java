@@ -26,10 +26,10 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class FuncitoDelegate {
-	private static final String GUAVA_FUNCTION = WrapperType.GUAVA_FUNCTION.toString();
-	private static final String GUAVA_PREDICATE = WrapperType.GUAVA_PREDICATE.toString();
-	private static final String FJ_F = WrapperType.FJ_F.toString();
-	
+    private static final String GUAVA_FUNCTION = WrapperType.GUAVA_FUNCTION.toString();
+    private static final String GUAVA_PREDICATE = WrapperType.GUAVA_PREDICATE.toString();
+    private static final String FJ_F = WrapperType.FJ_F.toString();
+    
     private static final InvocationManager invocationManager = new InvocationManager();
 
     public static InvocationManager getInvocationManager() { return invocationManager; }

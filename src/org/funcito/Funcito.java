@@ -37,17 +37,17 @@ public class Funcito {
     //--------------------        static calls for Google Guava      -------------------------
 
     public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-    	return new FuncitoDelegate().functionFor(ignoredRetVal);
+        return new FuncitoDelegate().functionFor(ignoredRetVal);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-    	return new FuncitoDelegate().predicateFor(ignoredRetVal);
+        return new FuncitoDelegate().predicateFor(ignoredRetVal);
     }
 
     //--------------------        static calls for Functional Java    -------------------------
 
     public static <T,V> F<T,V> fFor(V ignoredRetVal) {
-    	return new FuncitoDelegate().fFor(ignoredRetVal);
+        return new FuncitoDelegate().fFor(ignoredRetVal);
     }
 
 }
