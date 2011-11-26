@@ -20,11 +20,11 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
 public abstract class StubFactory {
-	private static final Supplier<StubFactory> supplier = Suppliers.memoize(new StubFactorySupplier());
-	
-	public static StubFactory instance() {
-		return supplier.get();
-	}
-	
+    private static final Supplier<StubFactory> supplier = Suppliers.memoize(new StubFactorySupplier());
+    
+    public static StubFactory instance() {
+        return supplier.get();
+    }
+    
     public abstract <T> T stub(Class<T> clazz);
 }

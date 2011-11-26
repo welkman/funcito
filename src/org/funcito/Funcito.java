@@ -23,8 +23,8 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class Funcito {
-	private static final FuncitoDelegate funcitoDelegate = new FuncitoDelegate();
-	
+    private static final FuncitoDelegate funcitoDelegate = new FuncitoDelegate();
+
     public static <T> T stub(Class<T> clazz) {
         return funcitoDelegate.stub(clazz);
     }

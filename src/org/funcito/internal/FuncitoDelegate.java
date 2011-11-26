@@ -54,10 +54,10 @@ public class FuncitoDelegate {
     //-------------------- Funcito Core -------------------------
 
     public void putInvokable(Invokable invokable) {
-    	new InvocationManager().pushInvokable(invokable);
+        new InvocationManager().pushInvokable(invokable);
     }
     
     private Invokable getInvokable(WrapperType wrapperType) {
-    	return new InvocationManager().extractInvokable(wrapperType.toString());
+        return new InvocationManager().extractInvokable(wrapperType.toString());
     }    
 }

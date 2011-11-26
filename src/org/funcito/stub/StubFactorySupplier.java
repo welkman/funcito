@@ -10,9 +10,9 @@ import com.google.common.base.Supplier;
 
 class StubFactorySupplier implements Supplier<StubFactory> {
 
-	public StubFactory get() {
-		StubFactory result = null;
-		
+    public StubFactory get() {
+        StubFactory result = null;
+        
         try {
             Class.forName("net.sf.cglib.proxy.Enhancer");
             result = new CglibStubFactory();
@@ -26,6 +26,6 @@ class StubFactorySupplier implements Supplier<StubFactory> {
             }
         }
         
-        return result;		
-	}
+        return result;        
+    }
 }
