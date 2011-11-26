@@ -23,8 +23,10 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class Funcito {
+	private static final FuncitoDelegate funcitoDelegate = new FuncitoDelegate();
+	
     public static <T> T stub(Class<T> clazz) {
-        return new FuncitoDelegate().stub(clazz);
+        return funcitoDelegate.stub(clazz);
     }
 
     /**
@@ -37,17 +39,17 @@ public class Funcito {
     //--------------------        static calls for Google Guava      -------------------------
 
     public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        return new FuncitoDelegate().functionFor(ignoredRetVal);
+        return funcitoDelegate.functionFor(ignoredRetVal);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        return new FuncitoDelegate().predicateFor(ignoredRetVal);
+        return funcitoDelegate.predicateFor(ignoredRetVal);
     }
 
     //--------------------        static calls for Functional Java    -------------------------
 
     public static <T,V> F<T,V> fFor(V ignoredRetVal) {
-        return new FuncitoDelegate().fFor(ignoredRetVal);
+        return funcitoDelegate.fFor(ignoredRetVal);
     }
 
 }
