@@ -28,7 +28,7 @@ import com.google.common.annotations.GwtIncompatible;
 public class CglibMethodInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         CglibInvokable invokable = new CglibInvokable(methodProxy);
-        FuncitoDelegate.getInvocationManager().pushInvokable(invokable);
+        new FuncitoDelegate().putInvokable(invokable);
         return null;
     }
 

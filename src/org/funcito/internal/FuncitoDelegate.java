@@ -19,6 +19,7 @@ import org.funcito.functionaljava.MethodF;
 import org.funcito.guava.MethodFunction;
 import org.funcito.guava.MethodPredicate;
 import org.funcito.stub.StubFactory;
+import static org.funcito.internal.WrapperType.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -26,14 +27,7 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class FuncitoDelegate {
-    private static final String GUAVA_FUNCTION = WrapperType.GUAVA_FUNCTION.toString();
-    private static final String GUAVA_PREDICATE = WrapperType.GUAVA_PREDICATE.toString();
-    private static final String FJ_F = WrapperType.FJ_F.toString();
     
-    private static final InvocationManager invocationManager = new InvocationManager();
-
-    public static InvocationManager getInvocationManager() { return invocationManager; }
-
     public <T> T stub(Class<T> clazz) {
         return StubFactory.instance().stub(clazz);
     }
@@ -41,20 +35,29 @@ public class FuncitoDelegate {
     //-------------------- Google Guava -------------------------
 
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable(GUAVA_FUNCTION);
+        final Invokable<T,V> invokable = getInvokable(GUAVA_FUNCTION);
         return new MethodFunction<T, V>(invokable);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        final Invokable<T,Boolean> invokable = invocationManager.extractInvokable(GUAVA_PREDICATE);
+        final Invokable<T,Boolean> invokable = getInvokable(GUAVA_PREDICATE);
         return new MethodPredicate<T>(invokable);
     }
 
     //-------------------- Functional Java -------------------------
 
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = invocationManager.extractInvokable(FJ_F);
+        final Invokable<T,V> invokable = getInvokable(FJ_F);
         return new MethodF<T, V>(invokable);
     }
 
+    //-------------------- Funcito Core -------------------------
+
+    public void putInvokable(Invokable invokable) {
+    	new InvocationManager().pushInvokable(invokable);
+    }
+    
+    private Invokable getInvokable(WrapperType wrapperType) {
+    	return new InvocationManager().extractInvokable(wrapperType.toString());
+    }    
 }

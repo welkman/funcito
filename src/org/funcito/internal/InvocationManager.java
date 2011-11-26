@@ -19,10 +19,12 @@ import java.util.Stack;
 
 import org.funcito.FuncitoException;
 
-public class InvocationManager {
-    final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();
+/* default */
+class InvocationManager {
+    static final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();
 
-    public void pushInvokable(Invokable invokable) {
+    /* default */ 
+    void pushInvokable(Invokable invokable) {
         if (!isInvocationsEmpty()) {
             clearInvocations();
             throw new FuncitoException("A method call to a Funcito stub was detected outside of acceptable scope.  This usually means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
@@ -34,7 +36,8 @@ public class InvocationManager {
         queuedInvokables.push(invokable);
     }
 
-    public Invokable extractInvokable(String wrapperType) {
+    /* default */ 
+    Invokable extractInvokable(String wrapperType) {
         validateInvocationsCount(wrapperType);
         return queuedInvokables.pop();
     }

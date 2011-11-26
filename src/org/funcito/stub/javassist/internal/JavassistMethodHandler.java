@@ -28,7 +28,8 @@ import com.google.common.annotations.GwtIncompatible;
 public class JavassistMethodHandler implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-        FuncitoDelegate.getInvocationManager().pushInvokable(new JavassistInvokable(method));
+        new FuncitoDelegate().putInvokable(new JavassistInvokable(method));
+        
         return Defaults.defaultValue(method.getReturnType());
     }
 }
