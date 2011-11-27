@@ -17,7 +17,6 @@ package org.funcito.stub.cglib.internal;
 
 import net.sf.cglib.core.DefaultNamingPolicy;
 
-/* default */ 
 class CglibNamingPolicy extends DefaultNamingPolicy {
 
     public static final CglibNamingPolicy INSTANCE = new CglibNamingPolicy();

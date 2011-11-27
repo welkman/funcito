@@ -19,11 +19,9 @@ import java.util.Stack;
 
 import org.funcito.FuncitoException;
 
-/* default */
 class InvocationManager {
     static final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();
 
-    /* default */ 
     void pushInvokable(Invokable invokable) {
         if (!isInvocationsEmpty()) {
             clearInvocations();
@@ -36,7 +34,6 @@ class InvocationManager {
         queuedInvokables.push(invokable);
     }
 
-    /* default */ 
     Invokable extractInvokable(String wrapperType) {
         validateInvocationsCount(wrapperType);
         return queuedInvokables.pop();
