@@ -16,15 +16,34 @@
 
 package org.funcito.stub;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import org.funcito.FuncitoException;
+import org.funcito.stub.cglib.CglibStubFactory;
+import org.funcito.stub.javassist.JavassistStubFactory;
 
 public abstract class StubFactory {
-    private static final Supplier<StubFactory> supplier = Suppliers.memoize(new StubFactorySupplier());
-    
-    public static StubFactory instance() {
-        return supplier.get();
+    private static StubFactory instance = null;
+
+    public static void setInstance(StubFactory newInstance) {
+        StubFactory.instance = newInstance;
     }
-    
+
+    public static StubFactory instance() {
+        if (instance == null) {
+            try {
+                Class.forName("net.sf.cglib.proxy.Enhancer");
+                instance = new CglibStubFactory();
+            } catch (ClassNotFoundException e) {
+                try {
+                    Class.forName("javassist.util.proxy.ProxyFactory");
+                    instance = new JavassistStubFactory();
+                } catch (ClassNotFoundException e2) {
+                    throw new FuncitoException("Error: Funcito requires the use of either the CGLib or Javassist code generation libraries." +
+                            "Please ensure that you have one of the two libraries in your classpath.");
+                }
+            }
+        }
+        return instance;
+    }
+
     public abstract <T> T stub(Class<T> clazz);
 }
