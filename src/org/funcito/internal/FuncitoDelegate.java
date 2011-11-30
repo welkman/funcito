@@ -27,6 +27,8 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class FuncitoDelegate {
+
+    private final InvocationManager invocationManager = new InvocationManager();
     
     public <T> T stub(Class<T> clazz) {
         return StubFactory.instance().stub(clazz);
@@ -54,10 +56,10 @@ public class FuncitoDelegate {
     //-------------------- Funcito Core -------------------------
 
     public void putInvokable(Invokable invokable) {
-        new InvocationManager().pushInvokable(invokable);
+        invocationManager.pushInvokable(invokable);
     }
     
     private Invokable getInvokable(WrapperType wrapperType) {
-        return new InvocationManager().extractInvokable(wrapperType.toString());
+        return invocationManager.extractInvokable(wrapperType.toString());
     }    
 }

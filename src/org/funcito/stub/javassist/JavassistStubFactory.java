@@ -29,6 +29,7 @@ import java.util.Map;
 public class JavassistStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();
+    private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
     public <T> T stub(Class<T> clazz) {
         T stub = clazz.cast(stubsCache.get(clazz));
@@ -38,7 +39,7 @@ public class JavassistStubFactory extends StubFactory {
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(new JavassistMethodHandler(), clazz);
+            stub = imposterizer.imposterise(handler, clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;

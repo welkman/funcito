@@ -31,6 +31,8 @@ public class CglibStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();
 
+    private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
+
     public <T> T stub(Class<T> clazz) {
         T stub = clazz.cast(stubsCache.get(clazz));
         if (stub == null) {
@@ -38,7 +40,7 @@ public class CglibStubFactory extends StubFactory {
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(new CglibMethodInterceptor(), clazz);
+            stub = imposterizer.imposterise(interceptor, clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;
