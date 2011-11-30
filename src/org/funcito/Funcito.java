@@ -25,15 +25,8 @@ import fj.F;
 public class Funcito {
     private static final FuncitoDelegate funcitoDelegate = new FuncitoDelegate();
 
-    public static <T> T stub(Class<T> clazz) {
-        return funcitoDelegate.stub(clazz);
-    }
-
-    /**
-     * Alias for "fluent" syntax
-     */
     public static <T> T callsTo(Class<T> clazz) {
-        return stub(clazz);
+        return funcitoDelegate.stub(clazz);
     }
 
     //--------------------        static calls for Google Guava      -------------------------

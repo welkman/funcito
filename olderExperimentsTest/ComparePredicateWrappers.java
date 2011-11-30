@@ -4,7 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static info.piwai.funkyjfunctional.guava.FunkyGuava.withPred;
-import static org.funcito.Funcito.stub;
+import static org.funcito.Funcito.callsTo;
 import static org.funcito.Funcito.predicateFor;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -42,7 +42,7 @@ public class ComparePredicateWrappers {
 
 
     // Example 4 Funcito (CGLib)
-    BooleanThing funcitoBooleanThingStub = stub(BooleanThing.class);
+    BooleanThing funcitoBooleanThingStub = callsTo(BooleanThing.class);
     Predicate<BooleanThing> funcitoPred = predicateFor(funcitoBooleanThingStub.getVal());
 
     private static long timeManual = 0L;
