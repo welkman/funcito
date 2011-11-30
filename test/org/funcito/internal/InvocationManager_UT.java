@@ -1,5 +1,6 @@
 package org.funcito.internal;
 
+import net.sf.cglib.asm.Type;
 import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -10,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.objectweb.asm.Type;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
