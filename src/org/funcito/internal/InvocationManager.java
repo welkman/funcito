@@ -15,42 +15,32 @@
  */
 package org.funcito.internal;
 
-import java.util.Stack;
-
 import org.funcito.FuncitoException;
 
 class InvocationManager {
-    static final private Stack<Invokable> queuedInvokables = new Stack<Invokable>();
+    private static final InvokableState state = new InvokableState();
 
     void pushInvokable(Invokable invokable) {
-        if (!isInvocationsEmpty()) {
-            clearInvocations();
-            throw new FuncitoException("A method call to a Funcito stub was detected outside of acceptable scope.  This usually means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
+        if (state.isFull()) {
+            throwEx("A method call to a Funcito stub was detected outside of acceptable scope.  This usually means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
         }
         if (invokable.getArgumentsLength() != 0) {
-            clearInvocations();
-            throw new FuncitoException("Failed to wrap method invocation.  Signature of method call on Funcito stub has arguments, when only no-arg methods are wrappable.");
+            throwEx("Failed to wrap method invocation.  Signature of method call on Funcito stub has arguments, when only no-arg methods are wrappable.");
         }
-        queuedInvokables.push(invokable);
+        
+        state.put(invokable);
     }
 
     Invokable extractInvokable(String wrapperType) {
-        validateInvocationsCount(wrapperType);
-        return queuedInvokables.pop();
-    }
-
-    private void validateInvocationsCount(String wrapperType) {
-        if (isInvocationsEmpty()) {
-            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
+        if (state.isEmpty()) {
+            throwEx("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
         }
+        
+        return state.get();
     }
-
-    private void clearInvocations() {
-        queuedInvokables.clear();
+    
+    private void throwEx(String msg) {
+        state.clear();
+        throw new FuncitoException(msg);
     }
-
-    private boolean isInvocationsEmpty() {
-        return queuedInvokables.isEmpty();
-    }
-
 }

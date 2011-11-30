@@ -57,7 +57,7 @@ public class InvocationManager_UT {
         mgr.pushInvokable(new CglibInvokable(mProxy));
         mgr.pushInvokable(new CglibInvokable(mProxy));
     }
-
+    
     @Test(expected = FuncitoException.class)
     public void testExtractInvokable_cannotCallWhenEmpty() {
         mgr.extractInvokable("");
