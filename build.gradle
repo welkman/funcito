@@ -42,8 +42,7 @@ dependencies {
     compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
 
     // internals
-    compile group: 'cglib', name: 'cglib', version: '2.2'
-    compile group: 'cglib', name: 'cglib-asm', version: '1.0'
+    compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
     compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
     compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
 
