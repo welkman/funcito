@@ -1,10 +1,30 @@
 
 apply plugin: 'java'
 
-version=0.1
+// version
+def propFile = new File('resources/Funcito.properties')
+assert propFile.exists()
+def properties = new Properties()
+properties.load(new FileReader(propFile))
+version = properties.getProperty('funcito.version')
 
-sourceSets.main.java.srcDirs 'src', 'examples'
-sourceSets.test.java.srcDirs 'test'
+println "***** working with Funcito v ${version}"
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src', 'examples'
+        }
+        resources {
+            srcDir 'resources'
+        }
+    } 
+    test {
+        java {
+            srcDirs 'test'
+        }
+    }
+}
 
 // build src jar
 task srcJar(type: Jar) {
@@ -12,6 +32,10 @@ task srcJar(type: Jar) {
 
     from(sourceSets.main.java.srcDirs) {
         include '**/*.java'
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.properties'
     }
     
     from('docs') {
