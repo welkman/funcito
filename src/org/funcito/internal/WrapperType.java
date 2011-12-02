@@ -16,19 +16,17 @@
 package org.funcito.internal;
 
 public enum WrapperType {
-    GUAVA_FUNCTION, GUAVA_PREDICATE, FJ_F;
+    GUAVA_FUNCTION("Guava Function"), 
+    GUAVA_PREDICATE("Guava Predicate"), 
+    FJ_F("Functional Java F (function)");
+    
+    private final String name;
+    
+    private WrapperType(String name) {
+        this.name = name;
+    }
     
     public String toString() {
-        String result = "";
-        
-        if (this == GUAVA_FUNCTION) {
-            result = "Guava Function";
-        } else if (this == GUAVA_PREDICATE) {
-            result = "Guava Predicate";            
-        } else if (this == FJ_F) {
-            result = "Functional Java F (function)";
-        }
-        
-        return result;
+        return name;
     }
 }
