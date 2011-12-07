@@ -1,9 +1,18 @@
 
 apply plugin: 'java'
 
-version=0.1
+// version
+def propFile = new File('resources/Funcito.properties')
+assert propFile.exists()
+def properties = new Properties()
+properties.load(new FileReader(propFile))
+version = properties.getProperty('funcito.version')
 
+println "***** working with Funcito v ${version}"
+
+// sourceSets
 sourceSets.main.java.srcDirs 'src', 'examples'
+sourceSets.main.resources.srcDir 'resources'
 sourceSets.test.java.srcDirs 'test'
 
 // build src jar
@@ -12,6 +21,10 @@ task srcJar(type: Jar) {
 
     from(sourceSets.main.java.srcDirs) {
         include '**/*.java'
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.properties'
     }
     
     from('docs') {
@@ -24,8 +37,11 @@ jar.dependsOn(srcJar)
 
 // build binary jar
 jar {
-    // TODO: add objenesis jar
-        
+    from { 
+        configurations.compile.findAll {
+            if (it.name =~ /objenesis/) { it }
+        } 
+    }        
     from('docs') {
         include 'ReadMe.txt'
         include 'License.txt'
@@ -42,8 +58,7 @@ dependencies {
     compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
 
     // internals
-    compile group: 'cglib', name: 'cglib', version: '2.2'
-    compile group: 'cglib', name: 'cglib-asm', version: '1.0'
+    compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
     compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
     compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
 
