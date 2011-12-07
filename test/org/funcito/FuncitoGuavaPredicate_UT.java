@@ -3,9 +3,8 @@ package org.funcito;
 import com.google.common.base.Predicate;
 import org.junit.Test;
 
-import static org.funcito.Funcito.callsTo;
-import static org.funcito.Funcito.predicateFor;
-import static org.junit.Assert.assertTrue;
+import static org.funcito.Funcito.*;
+import static org.junit.Assert.*;
 
 public class FuncitoGuavaPredicate_UT {
 
@@ -58,13 +57,29 @@ public class FuncitoGuavaPredicate_UT {
         assertTrue(stringPred.apply(integerGeneric));
     }
 
-    // TODO: I have not defined a policy for the below yet, currently throws NPE
-//    @Test
-//    public void testApply_ReturnNullBooleanWrapper() {
-//        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
-//        BooleanThing nullThing = new BooleanThing(null);
-//        pred.apply(nullThing);
-//    }
+    @Test
+    public void testApply_ReturnNullBooleanWrapper() {
+        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
+        BooleanThing nullThing = new BooleanThing(null);
+        try {
+            pred.apply(nullThing);
+            fail("This is the null-unsafe version; NPE is expected");
+        } catch (NullPointerException npe) {
+            // Happy
+        }
+    }
+
+    @Test
+    public void testPredicateFor_SafeVersion() {
+        BooleanThing nullThing = new BooleanThing(null);
+
+        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal(), true);
+        assertTrue(pred.apply(nullThing));
+
+        // do the same test for "false"
+        pred = predicateFor(callsTo(BooleanThing.class).getVal(), false);
+        assertFalse(pred.apply(nullThing));
+    }
 
     class PrimitiveBoolRetGeneric<T> {
         public boolean getVal() { return true; }

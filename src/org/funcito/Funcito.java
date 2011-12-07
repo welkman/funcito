@@ -31,12 +31,16 @@ public class Funcito {
 
     //--------------------        static calls for Google Guava      -------------------------
 
-    public static <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        return funcitoDelegate.functionFor(ignoredRetVal);
+    public static <T,V> Function<T,V> functionFor(V stubbedMethodCall) {
+        return funcitoDelegate.functionFor(stubbedMethodCall);
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        return funcitoDelegate.predicateFor(ignoredRetVal);
+    public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall) {
+        return funcitoDelegate.predicateFor(stubbedMethodCall);
+    }
+
+    public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall, boolean defaultForNull) {
+        return funcitoDelegate.predicateFor(stubbedMethodCall, defaultForNull);
     }
 
     //--------------------        static calls for Functional Java    -------------------------

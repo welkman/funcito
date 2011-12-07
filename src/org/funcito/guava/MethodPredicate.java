@@ -20,11 +20,10 @@ import com.google.common.base.Predicate;
 import org.funcito.internal.Invokable;
 
 public class MethodPredicate<T> implements Predicate<T> {
-    private Invokable<T,Boolean> invokable;
+    final protected Invokable<T,Boolean> invokable;
 
-
-    public MethodPredicate(Invokable<T,Boolean> invokable) {
-        this.invokable = invokable;
+    public MethodPredicate(Invokable<T,Boolean> initInvokable) {
+        this.invokable = initInvokable;
     }
 
     public boolean apply(T from) {

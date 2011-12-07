@@ -16,6 +16,7 @@
 package org.funcito.internal;
 
 import org.funcito.functionaljava.MethodF;
+import org.funcito.guava.DefaultableMethodPredicate;
 import org.funcito.guava.MethodFunction;
 import org.funcito.guava.MethodPredicate;
 import org.funcito.stub.StubFactory;
@@ -46,6 +47,10 @@ public class FuncitoDelegate {
         return new MethodPredicate<T>(invokable);
     }
 
+    public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
+        final Invokable<T,Boolean> invokable = getInvokable(GUAVA_PREDICATE);
+        return new DefaultableMethodPredicate<T>(invokable, defaultForNull);
+    }
     //-------------------- Functional Java -------------------------
 
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
@@ -61,5 +66,5 @@ public class FuncitoDelegate {
     
     private Invokable getInvokable(WrapperType wrapperType) {
         return invocationManager.extractInvokable(wrapperType.toString());
-    }    
+    }
 }
