@@ -1,6 +1,25 @@
 
 apply plugin: 'java'
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // functional APIs
+    compile group: 'com.google.guava', name: 'guava', version: 'r08'
+    compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
+
+    // internals
+    compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
+    compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
+    compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
+
+    // test
+    testCompile group: 'junit', name: 'junit', version: '4.8.2'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
+}
+
 // version
 def propFile = new File('resources/Funcito.properties')
 assert propFile.exists()
@@ -48,22 +67,4 @@ jar {
     }    
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    // functional APIs
-    compile group: 'com.google.guava', name: 'guava', version: 'r08'
-    compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
-
-    // internals
-    compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
-    compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
-    compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
-
-    // test
-    testCompile group: 'junit', name: 'junit', version: '4.8.2'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
-}
 
