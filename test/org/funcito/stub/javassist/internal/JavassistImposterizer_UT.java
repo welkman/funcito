@@ -19,7 +19,6 @@ package org.funcito.stub.javassist.internal;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyObject;
 
-import org.funcito.stub.javassist.internal.JavassistImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -91,6 +90,7 @@ public class JavassistImposterizer_UT {
     public void shouldKnowIfCanImposterize() throws Exception {
         assertFalse(imposterizer.canImposterise(FinalClass.class));
         assertFalse(imposterizer.canImposterise(int.class));
+        assertFalse(imposterizer.canImposterise(MyEnum.class)); // because enums are final
 
         assertTrue(imposterizer.canImposterise(SomeClass.class));
         assertTrue(imposterizer.canImposterise(SomeInterface.class));
@@ -110,6 +110,10 @@ public class JavassistImposterizer_UT {
         public ClassWithDodgyConstructor() {
             throw new RuntimeException();
         }
+    }
+
+    enum MyEnum {
+        E1, E2;
     }
 
     private final class MethodHandlerStub implements MethodHandler {

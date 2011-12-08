@@ -25,7 +25,6 @@ import net.sf.cglib.proxy.Factory;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.funcito.stub.cglib.internal.CglibImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -97,6 +96,7 @@ public class CglibImposterizer_UT {
     public void shouldKnowIfCanImposterize() throws Exception {
         assertFalse(imposterizer.canImposterise(FinalClass.class));
         assertFalse(imposterizer.canImposterise(int.class));
+        assertFalse(imposterizer.canImposterise(MyEnum.class)); // because enums are final
 
         assertTrue(imposterizer.canImposterise(SomeClass.class));
         assertTrue(imposterizer.canImposterise(SomeInterface.class));
@@ -118,8 +118,11 @@ public class CglibImposterizer_UT {
         }
     }
 
-    private final class MethodInterceptorStub implements MethodInterceptor {
+    enum MyEnum {
+        E1, E2;
+    }
 
+    private final class MethodInterceptorStub implements MethodInterceptor {
         public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
             return null;
         }
