@@ -5,6 +5,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    jarjar
+}
+
 dependencies {
     // functional APIs
     compile group: 'com.google.guava', name: 'guava', version: 'r08'
@@ -18,6 +22,9 @@ dependencies {
     // test
     testCompile group: 'junit', name: 'junit', version: '4.10'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
+    
+    // packaging    
+    jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'    
 }
 
 // version
@@ -52,19 +59,42 @@ task srcJar(type: Jar) {
     }
 }
 
-jar.dependsOn(srcJar)
+task binaryJar << {
+    def targetDir = "build/libs"
+    def targetJar = targetDir + "/${project.name}-${version}.jar"
+    def classesDir = "build/classes/main"
+    
+    ant.mkdir(dir : targetDir)
+    
+    // define jarjar
+    ant.taskdef(name: 'jarjar', classname: 'com.tonicsystems.jarjar.JarJarTask', classpath: configurations.jarjar.asPath)
+
+    // use jarjar to build jar and obfuscate org.objenesis
+    ant.jarjar(jarfile : targetJar) {
+        ant.fileset(dir : classesDir)
+        ant.fileset(dir : 'docs') {
+            include(name : 'ReadMe.txt')
+            include(name : 'License.txt')
+        }
+        
+        configurations.compile.findAll {
+            if (it.name =~ /objenesis/) { 
+                zipfileset(src : "${it.path}") 
+            }
+        } 
+        ant.rule(pattern : 'org.objenesis.**', result : 'org.funcito.thirdparty.objenesis.@1')
+    }
+}
+
+srcJar.dependsOn(test)
+binaryJar.dependsOn(test)
 
 // build binary jar
-jar {
-    from { 
-        configurations.compile.findAll {
-            if (it.name =~ /objenesis/) { it }
-        } 
-    }        
-    from('docs') {
-        include 'ReadMe.txt'
-        include 'License.txt'
-    }    
+task jar(overwrite : true) <<  {
+    // no-op
 }
+
+jar.dependsOn(srcJar)
+jar.dependsOn(binaryJar)
 
 
