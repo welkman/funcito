@@ -5,7 +5,9 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.cglib.CglibImposterizer;
 import org.funcito.internal.stub.cglib.CglibInvokable;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Method;
 
@@ -27,6 +29,9 @@ import static org.junit.Assert.*;
  * limitations under the License.
  */
 public class CglibInvokable_UT {
+
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
 
     @Test
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
@@ -52,13 +57,10 @@ public class CglibInvokable_UT {
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
-        try {
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("ClassCast");
             // Try invoking on wrong type
-            invokableForThing1.invoke(new Thing2(), (Object[]) null);
-            fail("Failed to catch type mismatch");
-        } catch (FuncitoException e) {
-            // happy
-            assertTrue(e.getMessage().contains("ClassCast"));
-        }
+        invokableForThing1.invoke(new Thing2(), (Object[]) null);
     }
 }

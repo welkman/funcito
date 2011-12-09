@@ -2,7 +2,9 @@ package org.funcito.internal.stub.cglib;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.cglib.CglibStubFactory;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertSame;
 
@@ -23,6 +25,9 @@ import static org.junit.Assert.assertSame;
  */
 public class CglibStubFactory_UT {
 
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
+
     @Test
     public void testStub_CachesInstancesOfSameClass() {
         CglibStubFactory factory = new CglibStubFactory();
@@ -33,10 +38,12 @@ public class CglibStubFactory_UT {
         assertSame(inst1, inst2);
     }
 
-    @Test(expected = FuncitoException.class)
+    @Test
     public void testStub_UnstubbableClassesThrowFuncitoException() {
         CglibStubFactory factory = new CglibStubFactory();
 
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Cannot mock");
         factory.stub(String.class); // String is final, should not be stubbable
     }
 

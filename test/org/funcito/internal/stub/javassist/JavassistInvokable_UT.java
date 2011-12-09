@@ -11,7 +11,9 @@ import javassist.util.proxy.MethodHandler;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.javassist.JavassistImposterizer;
 import org.funcito.internal.stub.javassist.JavassistInvokable;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -29,6 +31,9 @@ import org.junit.Test;
  * limitations under the License.
  */
 public class JavassistInvokable_UT {
+
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
 
     @Test
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
@@ -54,13 +59,10 @@ public class JavassistInvokable_UT {
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
-        try {
-            // Try invoking on wrong type
-            invokableForThing1.invoke(new Thing2(), (Object[]) null);
-            fail("Failed to catch type mismatch");
-        } catch (FuncitoException e) {
-            // happy
-            assertTrue(e.getMessage().contains("ClassCast"));
-        }
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("ClassCast");
+        // Try invoking on wrong type
+        invokableForThing1.invoke(new Thing2(), (Object[]) null);
     }
 }

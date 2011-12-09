@@ -35,7 +35,7 @@ public class JavassistStubFactory extends StubFactory {
 
             JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
             if (!imposterizer.canImposterise(clazz)) {
-                throw new FuncitoException("Cannot mock this class");
+                throw new FuncitoException("Cannot mock this class.  Typical casuse: final class, anonymous class, or primitive class.");
             }
             stub = imposterizer.imposterise(handler, clazz);
             stubsCache.put(clazz, stub);
