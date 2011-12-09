@@ -1,10 +1,10 @@
-package org.funcito.stub.cglib.internal;
+package org.funcito.internal.stub.cglib;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.cglib.internal.CglibImposterizer;
-import org.funcito.internal.stub.cglib.internal.CglibInvokable;
+import org.funcito.internal.stub.cglib.CglibImposterizer;
+import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

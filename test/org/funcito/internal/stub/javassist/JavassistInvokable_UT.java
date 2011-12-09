@@ -1,4 +1,4 @@
-package org.funcito.internal.stub.javassist.internal;
+package org.funcito.internal.stub.javassist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,8 +9,8 @@ import java.lang.reflect.Method;
 import javassist.util.proxy.MethodHandler;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.javassist.internal.JavassistImposterizer;
-import org.funcito.internal.stub.javassist.internal.JavassistInvokable;
+import org.funcito.internal.stub.javassist.JavassistImposterizer;
+import org.funcito.internal.stub.javassist.JavassistInvokable;
 import org.junit.Test;
 
 /**

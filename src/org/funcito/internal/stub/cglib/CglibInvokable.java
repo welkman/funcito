@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal.stub.cglib.internal;
+package org.funcito.internal.stub.cglib;
 
 import com.google.common.annotations.GwtIncompatible;
 import net.sf.cglib.proxy.MethodProxy;

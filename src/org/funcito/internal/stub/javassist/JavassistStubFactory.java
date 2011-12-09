@@ -20,8 +20,6 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
-import org.funcito.internal.stub.javassist.internal.JavassistImposterizer;
-import org.funcito.internal.stub.javassist.internal.JavassistMethodHandler;
 
 import java.util.Map;
 

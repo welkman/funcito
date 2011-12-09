@@ -19,7 +19,7 @@
  * This program is made available under the terms of the MIT License.
  */
 
-package org.funcito.internal.stub.cglib.internal;
+package org.funcito.internal.stub.cglib;
 
 import static java.lang.Thread.*;
 

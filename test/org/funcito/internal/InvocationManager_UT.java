@@ -5,8 +5,7 @@ import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.InvocationManager;
-import org.funcito.internal.stub.cglib.internal.CglibInvokable;
+import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

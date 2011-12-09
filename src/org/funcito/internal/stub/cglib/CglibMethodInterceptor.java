@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal.stub.javassist.internal;
+package org.funcito.internal.stub.cglib;
 
 import java.lang.reflect.Method;
 
-import javassist.util.proxy.MethodHandler;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
-import org.funcito.google.guava.common.base.Defaults;
 import org.funcito.internal.FuncitoDelegate;
 
 import com.google.common.annotations.GwtIncompatible;
 
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-public class JavassistMethodHandler implements MethodHandler {
-
-    public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-        new FuncitoDelegate().putInvokable(new JavassistInvokable(method));
-        
-        return Defaults.defaultValue(method.getReturnType());
+@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
+public class CglibMethodInterceptor implements MethodInterceptor {
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        CglibInvokable invokable = new CglibInvokable(methodProxy);
+        new FuncitoDelegate().putInvokable(invokable);
+        return null;
     }
+
 }
