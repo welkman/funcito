@@ -34,7 +34,7 @@ def properties = new Properties()
 properties.load(new FileReader(propFile))
 version = properties.getProperty('funcito.version')
 
-println "***** working with Funcito v ${version}"
+println "***** Funcito v ${version}"
 
 // sourceSets
 sourceSets.main.java.srcDirs 'src', 'examples'
