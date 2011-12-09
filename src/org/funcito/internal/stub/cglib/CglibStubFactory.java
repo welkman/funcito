@@ -36,7 +36,7 @@ public class CglibStubFactory extends StubFactory {
         if (stub == null) {
             CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
             if (!imposterizer.canImposterise(clazz)) {
-                throw new FuncitoException("Cannot mock this class.  Typical cause: final class, anonymous class, or primitive class.");
+                throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
             }
             stub = imposterizer.imposterise(interceptor, clazz);
             stubsCache.put(clazz, stub);
