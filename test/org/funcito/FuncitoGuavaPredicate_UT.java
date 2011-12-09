@@ -1,12 +1,17 @@
 package org.funcito;
 
 import com.google.common.base.Predicate;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.funcito.Funcito.*;
 import static org.junit.Assert.*;
 
 public class FuncitoGuavaPredicate_UT {
+
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
 
     private static class BooleanThing {
         private Boolean myVal;
@@ -61,12 +66,10 @@ public class FuncitoGuavaPredicate_UT {
     public void testApply_ReturnNullBooleanWrapper() {
         Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
         BooleanThing nullThing = new BooleanThing(null);
-        try {
-            pred.apply(nullThing);
-            fail("This is the null-unsafe version; NPE is expected");
-        } catch (NullPointerException npe) {
-            // Happy
-        }
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Predicate had a null Boolean");
+        pred.apply(nullThing);
     }
 
     @Test

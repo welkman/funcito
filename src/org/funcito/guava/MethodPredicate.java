@@ -17,6 +17,7 @@ package org.funcito.guava;
 
 import com.google.common.base.Predicate;
 
+import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
 public class MethodPredicate<T> implements Predicate<T> {
@@ -27,6 +28,12 @@ public class MethodPredicate<T> implements Predicate<T> {
     }
 
     public boolean apply(T from) {
-        return invokable.invoke(from);
+        try {
+            return invokable.invoke(from);
+        } catch (NullPointerException npe) {
+            throw new FuncitoException("Predicate had a null Boolean return value; " +
+                    "Guava Predicates expect a non-null Boolean so that it can be autoboxed to a primitive boolean.\n" +
+                    "You might consider the alternate method: predicateFor(Boolean stubbedMethodCall, boolean defaultForNull)", npe);
+        }
     }
 }
