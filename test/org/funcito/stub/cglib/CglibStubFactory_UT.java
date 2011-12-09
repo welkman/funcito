@@ -1,7 +1,7 @@
 package org.funcito.stub.cglib;
 
 import org.funcito.FuncitoException;
-import org.funcito.stub.cglib.CglibStubFactory;
+import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertSame;

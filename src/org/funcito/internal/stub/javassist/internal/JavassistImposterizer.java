@@ -19,7 +19,7 @@
  * This program is made available under the terms of the MIT License.
  */
 
-package org.funcito.stub.javassist.internal;
+package org.funcito.internal.stub.javassist.internal;
 
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;

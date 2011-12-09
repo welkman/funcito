@@ -19,7 +19,8 @@ import org.funcito.functionaljava.MethodF;
 import org.funcito.guava.DefaultableMethodPredicate;
 import org.funcito.guava.MethodFunction;
 import org.funcito.guava.MethodPredicate;
-import org.funcito.stub.StubFactory;
+import org.funcito.internal.stub.StubFactory;
+
 import static org.funcito.internal.WrapperType.*;
 
 import com.google.common.base.Function;

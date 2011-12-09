@@ -13,45 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.stub.javassist.internal;
+package org.funcito.internal.stub.cglib.internal;
 
 import com.google.common.annotations.GwtIncompatible;
+import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
-import java.lang.reflect.Method;
+@GwtIncompatible(value="Depends on CGLib bytecode generation library")
+public class CglibInvokable<T,V> implements Invokable<T,V> {
 
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-class JavassistInvokable<T, V> implements Invokable<T, V> {
+    private MethodProxy methodProxy;
 
-    private Method method;
-    private Class declaringClass;
-
-    JavassistInvokable(Method method) {
-        method.setAccessible(true);
-        this.method = method;
-        this.declaringClass = method.getDeclaringClass();
+    public CglibInvokable(MethodProxy methodProxy) {
+        this.methodProxy = methodProxy;
     }
 
     @SuppressWarnings({"unchecked"})
     public V invoke(T from, Object... args) {
-        if (!declaringClass.isAssignableFrom(from.getClass())) {
-            throw new FuncitoException("ClassCastException while invoking Funcito Invokable for Method " +
-                    from.getClass().getName() + "." + getMethodName() + "()");
-        }
         try {
-            return (V) method.invoke(from, args);
+            return (V)methodProxy.invoke(from, args);
+        } catch (ClassCastException e) {
+            throw new FuncitoException("ClassCastException while invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
         } catch (Throwable e2) {
             throw new FuncitoException("error invoking Funcito Invokable for Method " +
                     from.getClass().getName() + "." + getMethodName() + "()", e2);
         }
     }
 
-    public int getArgumentsLength() {
-        return method.getParameterTypes().length;
-    }
-
-    public String getMethodName() {
-        return method.getName();
-    }
+    public int getArgumentsLength() { return methodProxy.getSignature().getArgumentTypes().length; }
+    public String getMethodName() { return methodProxy.getSignature().getName(); }
 }

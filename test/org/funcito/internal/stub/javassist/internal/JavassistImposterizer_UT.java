@@ -1,4 +1,4 @@
-package org.funcito.stub.javassist.internal;
+package org.funcito.internal.stub.javassist.internal;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -19,6 +19,7 @@ package org.funcito.stub.javassist.internal;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyObject;
 
+import org.funcito.internal.stub.javassist.internal.JavassistImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

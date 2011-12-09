@@ -1,7 +1,8 @@
-package org.funcito.stub;
+package org.funcito.internal.stub;
 
 import static org.junit.Assert.*;
 
+import org.funcito.internal.stub.StubFactory;
 import org.junit.Test;
 
 public class StubFactory_UT {

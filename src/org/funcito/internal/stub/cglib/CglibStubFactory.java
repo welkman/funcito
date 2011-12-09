@@ -14,32 +14,33 @@
  * limitations under the License.
  */
 
-package org.funcito.stub.javassist;
-
-import com.google.common.annotations.GwtIncompatible;
-import com.google.common.collect.Maps;
-import org.funcito.FuncitoException;
-import org.funcito.stub.StubFactory;
-import org.funcito.stub.javassist.internal.JavassistImposterizer;
-import org.funcito.stub.javassist.internal.JavassistMethodHandler;
+package org.funcito.internal.stub.cglib;
 
 import java.util.Map;
 
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
-public class JavassistStubFactory extends StubFactory {
+import org.funcito.FuncitoException;
+import org.funcito.internal.stub.StubFactory;
+import org.funcito.internal.stub.cglib.internal.CglibImposterizer;
+import org.funcito.internal.stub.cglib.internal.CglibMethodInterceptor;
+
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.collect.Maps;
+
+@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
+public class CglibStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();
-    private final JavassistMethodHandler handler = new JavassistMethodHandler();
+
+    private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
 
     public <T> T stub(Class<T> clazz) {
         T stub = clazz.cast(stubsCache.get(clazz));
         if (stub == null) {
-
-            JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
+            CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
             if (!imposterizer.canImposterise(clazz)) {
                 throw new FuncitoException("Cannot mock this class");
             }
-            stub = imposterizer.imposterise(handler, clazz);
+            stub = imposterizer.imposterise(interceptor, clazz);
             stubsCache.put(clazz, stub);
         }
         return stub;
