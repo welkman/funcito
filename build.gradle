@@ -42,7 +42,7 @@ sourceSets.main.resources.srcDir 'resources'
 sourceSets.test.java.srcDirs 'test'
 
 // build src jar
-task srcJar(type: Jar) {
+task srcJar(type: Jar, dependsOn: test) {
     baseName = "${project.name}-src"
 
     from(sourceSets.main.java.srcDirs) {
@@ -59,7 +59,7 @@ task srcJar(type: Jar) {
     }
 }
 
-task binaryJar << {
+task binaryJar(dependsOn: test) << {
     def targetDir = "build/libs"
     def targetJar = targetDir + "/${project.name}-${version}.jar"
     def classesDir = "build/classes/main"
@@ -86,15 +86,9 @@ task binaryJar << {
     }
 }
 
-srcJar.dependsOn(test)
-binaryJar.dependsOn(test)
-
 // build binary jar
-task jar(overwrite : true) <<  {
+task jar(overwrite: true, dependsOn: [srcJar,binaryJar] ) << {
     // no-op
 }
-
-jar.dependsOn(srcJar)
-jar.dependsOn(binaryJar)
 
 
