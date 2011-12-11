@@ -23,6 +23,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.10'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
     
+    testRuntime group: 'net.sourceforge.cobertura', name: 'cobertura', version: '1.9.4.1'
+    
     // packaging    
     jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'    
 }
@@ -90,5 +92,59 @@ task binaryJar(dependsOn: test) << {
 task jar(overwrite: true, dependsOn: [srcJar,binaryJar] ) << {
     // no-op
 }
+
+// define Cobertura task
+ant.taskdef(resource:'tasks.properties') {
+    classpath {
+        pathelement(path: configurations.testRuntime.asPath)
+    }
+}
+
+def classesDir = "${project.buildDir}/classes/main"
+def origClassesDir = "${project.buildDir}/classes-orig/main"
+def coverageDir = "${project.buildDir}/reports/coverage"
+def serFile = "cobertura.ser"
+
+test.doFirst { task ->
+    ant.delete(file: serFile)
+    ant.delete(dir: coverageDir)
+    ant.delete(dir: origClassesDir)   
+    ant.mkdir(dir: origClassesDir)
+        
+    ant.copy(todir: origClassesDir) {
+        fileset(dir: classesDir)
+    }
+    
+    // define Cobertura task
+    ant.taskdef(resource: 'tasks.properties') {
+        classpath {
+            pathelement(path: configurations.testRuntime.asPath)
+        }
+    }
+    
+    // instrument the classes
+    ant.'cobertura-instrument' {
+        // only instrument the relevant classes
+        fileset(dir: classesDir,
+                includes: "org/funcito/**/*.class",
+                excludes: "org/funcito/thirdparty/**/*.class")
+    }        
+}
+ 
+test.doLast {
+    ant.'cobertura-report'(destdir: coverageDir,
+                           format: 'html') {
+        fileset(dir: new File('src') ) 
+    }
+
+    ant.delete(file: serFile)    
+    ant.delete(dir: classesDir)   
+    ant.mkdir(dir: classesDir)
+        
+    ant.copy(todir: classesDir) {
+        fileset(dir: origClassesDir)
+    } 
+}
+
 
 
