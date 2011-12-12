@@ -22,9 +22,6 @@ import javassist.util.proxy.MethodHandler;
 import org.funcito.google.guava.common.base.Defaults;
 import org.funcito.internal.FuncitoDelegate;
 
-import com.google.common.annotations.GwtIncompatible;
-
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
 public class JavassistMethodHandler implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {

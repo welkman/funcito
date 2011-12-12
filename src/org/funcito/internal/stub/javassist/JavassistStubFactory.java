@@ -16,14 +16,12 @@
 
 package org.funcito.internal.stub.javassist;
 
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
 
 import java.util.Map;
 
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
 public class JavassistStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();

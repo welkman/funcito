@@ -19,7 +19,6 @@ package org.funcito.internal.stub.javassist;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyObject;
 
-import org.funcito.internal.stub.javassist.JavassistImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -29,6 +28,14 @@ import static org.junit.Assert.*;
 @SuppressWarnings("unchecked")
 public class JavassistImposterizer_UT {
     private JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
+
+    @Test
+    public void createMockForObjectClass() {
+        Object proxy = imposterizer.imposterise(new MethodHandlerStub(), Object.class);
+
+        Class superClass = proxy.getClass().getSuperclass();
+        assertEquals(Object.class, superClass);
+    }
 
     @Test
     public void shouldCreateMockFromInterface() throws Exception {

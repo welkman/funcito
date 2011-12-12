@@ -22,9 +22,6 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.funcito.internal.FuncitoDelegate;
 
-import com.google.common.annotations.GwtIncompatible;
-
-@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 public class CglibMethodInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         CglibInvokable invokable = new CglibInvokable(methodProxy);

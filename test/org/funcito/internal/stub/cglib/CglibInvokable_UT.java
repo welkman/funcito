@@ -3,8 +3,6 @@ package org.funcito.internal.stub.cglib;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.cglib.CglibImposterizer;
-import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,8 +47,8 @@ public class CglibInvokable_UT {
             public String getVal() { return "abc"; }
         } // same signature but not a subclass
 
-        Thing1 thing1Proxy = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
-        thing1Proxy.getVal(); // proxy call intercepted and MethodProxy extracted
+        Thing1 thing1Mock = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
+        thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1
         CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0]);

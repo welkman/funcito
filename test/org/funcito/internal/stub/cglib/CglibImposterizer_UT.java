@@ -25,7 +25,6 @@ import net.sf.cglib.proxy.Factory;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.funcito.internal.stub.cglib.CglibImposterizer;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -35,6 +34,14 @@ import static org.junit.Assert.*;
 @SuppressWarnings("unchecked")
 public class CglibImposterizer_UT {
     private CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
+
+    @Test
+    public void createMockForObjectClass() {
+        Object proxy = imposterizer.imposterise(new MethodInterceptorStub(), Object.class);
+
+        Class superClass = proxy.getClass().getSuperclass();
+        assertEquals(Object.class, superClass);
+    }
 
     @Test
     public void shouldCreateMockFromInterface() throws Exception {

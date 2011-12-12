@@ -26,20 +26,21 @@ import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
 import org.funcito.FuncitoException;
+import org.funcito.internal.stub.AbstractClassImposterizer;
 import org.objenesis.ObjenesisStd;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class JavassistImposterizer {
+public class JavassistImposterizer extends AbstractClassImposterizer {
+    // NOTE: It looks like Javassist maybe cannot Proxy interfaces with default access
 
     public static final JavassistImposterizer INSTANCE = new JavassistImposterizer();
 
+    private ObjenesisStd objenesis = new ObjenesisStd();
+
     private JavassistImposterizer() {
     }
-
-    private ObjenesisStd objenesis = new ObjenesisStd();
 
 // TODO: from CglibImposerizer, it doesn't look like there is an equivalent capability in Javassist ProxyFactory
 //    private static final NamingPolicy NAMING_POLICY_THAT_ALLOWS_IMPOSTERISATION_OF_CLASSES_IN_SIGNED_PACKAGES = new CglibNamingPolicy() {
@@ -55,12 +56,6 @@ public class JavassistImposterizer {
         }
     };
 
-    public boolean canImposterise(Class<?> type) {
-        // NOTE: It looks like Javassist maybe cannot Proxy interfaces with default access
-        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
-//        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
-    }
-
     public <T> T imposterise(final MethodHandler handler, Class<T> mockedType) {
         try {
             setConstructorsAccessible(mockedType, true);
@@ -71,17 +66,7 @@ public class JavassistImposterizer {
         }
     }
 
-    private void setConstructorsAccessible(Class<?> mockedType, boolean accessible) {
-        for (Constructor<?> constructor : mockedType.getDeclaredConstructors()) {
-            constructor.setAccessible(accessible);
-        }
-    }
-
     private <T> Class<?> createProxyClass(Class<?> mockedType) {
-        if (mockedType == Object.class) {
-            mockedType = ClassWithSuperclassToWorkAroundCglibBug.class;
-        }
-
         ProxyFactory factory = new ProxyFactory();
         if (mockedType.isInterface()) {
             factory.setSuperclass(Object.class);
@@ -122,17 +107,7 @@ public class JavassistImposterizer {
     private Object createProxy(Class<?> proxyClass, final MethodHandler handler) {
         ProxyObject proxy = (ProxyObject) objenesis.newInstance(proxyClass);
         proxy.setHandler(handler);
-//        proxy.setCallbacks(new Callback[] {interceptor, NoOp.INSTANCE});
         return proxy;
     }
 
-    private Class<?>[] prepend(Class<?> first, Class<?>... rest) {
-        Class<?>[] all = new Class<?>[rest.length + 1];
-        all[0] = first;
-        System.arraycopy(rest, 0, all, 1, rest.length);
-        return all;
-    }
-
-    public static class ClassWithSuperclassToWorkAroundCglibBug {
-    }
 }

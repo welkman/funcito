@@ -15,13 +15,11 @@
  */
 package org.funcito.internal.stub.javassist;
 
-import com.google.common.annotations.GwtIncompatible;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
 import java.lang.reflect.Method;
 
-@GwtIncompatible(value = "Depends on Javassist bytecode generation library")
 class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     private Method method;

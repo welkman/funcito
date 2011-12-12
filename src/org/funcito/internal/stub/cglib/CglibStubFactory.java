@@ -20,11 +20,8 @@ import java.util.Map;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
-
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Maps;
 
-@GwtIncompatible(value = "Depends on CGLib bytecode generation library")
 public class CglibStubFactory extends StubFactory {
 
     private Map<Class, Object> stubsCache = Maps.newHashMap();

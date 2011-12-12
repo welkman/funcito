@@ -26,24 +26,24 @@ import net.sf.cglib.core.NamingPolicy;
 import net.sf.cglib.core.Predicate;
 import net.sf.cglib.proxy.*;
 import org.funcito.FuncitoException;
+import org.funcito.internal.stub.AbstractClassImposterizer;
 import org.objenesis.ObjenesisStd;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
- * Thanks to Mockito guys and jMock guys for this handy class that wraps all the cglib magic.
+ * Thanks to Mockito guys (and indirectly, jMock) for this handy class that wraps all the cglib magic.
  */
-public class CglibImposterizer {
+public class CglibImposterizer extends AbstractClassImposterizer {
 
     public static final CglibImposterizer INSTANCE = new CglibImposterizer();
 
+    private ObjenesisStd objenesis = new ObjenesisStd();
+
     private CglibImposterizer() {
     }
-
-    private ObjenesisStd objenesis = new ObjenesisStd();
 
     private static final NamingPolicy NAMING_POLICY_THAT_ALLOWS_IMPOSTERISATION_OF_CLASSES_IN_SIGNED_PACKAGES = new CglibNamingPolicy() {
         @Override
@@ -58,10 +58,6 @@ public class CglibImposterizer {
         }
     };
 
-    public boolean canImposterise(Class<?> type) {
-        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
-    }
-
     public <T> T imposterise(final MethodInterceptor interceptor, Class<T> mockedType) {
         try {
             setConstructorsAccessible(mockedType, true);
@@ -72,16 +68,11 @@ public class CglibImposterizer {
         }
     }
 
-    private void setConstructorsAccessible(Class<?> mockedType, boolean accessible) {
-        for (Constructor<?> constructor : mockedType.getDeclaredConstructors()) {
-            constructor.setAccessible(accessible);
-        }
-    }
-
     private <T> Class<?> createProxyClass(Class<?> mockedType) {
-        if (mockedType == Object.class) {
-            mockedType = ClassWithSuperclassToWorkAroundCglibBug.class;
-        }
+        // NOTE: this was part of the original ClassImposterizer, but it doesn't seem to be needed
+//        if (mockedType == Object.class) {
+//            mockedType = ClassWithSuperclassToWorkAroundCglibBug.class;
+//        }
 
         Enhancer enhancer = new Enhancer() {
             @Override
@@ -130,13 +121,6 @@ public class CglibImposterizer {
         return proxy;
     }
 
-    private Class<?>[] prepend(Class<?> first, Class<?>... rest) {
-        Class<?>[] all = new Class<?>[rest.length + 1];
-        all[0] = first;
-        System.arraycopy(rest, 0, all, 1, rest.length);
-        return all;
-    }
-
-    public static class ClassWithSuperclassToWorkAroundCglibBug {
+    private static class ClassWithSuperclassToWorkAroundCglibBug {
     }
 }
