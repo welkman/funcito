@@ -16,34 +16,38 @@
 
 package org.funcito.internal.stub;
 
-import org.funcito.FuncitoException;
 import org.funcito.internal.stub.cglib.CglibStubFactory;
-import org.funcito.internal.stub.javassist.JavassistStubFactory;
+import org.funcito.internal.stub.utils.StubUtils;
 
 public abstract class StubFactory {
     private static StubFactory instance = null;
-
+    private static StubUtils stubUtils = new StubUtils();
+    
     public static void setInstance(StubFactory newInstance) {
         StubFactory.instance = newInstance;
     }
 
     public static StubFactory instance() {
         if (instance == null) {
-            try {
-                Class.forName("net.sf.cglib.proxy.Enhancer");
-                instance = new CglibStubFactory();
-            } catch (ClassNotFoundException e) {
-                try {
-                    Class.forName("javassist.util.proxy.ProxyFactory");
-                    instance = new JavassistStubFactory();
-                } catch (ClassNotFoundException e2) {
-                    throw new FuncitoException("Error: Funcito requires the use of either the CGLib or Javassist code generation libraries." +
-                            "Please ensure that you have one of the two libraries in your classpath.");
+            instance = stubUtils.getOverrideBySystemProperty();
+            
+            if (instance == null) {
+                instance = stubUtils.getExactlyOneFactoryFromClasspath();
+                
+                if (instance == null) {
+                    // both available on classpath
+                    instance = new CglibStubFactory();
                 }
             }
         }
+        
         return instance;
     }
 
     public abstract <T> T stub(Class<T> clazz);
+    
+    // for testing
+    static void setStringUtils(StubUtils stubUtils) {
+        stubUtils = stubUtils;
+    }
 }
