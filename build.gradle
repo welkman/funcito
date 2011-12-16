@@ -59,7 +59,7 @@ task buildInfo() {
        def map = System.getenv();
        map.each { key, value ->
            if (vars.contains(key)) { 
-               writer.write("${key} = ${value}") 
+               writer.write("${key} = ${value}\n") 
            }
        }
    }
