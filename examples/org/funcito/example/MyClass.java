@@ -15,8 +15,7 @@
  */
 package org.funcito.example;
 
-import static org.funcito.Funcito.callsTo;
-import static org.funcito.Funcito.functionFor;
+import static org.funcito.Funcito.Guava.*;
 
 import com.google.common.base.Function;
 
@@ -28,7 +27,7 @@ public class MyClass {
     public static final MyClass stubbedCallsTo = callsTo(MyClass.class);
 
     public static final Function<MyClass, String> getMyString = functionFor(stubbedCallsTo.getMyString());
-    public static final Function<MyClass, Integer> getOther =   functionFor(stubbedCallsTo.getOther());
+    public static final Function<MyClass, Integer> getOther = functionFor(stubbedCallsTo.getOther());
 
     // alternative single line syntax
     public static final Function<MyClass, String> getMyStringF2 = functionFor(callsTo(MyClass.class).getMyString());

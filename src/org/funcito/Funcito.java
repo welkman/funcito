@@ -17,7 +17,6 @@ package org.funcito;
 
 import org.funcito.functionaljava.FJDelegate;
 import org.funcito.guava.GuavaDelegate;
-import org.funcito.internal.FuncitoDelegate;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -25,34 +24,38 @@ import com.google.common.base.Predicate;
 import fj.F;
 
 public class Funcito {
-    private static final GuavaDelegate guavaDelegate = new GuavaDelegate();
-    private static final FJDelegate fjDelegate = new FJDelegate();
 
-    public static <T> T callsTo(Class<T> clazz) {
-        return guava().stub(clazz);
+    public static class Guava {
+
+        private static final GuavaDelegate guavaDelegate = new GuavaDelegate();
+
+        public static <T> T callsTo(Class<T> clazz) {
+            return guavaDelegate.stub(clazz);
+        }
+
+        public static <T,V> Function<T,V> functionFor(V stubbedMethodCall) {
+            return guavaDelegate.functionFor(stubbedMethodCall);
+        }
+
+        public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall) {
+            return guavaDelegate.predicateFor(stubbedMethodCall);
+        }
+
+        public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall, boolean defaultForNull) {
+            return guavaDelegate.predicateFor(stubbedMethodCall, defaultForNull);
+        }
     }
 
-    public static GuavaDelegate guava() { return guavaDelegate; }
-    public static FJDelegate fj() { return fjDelegate; }
+    public static class Fj {
+        private static final FJDelegate fjDelegate = new FJDelegate();
 
-    //--------------------        static calls for Google Guava      -------------------------
+        public static <T> T callsTo(Class<T> clazz) {
+            return fjDelegate.stub(clazz);
+        }
 
-    public static <T,V> Function<T,V> functionFor(V stubbedMethodCall) {
-        return guava().functionFor(stubbedMethodCall);
-    }
-
-    public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall) {
-        return guava().predicateFor(stubbedMethodCall);
-    }
-
-    public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall, boolean defaultForNull) {
-        return guava().predicateFor(stubbedMethodCall, defaultForNull);
-    }
-
-    //--------------------        static calls for Functional Java    -------------------------
-
-    public static <T,V> F<T,V> fFor(V ignoredRetVal) {
-        return fj().fFor(ignoredRetVal);
+        public static <T,V> F<T,V> fFor(V ignoredRetVal) {
+            return fjDelegate.fFor(ignoredRetVal);
+        }
     }
 
 }

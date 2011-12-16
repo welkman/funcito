@@ -23,7 +23,7 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testPredicateFor_AssignToPredicateWithSourceSuperType() {
-        Predicate<Object> superTypeRet = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<Object> superTypeRet = Guava.predicateFor(Guava.callsTo(BooleanThing.class).getVal());
         assertTrue(superTypeRet.apply(new BooleanThing(true)));
     }
 
@@ -32,7 +32,7 @@ public class FuncitoGuavaPredicate_UT {
         class BooleanWrapperRet {
             public Boolean getBoolWrap() { return Boolean.TRUE; }
         }
-        Predicate<BooleanWrapperRet> wrapBoolPred = predicateFor(callsTo(BooleanWrapperRet.class).getBoolWrap());
+        Predicate<BooleanWrapperRet> wrapBoolPred = Guava.predicateFor(Guava.callsTo(BooleanWrapperRet.class).getBoolWrap());
         assertTrue(wrapBoolPred.apply(new BooleanWrapperRet()));
     }
 
@@ -41,13 +41,13 @@ public class FuncitoGuavaPredicate_UT {
         class PrimitiveBoolRet {
             public boolean getPrimBool() { return true; }
         }
-        Predicate<PrimitiveBoolRet> primBoolPred = predicateFor(callsTo(PrimitiveBoolRet.class).getPrimBool());
+        Predicate<PrimitiveBoolRet> primBoolPred = Guava.predicateFor(Guava.callsTo(PrimitiveBoolRet.class).getPrimBool());
         assertTrue(primBoolPred.apply(new PrimitiveBoolRet()));
     }
 
     @Test
     public void testPredicateFor_ValidateDetectsMismatchedGenericTypes() {
-        Predicate<PrimitiveBoolRetGeneric<String>> stringPred = predicateFor(callsTo(PrimitiveBoolRetGeneric.class).getVal());
+        Predicate<PrimitiveBoolRetGeneric<String>> stringPred = Guava.predicateFor(Guava.callsTo(PrimitiveBoolRetGeneric.class).getVal());
         PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
 
         // The below can't actually be compiled, which proves the test passes: compile time mismatch detection
@@ -56,7 +56,7 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testAllowUpcastToExtensionGenericType() {
-        Predicate<PrimitiveBoolRetGeneric<?>> stringPred = predicateFor(callsTo(PrimitiveBoolRetGeneric.class).getVal());
+        Predicate<PrimitiveBoolRetGeneric<?>> stringPred = Guava.predicateFor(Guava.callsTo(PrimitiveBoolRetGeneric.class).getVal());
         PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
 
         assertTrue(stringPred.apply(integerGeneric));
@@ -64,7 +64,7 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testApply_ReturnNullBooleanWrapper() {
-        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<BooleanThing> pred = Guava.predicateFor(Guava.callsTo(BooleanThing.class).getVal());
         BooleanThing nullThing = new BooleanThing(null);
 
         thrown.expect(FuncitoException.class);
@@ -76,11 +76,11 @@ public class FuncitoGuavaPredicate_UT {
     public void testPredicateFor_SafeVersion() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal(), true);
+        Predicate<BooleanThing> pred = Guava.predicateFor(Guava.callsTo(BooleanThing.class).getVal(), true);
         assertTrue(pred.apply(nullThing));
 
         // do the same test for "false"
-        pred = predicateFor(callsTo(BooleanThing.class).getVal(), false);
+        pred = Guava.predicateFor(Guava.callsTo(BooleanThing.class).getVal(), false);
         assertFalse(pred.apply(nullThing));
     }
 

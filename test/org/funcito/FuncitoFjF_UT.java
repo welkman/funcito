@@ -1,12 +1,12 @@
 package org.funcito;
 
-import com.google.common.base.Function;
+import fj.F;
 import org.junit.Test;
 
+import static org.funcito.Funcito.Fj.*;
 import static org.junit.Assert.assertEquals;
-import static org.funcito.Funcito.Guava.*;
 
-public class FuncitoGuavaFunction_UT {
+public class FuncitoFjF_UT {
 
     private static class StringThing {
         protected String myString;
@@ -22,15 +22,15 @@ public class FuncitoGuavaFunction_UT {
 
     @Test
     public void testFunctionFor_AssignToFunctionWithSourceSuperType() {
-        Function<Object, Integer> superTypeRet = functionFor(callsTo(StringThing.class).size());
-        assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
+        F<Object, Integer> superTypeRet = fFor(callsTo(StringThing.class).size());
+        assertEquals(3, superTypeRet.f(new StringThing("ABC")).intValue());
     }
 
     @Test
     public void testFunctionFor_AssignToFuncWithTargetSuperType() {
-        Function<StringThing, ? extends Number> superType = functionFor(callsTo(StringThing.class).size());
+        F<StringThing, ? extends Number> superType = fFor(callsTo(StringThing.class).size());
         StringThing thing = new StringThing("123456");
-        Number n = superType.apply(thing);
+        Number n = superType.f(thing);
         assertEquals(6, n);
     }
 
@@ -41,8 +41,8 @@ public class FuncitoGuavaFunction_UT {
                 return 123;
             }
         }
-        Function<IntegerWrapperRet, Integer> wrapperIntFunc = functionFor(callsTo(IntegerWrapperRet.class).getVal());
-        assertEquals(123, wrapperIntFunc.apply(new IntegerWrapperRet()).intValue());
+        F<IntegerWrapperRet, Integer> wrapperIntFunc = fFor(callsTo(IntegerWrapperRet.class).getVal());
+        assertEquals(123, wrapperIntFunc.f(new IntegerWrapperRet()).intValue());
     }
 
     @Test
@@ -52,8 +52,8 @@ public class FuncitoGuavaFunction_UT {
                 return 123;
             }
         }
-        Function<PrimitiveIntRet, Integer> primIntFunc = functionFor(callsTo(PrimitiveIntRet.class).getVal());
-        assertEquals(123, primIntFunc.apply(new PrimitiveIntRet()).intValue());
+        F<PrimitiveIntRet, Integer> primIntFunc = fFor(callsTo(PrimitiveIntRet.class).getVal());
+        assertEquals(123, primIntFunc.f(new PrimitiveIntRet()).intValue());
     }
 
     @Test
@@ -63,11 +63,11 @@ public class FuncitoGuavaFunction_UT {
                 return 123;
             }
         }
-        Function<Generic<String>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
+        F<Generic<String>, Integer> stringFunc = fFor(callsTo(Generic.class).getVal());
         Generic<Integer> integerGeneric = new Generic<Integer>();
 
 //        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        stringFunc.apply(integerGeneric);
+//        stringFunc.f(integerGeneric);
     }
 
     @Test
@@ -77,10 +77,10 @@ public class FuncitoGuavaFunction_UT {
                 return 123;
             }
         }
-        Function<Generic<? extends Object>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
+        F<Generic<? extends Object>, Integer> stringFunc = fFor(callsTo(Generic.class).getVal());
         Generic<Integer> integerGeneric = new Generic<Integer>();
 
-        assertEquals(123, stringFunc.apply(integerGeneric).intValue());
+        assertEquals(123, stringFunc.f(integerGeneric).intValue());
     }
 }
 

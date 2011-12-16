@@ -1,11 +1,7 @@
 package org.funcito;
 
-import static org.funcito.Funcito.callsTo;
-import static org.funcito.Funcito.functionFor;
 import static org.junit.Assert.assertEquals;
-
-import org.funcito.internal.Invokable;
-import org.junit.Test;
+import static org.funcito.Funcito.Guava.*;
 
 import com.google.common.base.Function;
 
@@ -23,8 +19,8 @@ class Worker {
 }
 
 class WorkerThread {
-    private static final Worker CALLS_TO = callsTo(Worker.class); 
- 
+    private static final Worker CALLS_TO = callsTo(Worker.class);
+
     public void workWithBadgeNum() {
         //Invokable invokable = CALLS_TO.getBadgeNum();
     }
@@ -33,7 +29,7 @@ class WorkerThread {
         
     }
     public static final Function<Worker,Integer> GET_BADGE_NUM  = functionFor(CALLS_TO.getBadgeNum());
- }
+}
 
 public class Funcito_Pathogological_IT {
 

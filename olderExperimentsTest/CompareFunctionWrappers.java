@@ -45,7 +45,7 @@ public class CompareFunctionWrappers {
 
 
     // Example 4 Funcito (CGLib)
-    private static Function<StringThing, Integer> funcitoFunc = functionFor(callsTo(StringThing.class).size());
+    private static Function<StringThing, Integer> funcitoFunc = Guava.functionFor(Guava.callsTo(StringThing.class).size());
 
     private static long timeManual = 0L;
 
