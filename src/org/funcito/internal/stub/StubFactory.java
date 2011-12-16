@@ -36,6 +36,8 @@ public abstract class StubFactory {
                 
                 if (instance == null) {
                     // both available on classpath
+                    System.err.println("Warning: found both CgLib and Javassist on classpath. Using CgLib: "
+                            + "set System property 'funcito.codegen.lib' to change.");
                     instance = new CglibStubFactory();
                 }
             }

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertSame;
 public class CglibStubFactory_UT {
 
     @Rule
-    public ExpectedException thrown= ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testStub_CachesInstancesOfSameClass() {

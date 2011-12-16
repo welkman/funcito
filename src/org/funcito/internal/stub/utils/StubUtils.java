@@ -28,6 +28,10 @@ public class StubUtils {
     static final String CGLIB_CLASS = "net.sf.cglib.proxy.Enhancer";
     static final String JAVASSIST_CLASS = "javassist.util.proxy.ProxyFactory";
     
+    static final String OVERRIDE_EXCEPTION = "unknown value for system property: " + FUNCITO_CODEGEN_LIB;
+    static final String NONE_ON_CLASSPATH_EXCEPTION = "Error: Funcito requires the use of either the CGLib or Javassist code generation libraries." +
+                            "Please ensure that you have one of the two libraries in your classpath.";
+    
     private ClassFinder classFinder = new ClassFinder();
     private PropertyFinder propertyFinder = new PropertyFinder();
     
@@ -38,8 +42,7 @@ public class StubUtils {
         boolean foundJavassist = classFinder.findOnClasspath(JAVASSIST_CLASS);
         
         if ((! foundCglib) && (! foundJavassist)) {
-            throw new FuncitoException("Error: Funcito requires the use of either the CGLib or Javassist code generation libraries." +
-            "Please ensure that you have one of the two libraries in your classpath.");
+            throw new FuncitoException(NONE_ON_CLASSPATH_EXCEPTION);
         } else if (foundCglib && foundJavassist) {
             // no-op, return null
         } else {
@@ -64,7 +67,7 @@ public class StubUtils {
             } else if (prop.toUpperCase().equals(JAVASSIST)) {
                 result = new JavassistStubFactory();
             } else {
-                throw new FuncitoException("unknown value for system property: " + FUNCITO_CODEGEN_LIB); 
+                throw new FuncitoException(OVERRIDE_EXCEPTION); 
             }
         }
         

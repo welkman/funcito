@@ -16,29 +16,30 @@
 
 package org.funcito.internal.stub.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.*;
 import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.javassist.JavassistStubFactory;
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class StubUtils_UT {
-    private StubUtils stubUtils = new StubUtils();
-    
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Mock
     ClassFinder classFinder;
 
     @Mock
     PropertyFinder propertyFinder;
+
+    @InjectMocks private StubUtils stubUtils = new StubUtils();
 
     @Before
     public void setUp() {
@@ -49,19 +50,17 @@ public class StubUtils_UT {
     public void testGetExactlyOneFactoryFromClasspath_Both() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
-        stubUtils.setClassFinder(classFinder);
         
         // test
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
         
-        assertTrue(result == null);
+        assertNull(result);
     }
 
     @Test
     public void testGetExactlyOneFactoryFromClasspath_Cglib() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
-        stubUtils.setClassFinder(classFinder);
         
         // test
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
@@ -73,7 +72,6 @@ public class StubUtils_UT {
     public void testGetExactlyOneFactoryFromClasspath_Javassist() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
-        stubUtils.setClassFinder(classFinder);
         
         // test
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
@@ -81,31 +79,31 @@ public class StubUtils_UT {
         assertTrue(result instanceof JavassistStubFactory);
     }
 
-    @Test(expected = FuncitoException.class)
+    @Test
     public void testGetExactlyOneFactoryFromClasspath_Neither() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
-        stubUtils.setClassFinder(classFinder);
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage(StubUtils.NONE_ON_CLASSPATH_EXCEPTION);
         
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();        
     }
 
     @Test
     public void testGetOverrideBySystemProperty_None() {
         when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(null);
-        stubUtils.setPropertyFinder(propertyFinder);
         
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
         
-        assertEquals(null, result);
+        assertNull(result);
     }
     
     @Test
     public void testGetOverrideBySystemProperty_Cglib() {
         when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(StubUtils.CGLIB);
-        stubUtils.setPropertyFinder(propertyFinder);
         
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -116,7 +114,6 @@ public class StubUtils_UT {
     @Test
     public void testGetOverrideBySystemProperty_Javassist() {
         when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(StubUtils.JAVASSIST);
-        stubUtils.setPropertyFinder(propertyFinder);
         
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -124,10 +121,12 @@ public class StubUtils_UT {
         assertTrue(result instanceof JavassistStubFactory);
     }
     
-    @Test(expected = FuncitoException.class)
+    @Test
     public void testGetOverrideBySystemProperty_IllegalValue() {
         when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn("bogus");
-        stubUtils.setPropertyFinder(propertyFinder);
+        
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage(StubUtils.OVERRIDE_EXCEPTION);
         
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
