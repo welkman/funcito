@@ -29,8 +29,11 @@ dependencies {
     jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'    
 }
 
+final String PROP_FILE = "Funcito.properties"
+final String BUILD_INFO_FILE = "buildInfo.txt"
+
 // version
-def propFile = new File('resources/Funcito.properties')
+def propFile = new File("resources/${PROP_FILE}")
 assert propFile.exists()
 def properties = new Properties()
 properties.load(new FileReader(propFile))
@@ -43,8 +46,27 @@ sourceSets.main.java.srcDirs 'src', 'examples'
 sourceSets.main.resources.srcDir 'resources'
 sourceSets.test.java.srcDirs 'test'
 
+// create build info file
+task buildInfo() {
+   def buildInfoFile = "resources/${BUILD_INFO_FILE}"
+   ant.delete(file: buildInfoFile)
+   def vars = ["BUILD_NUMBER", "BUILD_ID", "JOB_NAME", "BUILD_TAG",
+               "EXECUTOR_NUMBER", "NODE_NAME", "NODE_LABELS", 
+               "JAVA_HOME", "WORKSPACE", "HUDSON_URL", "JOB_URL",
+               "SVN_REVISION", "CVS_BRANCH"]
+
+   new File(buildInfoFile).withWriter { writer ->
+       def map = System.getenv();
+       map.each { key, value ->
+           if (vars.contains(key)) { 
+               writer.write("${key} = ${value}") 
+           }
+       }
+   }
+}
+
 // build src jar
-task srcJar(type: Jar, dependsOn: test) {
+task srcJar(type: Jar, dependsOn: [buildInfo,test]) {
     baseName = "${project.name}-src"
 
     from(sourceSets.main.java.srcDirs) {
@@ -53,6 +75,7 @@ task srcJar(type: Jar, dependsOn: test) {
 
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.properties'
+        include '**/*.txt'
     }
     
     from('docs') {
@@ -66,25 +89,30 @@ task binaryJar(dependsOn: test) << {
     def targetJar = targetDir + "/${project.name}-${version}.jar"
     def classesDir = "build/classes/main"
     
-    ant.mkdir(dir : targetDir)
+    ant.mkdir(dir: targetDir)
     
     // define jarjar
     ant.taskdef(name: 'jarjar', classname: 'com.tonicsystems.jarjar.JarJarTask', classpath: configurations.jarjar.asPath)
 
     // use jarjar to build jar and obfuscate org.objenesis
-    ant.jarjar(jarfile : targetJar) {
-        ant.fileset(dir : classesDir)
-        ant.fileset(dir : 'docs') {
-            include(name : 'ReadMe.txt')
-            include(name : 'License.txt')
+    ant.jarjar(jarfile: targetJar) {
+        ant.fileset(dir: classesDir)
+
+        ant.fileset(dir: 'resources') {
+            include(name: PROP_FILE)
+            include(name: BUILD_INFO_FILE) 
+        }
+        ant.fileset(dir: 'docs') {
+            include(name: 'ReadMe.txt')
+            include(name: 'License.txt')
         }
         
         configurations.compile.findAll {
             if (it.name =~ /objenesis/) { 
-                zipfileset(src : "${it.path}") 
+                zipfileset(src: "${it.path}") 
             }
         } 
-        ant.rule(pattern : 'org.objenesis.**', result : 'org.funcito.thirdparty.objenesis.@1')
+        ant.rule(pattern: 'org.objenesis.**', result: 'org.funcito.thirdparty.objenesis.@1')
     }
 }
 
