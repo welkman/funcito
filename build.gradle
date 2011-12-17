@@ -13,6 +13,7 @@ dependencies {
     // functional APIs
     compile group: 'com.google.guava', name: 'guava', version: 'r08'
     compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
+    compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5'
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'

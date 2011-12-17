@@ -15,6 +15,8 @@
  */
 package org.funcito;
 
+import jedi.functional.Filter;
+import jedi.functional.Functor;
 import org.funcito.functionaljava.FJDelegate;
 import org.funcito.guava.GuavaDelegate;
 
@@ -22,6 +24,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
 import fj.F;
+import org.funcito.jedi.JediDelegate;
 
 public class Funcito {
 
@@ -43,6 +46,23 @@ public class Funcito {
 
         public static <T> Predicate<T> predicateFor(Boolean stubbedMethodCall, boolean defaultForNull) {
             return guavaDelegate.predicateFor(stubbedMethodCall, defaultForNull);
+        }
+    }
+
+    public static class Jedi {
+
+        private static final JediDelegate jediDelegate = new JediDelegate();
+
+        public static <T> T callsTo(Class<T> clazz) {
+            return jediDelegate.stub(clazz);
+        }
+
+        public static <T,V> Functor<T, V> functorFor(V stubbedMethodCall) {
+            return jediDelegate.functorFor(stubbedMethodCall);
+        }
+
+        public static <T> Filter<T> filterFor(Boolean stubbedMethodCall) {
+            return jediDelegate.filterFor(stubbedMethodCall);
         }
     }
 

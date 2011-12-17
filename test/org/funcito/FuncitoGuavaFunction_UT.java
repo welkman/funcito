@@ -21,6 +21,12 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
+    public void testFunctionFor_AssignToFunctionWithMatchingTypes() {
+        Function<StringThing, Integer> superTypeRet = functionFor(callsTo(StringThing.class).size());
+        assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
+    }
+
+    @Test
     public void testFunctionFor_AssignToFunctionWithSourceSuperType() {
         Function<Object, Integer> superTypeRet = functionFor(callsTo(StringThing.class).size());
         assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());

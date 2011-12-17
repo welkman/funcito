@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal;
+package org.funcito.jedi;
 
-public enum WrapperType {
-    GUAVA_FUNCTION("Guava Function"), 
-    GUAVA_PREDICATE("Guava Predicate"), 
-    FJ_F("Functional Java F (function)"),
-    JEDI_FUNCTOR("Jedi Functor"),
-    JEDI_FILTER("Jedi Filter");
+import com.google.common.base.Predicate;
+import jedi.functional.Filter;
+import org.funcito.FuncitoException;
+import org.funcito.internal.Invokable;
 
-    private final String name;
-    
-    private WrapperType(String name) {
-        this.name = name;
+public class MethodFilter<T> implements Filter<T> {
+    final protected Invokable<T,Boolean> invokable;
+
+    public MethodFilter(Invokable<T, Boolean> initInvokable) {
+        this.invokable = initInvokable;
     }
-    
-    public String toString() {
-        return name;
+
+    public Boolean execute(T from) {
+        return invokable.invoke(from);
     }
 }
