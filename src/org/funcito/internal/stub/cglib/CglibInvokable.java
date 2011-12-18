@@ -15,12 +15,10 @@
  */
 package org.funcito.internal.stub.cglib;
 
-import com.google.common.annotations.GwtIncompatible;
 import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
-@GwtIncompatible(value="Depends on CGLib bytecode generation library")
 public class CglibInvokable<T,V> implements Invokable<T,V> {
 
     private MethodProxy methodProxy;
