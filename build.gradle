@@ -93,7 +93,7 @@ task buildInfo() {
 }
 
 // build src jar
-task srcJar(type: Jar, dependsOn: [buildInfo,test]) {
+task srcJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     archiveName = vars.srcJarFilename
 
     from(sourceSets.main.java.srcDirs) {
@@ -109,9 +109,15 @@ task srcJar(type: Jar, dependsOn: [buildInfo,test]) {
         include 'ReadMe.txt'
         include 'License.txt'
     }
+    
+    into('docs') {
+        from('build/docs') {
+            include '**/*.*'
+        }
+    }
 }
 
-task binaryJar(dependsOn: test) << {
+task binaryJar(dependsOn: [test,javadoc]) << {
     def targetDir = "build/libs"
     def targetJar = targetDir + vars.binaryJarFilename
     def classesDir = "build/classes/main"
@@ -129,10 +135,13 @@ task binaryJar(dependsOn: test) << {
             include(name: PROP_FILE)
             include(name: BUILD_INFO_FILE) 
         }
+        
         ant.fileset(dir: 'docs') {
             include(name: 'ReadMe.txt')
             include(name: 'License.txt')
         }
+        
+        ant.zipfileset(dir: 'build/docs/javadoc', prefix: 'docs/javadoc')
         
         configurations.compile.findAll {
             if (it.name =~ /objenesis/) { 
@@ -203,6 +212,7 @@ test.doLast {
         fileset(dir: origClassesDir)
     } 
 }
+
 
 
 

@@ -26,12 +26,23 @@ import com.google.common.base.Predicate;
 import fj.F;
 import org.funcito.jedi.JediDelegate;
 
+/**
+ * This class is public entry point into the Funcito API.
+ */
 public class Funcito {
 
+    /**
+     * This class is the entry point of the Funcito API for Google Guava.
+     */
     public static class Guava {
 
         private static final GuavaDelegate guavaDelegate = new GuavaDelegate();
 
+        /**
+         * generates a stub object for use with other API calls
+         * @param clazz is the class to be stubbed
+         * @return a stub which can be used by other API calls
+         */
         public static <T> T callsTo(Class<T> clazz) {
             return guavaDelegate.stub(clazz);
         }
@@ -49,10 +60,18 @@ public class Funcito {
         }
     }
 
+    /**
+     * This class is the entry point of the Funcito API for Jedi.
+     */
     public static class Jedi {
 
         private static final JediDelegate jediDelegate = new JediDelegate();
 
+        /**
+         * generates a stub object for use with other API calls
+         * @param clazz is the class to be stubbed
+         * @return a stub which can be used by other API calls
+         */
         public static <T> T callsTo(Class<T> clazz) {
             return jediDelegate.stub(clazz);
         }
@@ -66,9 +85,17 @@ public class Funcito {
         }
     }
 
+    /**
+     * This class is the entry point of the Funcito API for Functional Java.
+     */
     public static class Fj {
         private static final FJDelegate fjDelegate = new FJDelegate();
 
+        /**
+         * generates a stub object for use with other API calls
+         * @param clazz is the class to be stubbed
+         * @return a stub which can be used by other API calls
+         */
         public static <T> T callsTo(Class<T> clazz) {
             return fjDelegate.stub(clazz);
         }
