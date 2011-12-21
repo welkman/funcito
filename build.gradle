@@ -64,11 +64,11 @@ vars.binaryJarFilename = "/${project.name}-${version}.jar"
 vars.isJenkins = vars.envMap.keySet().contains(BUILD_NUMBER)
  
 if (vars.isJenkins) {
-    def formatter = new java.text.SimpleDateFormat("dd.MMM.yyyy")
+    def formatter = new java.text.SimpleDateFormat("dd-MMM-yyyy")
     def now = formatter.format(new Date())
     def buildNumber = vars.envMap.get(BUILD_NUMBER)
-    vars.srcJarFilename = "${project.name}-src-SNAPSHOT-${buildNumber}-${now}.jar"
-    vars.binaryJarFilename = "/${project.name}-SNAPSHOT-${buildNumber}-${now}.jar"
+    vars.srcJarFilename = "${project.name}-src-SNAPSHOT-${buildNumber}_${now}.jar"
+    vars.binaryJarFilename = "/${project.name}-SNAPSHOT-${buildNumber}_${now}.jar"
 }
 
 ///////////////////////////
