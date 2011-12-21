@@ -117,7 +117,7 @@ task srcJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     }
 }
 
-task binaryJar(dependsOn: [test,javadoc]) << {
+task binaryJar(dependsOn: test) << {
     def targetDir = "build/libs"
     def targetJar = targetDir + vars.binaryJarFilename
     def classesDir = "build/classes/main"
@@ -140,8 +140,6 @@ task binaryJar(dependsOn: [test,javadoc]) << {
             include(name: 'ReadMe.txt')
             include(name: 'License.txt')
         }
-        
-        ant.zipfileset(dir: 'build/docs/javadoc', prefix: 'docs/javadoc')
         
         configurations.compile.findAll {
             if (it.name =~ /objenesis/) { 
