@@ -88,7 +88,7 @@ public class Funcito {
     /**
      * This class is the entry point of the Funcito API for Functional Java.
      */
-    public static class Fj {
+    public static class FJ {
         private static final FJDelegate fjDelegate = new FJDelegate();
 
         /**

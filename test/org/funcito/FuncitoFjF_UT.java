@@ -3,7 +3,7 @@ package org.funcito;
 import fj.F;
 import org.junit.Test;
 
-import static org.funcito.Funcito.Fj.*;
+import static org.funcito.Funcito.FJ.*;
 import static org.junit.Assert.assertEquals;
 
 public class FuncitoFjF_UT {
