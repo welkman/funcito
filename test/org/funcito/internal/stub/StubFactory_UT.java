@@ -11,9 +11,7 @@ public class StubFactory_UT {
         // test
         StubFactory sf1 = StubFactory.instance();
         StubFactory sf2 = StubFactory.instance();
-        StubFactory sf3 = StubFactory.instance();
 
-        assertEquals(sf1, sf2);
-        assertEquals(sf2, sf3);
+        assertSame(sf1, sf2);
     }
 }

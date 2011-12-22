@@ -36,9 +36,6 @@ public class StubUtils_UT {
     @Mock
     ClassFinder classFinder;
 
-    @Mock
-    PropertyFinder propertyFinder;
-
     @InjectMocks private StubUtils stubUtils = new StubUtils();
 
     @Before
@@ -88,13 +85,13 @@ public class StubUtils_UT {
         thrown.expectMessage(StubUtils.NONE_ON_CLASSPATH_EXCEPTION);
         
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();        
+        stubUtils.getExactlyOneFactoryFromClasspath();
     }
 
     @Test
     public void testGetOverrideBySystemProperty_None() {
-        when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(null);
-        
+        assertNull(System.getProperty(StubUtils.FUNCITO_CODEGEN_LIB));
+
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
         
@@ -103,8 +100,8 @@ public class StubUtils_UT {
     
     @Test
     public void testGetOverrideBySystemProperty_Cglib() {
-        when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(StubUtils.CGLIB);
-        
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.CGLIB);
+
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
         
@@ -113,8 +110,8 @@ public class StubUtils_UT {
 
     @Test
     public void testGetOverrideBySystemProperty_Javassist() {
-        when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn(StubUtils.JAVASSIST);
-        
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVASSIST);
+
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
         
@@ -123,13 +120,13 @@ public class StubUtils_UT {
     
     @Test
     public void testGetOverrideBySystemProperty_IllegalValue() {
-        when(propertyFinder.findProperty(StubUtils.FUNCITO_CODEGEN_LIB)).thenReturn("bogus");
-        
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, "bogus");
+
         thrown.expect(FuncitoException.class);
         thrown.expectMessage(StubUtils.OVERRIDE_EXCEPTION);
         
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        stubUtils.getOverrideBySystemProperty();
     }
     
 }
