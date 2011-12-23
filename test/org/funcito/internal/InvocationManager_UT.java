@@ -47,14 +47,14 @@ public class InvocationManager_UT {
     @Test(expected = FuncitoException.class)
     public void testPushInvocation_nonZeroArgsNotAllowed() {
         when(sig.getArgumentTypes()).thenReturn(new Type[1]);
-        mgr.pushInvokable(new CglibInvokable(mProxy));
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
     }
 
     @Test(expected = FuncitoException.class)
     public void testPushInvocation_multiCglibCallsNotAllowed() {
         when(sig.getArgumentTypes()).thenReturn(new Type[0]);
-        mgr.pushInvokable(new CglibInvokable(mProxy));
-        mgr.pushInvokable(new CglibInvokable(mProxy));
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
     }
     
     @Test(expected = FuncitoException.class)
@@ -65,7 +65,7 @@ public class InvocationManager_UT {
     @Test
     public void testExtractInvokable_cglibInvokableWrapsInvocationMethodProxy() throws Throwable {
         when(sig.getArgumentTypes()).thenReturn(new Type[0]);
-        CglibInvokable<?, ?> invocation = new CglibInvokable<Object, Object>(mProxy);
+        CglibInvokable<?, ?> invocation = new CglibInvokable<Object, Object>(mProxy, Object.class);
         mgr.pushInvokable(invocation);
 
         CglibInvokable<?, ?> invokable = (CglibInvokable<?, ?>) mgr.extractInvokable("");

@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import javassist.util.proxy.MethodHandler;
 
 import org.funcito.FuncitoException;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,11 +34,6 @@ public class JavassistInvokable_UT {
 
     @Test
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
-        class Handler implements MethodHandler {
-            public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-                return null;
-            }
-        }
         class Thing1 {
             public String getVal() { return "abc"; }
         }
@@ -56,8 +52,34 @@ public class JavassistInvokable_UT {
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("ClassCast");
+        thrown.expectMessage("You attempted to invoke");
         // Try invoking on wrong type
         invokableForThing1.invoke(new Thing2(), (Object[]) null);
+    }
+
+    @Ignore("still working on this functionality")
+    @Test
+    public void testInvoke_rethrowsThrowableInternalToMethodAsFuncitoException() throws Throwable {
+        class MyThrowable extends Throwable{};
+        class ThrowsThrowable {
+            public Integer doStuff() throws MyThrowable { throw new MyThrowable(); }
+        }
+        Method method = ThrowsThrowable.class.getMethod("doStuff");
+
+        ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler(), ThrowsThrowable.class);
+        ttObj.doStuff(); // mock call intercepted and MethodProxy extracted
+
+        JavassistInvokable invokable = new JavassistInvokable<ThrowsThrowable, String>(method);
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Caught throwable ");
+        thrown.expectMessage("MyThrowable");
+        invokable.invoke(new ThrowsThrowable());
+    }
+
+    class Handler implements MethodHandler {
+        public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
+            return null;
+        }
     }
 }

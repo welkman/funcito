@@ -24,7 +24,7 @@ import org.funcito.internal.FuncitoDelegate;
 
 public class CglibMethodInterceptor implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-        CglibInvokable invokable = new CglibInvokable(methodProxy);
+        CglibInvokable invokable = new CglibInvokable(methodProxy, o.getClass());
         new FuncitoDelegate().putInvokable(invokable);
         return null;
     }

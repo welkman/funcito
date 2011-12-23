@@ -33,15 +33,18 @@ class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     @SuppressWarnings({"unchecked"})
     public V invoke(T from, Object... args) {
-        if (!declaringClass.isAssignableFrom(from.getClass())) {
-            throw new FuncitoException("ClassCastException while invoking Funcito Invokable for Method " +
-                    from.getClass().getName() + "." + getMethodName() + "()");
-        }
         try {
             return (V) method.invoke(from, args);
-        } catch (Throwable e2) {
-            throw new FuncitoException("error invoking Funcito Invokable for Method " +
-                    from.getClass().getName() + "." + getMethodName() + "()", e2);
+        } catch (Throwable e) {
+            if (e instanceof IllegalArgumentException && !declaringClass.isInstance(from)) {
+                throw new FuncitoException("You attempted to invoke method " +
+                        from.getClass().getName() + "." + getMethodName() + "() " +
+                        "but defined Funcito invokable was for method " +
+                        declaringClass.getName() +  "." + getMethodName() + "() ", e);
+            }
+            throw new FuncitoException("Caught throwable " + e.getClass().getName() +
+                    " invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
         }
     }
 
