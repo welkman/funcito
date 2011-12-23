@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.funcito.Funcito.Guava.*;
+import static org.funcito.FuncitoGuava.*;
 
 public class FuncitoGuavaFunction_UT {
 

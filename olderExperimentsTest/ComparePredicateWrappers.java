@@ -1,6 +1,6 @@
 import com.google.common.base.Predicate;
 import info.piwai.funkyjfunctional.guava.Pred;
-import org.funcito.Funcito;
+import org.funcito.FuncitoGuava;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -41,8 +41,8 @@ public class ComparePredicateWrappers {
 
 
     // Example 4 Funcito (CGLib)
-    BooleanThing funcitoBooleanThingStub = Funcito.Guava.callsTo(BooleanThing.class);
-    Predicate<BooleanThing> funcitoPred = Funcito.Guava.predicateFor(funcitoBooleanThingStub.getVal());
+    BooleanThing funcitoBooleanThingStub = FuncitoGuava.callsTo(BooleanThing.class);
+    Predicate<BooleanThing> funcitoPred = FuncitoGuava.predicateFor(funcitoBooleanThingStub.getVal());
 
     private static long timeManual = 0L;
     @BeforeClass

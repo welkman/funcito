@@ -3,7 +3,7 @@ package org.funcito;
 import jedi.functional.Filter;
 import org.junit.Test;
 
-import static org.funcito.Funcito.Jedi.*;
+import static org.funcito.FuncitoJedi.*;
 import static org.junit.Assert.*;
 
 public class FuncitoJediFilter_UT {

@@ -1,12 +1,12 @@
 import static ch.lambdaj.Lambda.closure;
 import static ch.lambdaj.Lambda.of;
 import static info.piwai.funkyjfunctional.guava.FunkyGuava.*;
-import static org.funcito.Funcito.*;
 import static org.junit.Assert.*;
 
 import ch.lambdaj.function.closure.Closure1;
 import com.google.common.base.Function;
 import info.piwai.funkyjfunctional.guava.Func;
+import org.funcito.FuncitoGuava;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class CompareFunctionWrappers {
 
 
     // Example 4 Funcito (CGLib)
-    private static Function<StringThing, Integer> funcitoFunc = Guava.functionFor(Guava.callsTo(StringThing.class).size());
+    private static Function<StringThing, Integer> funcitoFunc = FuncitoGuava.functionFor(FuncitoGuava.callsTo(StringThing.class).size());
 
     private static long timeManual = 0L;
 

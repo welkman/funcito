@@ -15,7 +15,7 @@
  */
 package org.funcito.example;
 
-import static org.funcito.Funcito.Guava.*;
+import static org.funcito.FuncitoGuava.*;
 
 import com.google.common.base.Function;
 

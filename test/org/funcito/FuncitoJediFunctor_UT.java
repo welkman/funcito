@@ -3,7 +3,7 @@ package org.funcito;
 import jedi.functional.Functor;
 import org.junit.Test;
 
-import static org.funcito.Funcito.Jedi.*;
+import static org.funcito.FuncitoJedi.*;
 import static org.junit.Assert.assertEquals;
 
 public class FuncitoJediFunctor_UT {

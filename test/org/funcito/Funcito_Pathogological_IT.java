@@ -1,7 +1,7 @@
 package org.funcito;
 
 import static org.junit.Assert.assertEquals;
-import static org.funcito.Funcito.Guava.*;
+import static org.funcito.FuncitoGuava.*;
 
 import com.google.common.base.Function;
 

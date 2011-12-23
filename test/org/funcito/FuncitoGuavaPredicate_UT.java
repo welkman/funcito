@@ -5,7 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.funcito.Funcito.Guava.*;
+import static org.funcito.FuncitoGuava.*;
 import static org.junit.Assert.*;
 
 public class FuncitoGuavaPredicate_UT {
