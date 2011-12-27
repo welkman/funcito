@@ -29,11 +29,11 @@ import org.funcito.jedi.JediDelegate;
  * <code>
  *     import org.funcito.Funcito.*;<br/>
  *     <br/>
- *     MyClass guavaStub function = guava().callsTo(MyClass.class);<br/>
- *     MyClass fjStub f = fj().callsTo(MyClass.class);<br/>
+ *     MyClass guavaStub = guava().callsTo(MyClass.class);<br/>
+ *     MyClass fjStub = fj().callsTo(MyClass.class);<br/>
  *     <br/>
- *     Function<MyClass,RetType> = guava().functionFor(guavaStub.someMethod());<br/>
- *     F<MyClass,RetType> = fj().fFor(fjStub.someMethod());<br/>
+ *     Function<MyClass,RetType> function = guava().functionFor(guavaStub.someMethod());<br/>
+ *     F<MyClass,RetType> f = fj().fFor(fjStub.someMethod());<br/>
  * </code>
  * <p>
  * or calls may be made inline without problem, though it may be less readable to some:
