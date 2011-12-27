@@ -21,7 +21,7 @@ public class FuncitoDelegate {
 
     private final InvocationManager invocationManager = new InvocationManager();
     
-    public <T> T stub(Class<T> clazz) {
+    public <T> T callsTo(Class<T> clazz) {
         return StubFactory.instance().stub(clazz);
     }
 

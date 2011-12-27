@@ -20,7 +20,30 @@ import org.funcito.guava.GuavaDelegate;
 import org.funcito.jedi.JediDelegate;
 
 /**
- * This class is public entry point into the Funcito API.
+ * This class is a public entry point into Funcito for the supported functional framework APIs.  Most users will probably
+ * prefer to use static imports from the particular API being used, such as {@link FuncitoGuava}, {@link FuncitoFJ} (Functional Java),
+ * or {@link FuncitoJedi}, because the usage is more terse.  But for rare cases when multiple functional frameworks are
+ * being used within the same class, the static methods within this class can be used to differentiate between their usages.
+ * Example:
+ * <p>
+ * <code>
+ *     import org.funcito.Funcito.*;<br/>
+ *     <br/>
+ *     MyClass guavaStub function = guava().callsTo(MyClass.class);<br/>
+ *     MyClass fjStub f = fj().callsTo(MyClass.class);<br/>
+ *     <br/>
+ *     Function<MyClass,RetType> = guava().functionFor(guavaStub.someMethod());<br/>
+ *     F<MyClass,RetType> = fj().fFor(fjStub.someMethod());<br/>
+ * </code>
+ * <p>
+ * or calls may be made inline without problem, though it may be less readable to some:
+ * <p>
+ * <code>
+ *     Function<MyClass,RetType> function = guava().functionFor( guava().callsTo(MyClass.class).someMethod());<br/>
+ * </code>
+ * @see FuncitoGuava
+ * @see FuncitoFJ
+ * @see FuncitoJedi
  */
 public class Funcito {
 
