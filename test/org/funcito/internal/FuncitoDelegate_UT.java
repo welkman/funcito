@@ -29,13 +29,13 @@ public class FuncitoDelegate_UT {
     private FuncitoDelegate delegate = new FuncitoDelegate();
 
     @Test
-    public void threadSafety() throws Exception {
+    public void testPutGetInvokable_threadSafety() throws Exception {
         Method method1 = MyClass.class.getDeclaredMethod("getString1");
         Method method2 = MyClass.class.getDeclaredMethod("getString2");
         final JavassistInvokable<MyClass,String> invokable1 = new JavassistInvokable<MyClass,String>(method1);
         final JavassistInvokable<MyClass,String> invokable2 = new JavassistInvokable<MyClass,String>(method2);
-        final Semaphore lock1 = new Semaphore(1);
-        final Semaphore lock2 = new Semaphore(1);
+        final Semaphore lock1 = new Semaphore(1, true);
+        final Semaphore lock2 = new Semaphore(1, true);
         final Invokable<?,?>[] ret2 = new Invokable[1];
         Runnable runnable = new Runnable() {
             public void run() {
