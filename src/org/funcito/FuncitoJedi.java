@@ -66,7 +66,7 @@ public class FuncitoJedi {
         return tFilter;
     }
 
-    static JediDelegate delegate() {
-        return delegate();
+    public static JediDelegate delegate() {
+        return jediDelegate;
     }
 }

@@ -50,6 +50,6 @@ public abstract class StubFactory {
     
     // for testing
     static void setStringUtils(StubUtils stubUtils) {
-        stubUtils = stubUtils;
+        StubFactory.stubUtils = stubUtils;
     }
 }

@@ -1,10 +1,7 @@
 package org.funcito.jedi;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import org.funcito.guava.DefaultableMethodPredicate;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.Invokable;
 
