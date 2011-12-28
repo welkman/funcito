@@ -18,7 +18,8 @@ package org.funcito.internal;
 import org.funcito.FuncitoException;
 
 class InvocationManager {
-    private static final InvokableState state = new InvokableState();
+
+    private final InvokableState state = new InvokableState();
 
     void pushInvokable(Invokable invokable) {
         if (state.isFull()) {

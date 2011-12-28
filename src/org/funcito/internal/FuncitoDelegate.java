@@ -19,19 +19,28 @@ import org.funcito.internal.stub.StubFactory;
 
 public class FuncitoDelegate {
 
-    private final InvocationManager invocationManager = new InvocationManager();
+    private static final ThreadLocal<InvocationManager> invocationManager = new ThreadLocal<InvocationManager>();
     
     public <T> T callsTo(Class<T> clazz) {
         return StubFactory.instance().stub(clazz);
     }
 
+    private InvocationManager getManager() {
+        InvocationManager manager = invocationManager.get();
+        if (manager==null) {
+            manager = new InvocationManager();
+            invocationManager.set(manager);
+        }
+        return manager;
+    }
+
     //-------------------- Funcito Core -------------------------
 
     public void putInvokable(Invokable invokable) {
-        invocationManager.pushInvokable(invokable);
+        getManager().pushInvokable(invokable);
     }
     
     protected Invokable getInvokable(WrapperType wrapperType) {
-        return invocationManager.extractInvokable(wrapperType.toString());
+        return getManager().extractInvokable(wrapperType.toString());
     }
 }

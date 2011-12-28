@@ -20,12 +20,12 @@ import org.funcito.internal.Invokable;
 
 import java.lang.reflect.Method;
 
-class JavassistInvokable<T, V> implements Invokable<T, V> {
+public class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     private Method method;
     private Class declaringClass;
 
-    JavassistInvokable(Method method) {
+    public JavassistInvokable(Method method) {
         method.setAccessible(true);
         this.method = method;
         this.declaringClass = method.getDeclaringClass();
