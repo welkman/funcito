@@ -21,11 +21,13 @@ import com.google.common.base.Predicate;
 import org.funcito.guava.GuavaDelegate;
 
 /**
- * This class is the entry point of the Funcito API for Google Guava.
+ * This class is the static entry point of the Funcito API for Google Guava.
  */
 public class FuncitoGuava {
 
     private static final GuavaDelegate guavaDelegate = new GuavaDelegate();
+
+    private FuncitoGuava() {}
 
     /**
      * Generates a stub object for use with other <code>FuncitoGuava</code> static calls.  This stub should not

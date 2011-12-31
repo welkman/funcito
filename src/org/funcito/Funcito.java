@@ -42,12 +42,14 @@ import org.funcito.jedi.JediDelegate;
  */
 public class Funcito {
 
+    private Funcito() {}
+
     /**
-     * Creates a mock instance of a class, for the purpose of capturing and wrapping faux calls to the method or methods
-     * being wrapped.  Return values of these faux method calls should be passed as the argument to one of the functional-object
-     * factory methods, preferably inline so it is apparent in one place what method is being wrapped.  This <code>callsTo()</code>
+     * Creates a mock instance of a class, for the purpose of capturing and wrapping faux calls to methods in that class.
+     * Return values of these faux method calls should be passed as the argument to one of the functional-object factory
+     * methods, preferably inline so it is apparent in one place what method is being wrapped.  This <code>callsTo()</code>
      * method is provided as a convenience when using the static delegate methods in this class.  It is functionally
-     * interchangeable with calls through to the delegates' version of <code>callsTo()</code>, such as <code>guava().callsTo()</code>
+     * interchangeable with calls through to the delegates' version of <code>callsTo()</code>, such as <code>guava().callsTo()</code>.
      * @param clazz Class to be mocked
      * @param <T> the specific type of the class to be mocked
      * @return mock instance of clazz, solely for invoking and capturing faux method calls

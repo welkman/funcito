@@ -20,10 +20,12 @@ import org.funcito.functionaljava.FJDelegate;
  */
 
 /**
- * This class is the entry point of the Funcito API for Functional Java.
+ * This class is the static entry point of the Funcito API for Functional Java.
  */
 public class FuncitoFJ {
     private static final FJDelegate fjDelegate = new FJDelegate();
+
+    private FuncitoFJ() {}
 
     /**
      * Generates a stub object for use with other FuncitoFJ static calls.  This callsTo should not

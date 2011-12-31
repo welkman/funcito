@@ -21,11 +21,13 @@ import org.funcito.jedi.JediDelegate;
  */
 
 /**
- * This class is the entry point of the Funcito API for Jedi.
+ * This class is the static entry point of the Funcito API for Jedi.
  */
 public class FuncitoJedi {
 
     private static final JediDelegate jediDelegate = new JediDelegate();
+
+    private FuncitoJedi() {}
 
     /**
      * Generates a stub object for use with other FuncitoJedi static calls.  This stub should not
