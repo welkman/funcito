@@ -30,8 +30,7 @@ public class FuncitoFJ {
      * be used for any other purposes.  An example of proper usage is as follows:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);
-     *     <br>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
      *     F<MyClass,RetType> func = fFor( callsTo.noArgMethodWithRetType() );
      * </code>
      * <p>

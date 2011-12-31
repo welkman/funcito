@@ -32,8 +32,7 @@ public class FuncitoJedi {
      * be used for any other purposes.  An example of proper usage is as follows:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);
-     *     <br>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
      *     Functor<MyClass,RetType> func = functorFor( callsTo.noArgMethodWithRetType() );
      * </code>
      * <p>

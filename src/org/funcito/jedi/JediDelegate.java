@@ -7,7 +7,7 @@ import org.funcito.internal.Invokable;
 
 import static org.funcito.internal.WrapperType.*;
 
-/**
+/*
  * Copyright 2011 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");

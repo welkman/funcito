@@ -32,8 +32,7 @@ public class FuncitoGuava {
      * be used for any other purposes.  An example of proper usage is as follows:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);
-     *     <br>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
      *     Function<MyClass,RetType> func = functionFor( callsTo.noArgMethodWithRetType() );
      * </code>
      * <p>
