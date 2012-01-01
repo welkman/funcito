@@ -54,7 +54,7 @@ public class Funcito {
      * @param <T> the specific type of the class to be mocked
      * @return mock instance of clazz, solely for invoking and capturing faux method calls
      */
-    public <T> T callsTo(Class<T> clazz) {
+    public static <T> T callsTo(Class<T> clazz) {
         FuncitoDelegate defaultDelegate = new FuncitoDelegate();
         return defaultDelegate.callsTo(clazz);
     }
