@@ -40,7 +40,7 @@ public class FuncitoDelegate {
         getManager().pushInvokable(invokable);
     }
     
-    protected Invokable getInvokable(WrapperType wrapperType) {
+    public Invokable getInvokable(WrapperType wrapperType) {
         return getManager().extractInvokable(wrapperType.toString());
     }
 }
