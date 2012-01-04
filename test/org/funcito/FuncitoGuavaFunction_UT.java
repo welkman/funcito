@@ -1,40 +1,44 @@
 package org.funcito;
 
 import com.google.common.base.Function;
+import org.funcito.internal.FuncitoDelegate;
+import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.funcito.FuncitoGuava.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 public class FuncitoGuavaFunction_UT {
 
-    private static class StringThing {
+    private StringThing CALLS_TO_STRING_THING = callsTo(StringThing.class);
+
+    private class StringThing {
         protected String myString;
 
-        public StringThing(String myString) {
-            this.myString = myString;
-        }
+        public StringThing(String myString) { this.myString = myString; }
 
-        public int size() {
-            return myString.length();
-        }
+        public int size() { return myString.length(); }
+
+        public String toString() { return myString; }
     }
 
     @Test
     public void testFunctionFor_AssignToFunctionWithMatchingTypes() {
-        Function<StringThing, Integer> superTypeRet = functionFor(callsTo(StringThing.class).size());
+        Function<StringThing, Integer> superTypeRet = functionFor(CALLS_TO_STRING_THING.size());
         assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
     }
 
     @Test
     public void testFunctionFor_AssignToFunctionWithSourceSuperType() {
-        Function<Object, Integer> superTypeRet = functionFor(callsTo(StringThing.class).size());
+        Function<Object, Integer> superTypeRet = functionFor(CALLS_TO_STRING_THING.size());
         assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
     }
 
     @Test
     public void testFunctionFor_AssignToFuncWithTargetSuperType() {
-        Function<StringThing, ? extends Number> superType = functionFor(callsTo(StringThing.class).size());
+        Function<StringThing, ? extends Number> superType = functionFor(CALLS_TO_STRING_THING.size());
         StringThing thing = new StringThing("123456");
         Number n = superType.apply(thing);
         assertEquals(6, n);
@@ -87,6 +91,30 @@ public class FuncitoGuavaFunction_UT {
         Generic<Integer> integerGeneric = new Generic<Integer>();
 
         assertEquals(123, stringFunc.apply(integerGeneric).intValue());
+    }
+
+    @Test
+    public void testFunctionFor_MethodChainingUnsupported() {
+        try {
+            // NOTE: this test is a test that proves and documents a limitation of Funcito
+            // It may be possible to eliminate this restriction where each element in the chain is mockable.
+            functionFor(CALLS_TO_STRING_THING.toString().length());
+            fail("Should have thrown NPE");
+        } catch (NullPointerException e) {
+            // cleanup aftermath of test
+            delegate().getInvokable(WrapperType.GUAVA_FUNCTION);
+        }
+
+    }
+
+    @Test
+    public void testFunctionFor_ExpressionsWithOperatorsAreUnsupported() {
+        Function<StringThing,String> pluralFunc = functionFor(CALLS_TO_STRING_THING.toString() + "S");
+        StringThing dog = new StringThing("dog");
+
+        // NOTE: this test is a test that proves and documents a limitation of Funcito
+        assertFalse("dogs".equals( pluralFunc.apply(dog)));
+        assertEquals("dog", pluralFunc.apply(dog));
     }
 }
 
