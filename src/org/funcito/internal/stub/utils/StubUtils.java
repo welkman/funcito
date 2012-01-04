@@ -22,9 +22,9 @@ import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.javassist.JavassistStubFactory;
 
 public class StubUtils {    
-    static final String FUNCITO_CODEGEN_LIB = "funcito.codegen.lib";
-    static final String CGLIB = "CGLIB";
-    static final String JAVASSIST = "JAVASSIST";
+    public static final String FUNCITO_CODEGEN_LIB = "funcito.codegen.lib";
+    public static final String CGLIB = "CGLIB";
+    public static final String JAVASSIST = "JAVASSIST";
     static final String CGLIB_CLASS = "net.sf.cglib.proxy.Enhancer";
     static final String JAVASSIST_CLASS = "javassist.util.proxy.ProxyFactory";
     

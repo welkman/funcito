@@ -1,12 +1,16 @@
 package org.funcito.internal.stub.cglib;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.cglib.CglibStubFactory;
+import org.funcito.internal.FuncitoDelegate;
+import org.funcito.internal.Invokable;
+import org.funcito.internal.WrapperType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.assertSame;
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.*;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -28,10 +32,12 @@ public class CglibStubFactory_UT {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private CglibStubFactory factory = new CglibStubFactory();
+
     @Test
     public void testStub_CachesInstancesOfSameClass() {
-        CglibStubFactory factory = new CglibStubFactory();
-
+        class MyClass {
+        }
         MyClass inst1 = factory.stub(MyClass.class);
         MyClass inst2 = factory.stub(MyClass.class);
 
@@ -40,13 +46,44 @@ public class CglibStubFactory_UT {
 
     @Test
     public void testStub_UnstubbableClassesThrowFuncitoException() {
-        CglibStubFactory factory = new CglibStubFactory();
-
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Cannot mock");
+
         factory.stub(String.class); // String is final, should not be stubbable
     }
 
-    class MyClass {
+    static class A {
+        public String foo() { return "A"; }
     }
+    public static class C extends A {
+        // C generates a bridge "foo" method because class D is more visible class
+        // see http://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
+    }
+    public static class D extends A {
+        public String foo() { return "D"; }
+    }
+
+    @Test
+    public void testStub_BridgeMethods() throws Exception {
+        FuncitoDelegate delegate = new FuncitoDelegate();
+
+        Method bridgeMethod = C.class.getMethod("foo");
+        assertTrue( bridgeMethod.isBridge());
+
+        factory.stub(C.class).foo();
+        // The main assert is just that we get past the above line without an IllegalArgumentException from Cglib
+
+        Invokable<C,String> bridgeInvokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("A", bridgeInvokable.invoke(new C()));
+
+        // now double check method that overrides bridge method
+        Method nonBridgeMethod = D.class.getMethod("foo");
+        assertFalse(nonBridgeMethod.isBridge());
+
+        factory.stub(D.class).foo();
+
+        Invokable<D,String> nonBridgeInvokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("D", nonBridgeInvokable.invoke(new D()));
+    }
+
 }

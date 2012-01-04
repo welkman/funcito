@@ -21,7 +21,6 @@
 
 package org.funcito.internal.stub.javassist;
 
-import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
@@ -29,7 +28,6 @@ import org.funcito.FuncitoException;
 import org.funcito.internal.stub.AbstractClassImposterizer;
 import org.objenesis.ObjenesisStd;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class JavassistImposterizer extends AbstractClassImposterizer {
@@ -49,12 +47,6 @@ public class JavassistImposterizer extends AbstractClassImposterizer {
 //            return "codegen." + super.getClassName(prefix, source, key, names);
 //        }
 //    };
-
-    private static final MethodFilter IGNORE_BRIDGE_METHODS = new MethodFilter() {
-        public boolean isHandled(Method method) {
-            return !method.isBridge();
-        }
-    };
 
     public <T> T imposterise(final MethodHandler handler, Class<T> mockedType) {
         try {
@@ -81,7 +73,9 @@ public class JavassistImposterizer extends AbstractClassImposterizer {
 //        }
 
         try {
-            return factory.createClass(IGNORE_BRIDGE_METHODS);
+            return factory.createClass();
+        // we want to handle bridge methods so don't filter them
+//            return factory.createClass(IGNORE_BRIDGE_METHODS);
         } catch (Throwable e) {
             if (Modifier.isPrivate(mockedType.getModifiers())) {
                 throw new FuncitoException("\n"

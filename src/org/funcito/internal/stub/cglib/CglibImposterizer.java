@@ -29,7 +29,6 @@ import org.funcito.FuncitoException;
 import org.funcito.internal.stub.AbstractClassImposterizer;
 import org.objenesis.ObjenesisStd;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
@@ -49,12 +48,6 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         @Override
         public String getClassName(String prefix, String source, Object key, Predicate names) {
             return "codegen." + super.getClassName(prefix, source, key, names);
-        }
-    };
-
-    private static final CallbackFilter IGNORE_BRIDGE_METHODS = new CallbackFilter() {
-        public int accept(Method method) {
-            return method.isBridge() ? 1 : 0;
         }
     };
 
@@ -91,7 +84,8 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         }
 //        enhancer.setCallbackTypes(new Class[]{MethodInterceptor.class, NoOp.class});
         enhancer.setCallbackTypes(new Class[]{MethodInterceptor.class});
-        enhancer.setCallbackFilter(IGNORE_BRIDGE_METHODS);
+        // we want to handle bridge methods so don't filter them
+//        enhancer.setCallbackFilter(IGNORE_BRIDGE_METHODS);
         if (mockedType.getSigners() != null) {
             enhancer.setNamingPolicy(NAMING_POLICY_THAT_ALLOWS_IMPOSTERISATION_OF_CLASSES_IN_SIGNED_PACKAGES);
         } else {

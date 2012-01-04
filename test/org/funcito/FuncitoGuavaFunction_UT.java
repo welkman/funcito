@@ -1,14 +1,11 @@
 package org.funcito;
 
 import com.google.common.base.Function;
-import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.funcito.FuncitoGuava.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class FuncitoGuavaFunction_UT {
 
