@@ -41,9 +41,10 @@ public class CglibInvokable_UT {
         } // same signature but not a subclass
         Thing1 thing1Mock = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and MethodProxy/Method extracted
+        Method m1 = Thing1.class.getMethod("getVal");
 
         // Type erasure means we could queue up calls to other than Thing1
-        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0], Thing1.class);
+        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0], Thing1.class, m1);
 
         // preassert that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
@@ -58,11 +59,12 @@ public class CglibInvokable_UT {
     public void testInvoke_rethrowsThrowableInternalToMethodAsFuncitoException() throws Throwable {
         class MyThrowable extends Throwable{};
         class ThrowsThrowable {
-            Integer doStuff() throws Throwable { throw new MyThrowable(); }
+            public Integer doStuff() throws Throwable { throw new MyThrowable(); }
         }
         ThrowsThrowable ttObj = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), ThrowsThrowable.class);
         ttObj.doStuff(); // calling this on the imposter registers the Method/MethodProxy without throwing the exception
-        CglibInvokable invokable = new CglibInvokable<ThrowsThrowable, String>(proxy[0], ThrowsThrowable.class);
+        Method m = ThrowsThrowable.class.getMethod("doStuff");
+        CglibInvokable invokable = new CglibInvokable<ThrowsThrowable, String>(proxy[0], ThrowsThrowable.class, m);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
@@ -73,7 +75,7 @@ public class CglibInvokable_UT {
     @Test
     public void testInvoke_internalClassCastExceptionDifferentFromErasureError() throws NoSuchMethodException {
         class ThrowsCastException{
-            Integer doStuff() {
+            public Integer doStuff() {
                 Boolean b = true;
                 Object o = b;
                 return (Integer)o; // should throw ClassCastException
@@ -81,7 +83,8 @@ public class CglibInvokable_UT {
         }
         ThrowsCastException tceObj = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), ThrowsCastException.class);
         tceObj.doStuff(); // calling this on the imposter registers the Method/MethodProxy without throwing the exception
-        CglibInvokable invokable = new CglibInvokable<ThrowsCastException, String>(proxy[0], ThrowsCastException.class);
+        Method m = ThrowsCastException.class.getMethod("doStuff");
+        CglibInvokable invokable = new CglibInvokable<ThrowsCastException, String>(proxy[0], ThrowsCastException.class, m);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");

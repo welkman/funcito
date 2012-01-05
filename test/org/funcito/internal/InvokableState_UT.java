@@ -6,8 +6,10 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.cglib.CglibInvokable;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -32,10 +34,14 @@ public class InvokableState_UT {
     @Mock
     private MethodProxy mProxy;
 
+    @Before
+    public void setUp() throws NoSuchMethodException {
+        MockitoAnnotations.initMocks(this);
+        invokable = new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName"));
+    }
+
     @Test
     public void testPut_Basic() {
-        invokable = new CglibInvokable(mProxy, Object.class);
-        
         // test
         state.put(invokable);
         assertTrue(state.isFull());
@@ -43,7 +49,6 @@ public class InvokableState_UT {
 
     @Test
     public void testGet_Basic() {
-        invokable = new CglibInvokable(mProxy, Object.class);
         state.put(invokable);
         
         // test
@@ -61,7 +66,6 @@ public class InvokableState_UT {
 
     @Test(expected = FuncitoException.class)
     public void testGet_Twice() {
-        invokable = new CglibInvokable(mProxy, Object.class);
         state.put(invokable);
         assertTrue(state.isFull());
         state.get();        
@@ -71,7 +75,6 @@ public class InvokableState_UT {
     
     @Test(expected = FuncitoException.class)
     public void testPut_Twice() {
-        invokable = new CglibInvokable(mProxy, Object.class);
         state.put(invokable);
         // put
         state.put(invokable);

@@ -11,6 +11,7 @@ public class JavassistMethodHandler_UT {
 
     private JavassistMethodHandler handler = new JavassistMethodHandler();
     private FuncitoDelegate delegate = new FuncitoDelegate();
+    private Integer anInt = 1;
 
     @After
     public void tearDown() {
@@ -23,7 +24,7 @@ public class JavassistMethodHandler_UT {
         Method intMethod = Integer.class.getDeclaredMethod("intValue");
 
         // no NPEs means success
-        int fakeInt = (Integer)handler.invoke(null, intMethod, null, null);
+        int fakeInt = (Integer)handler.invoke(anInt, intMethod, null, null);
     }
 
     @Test
@@ -31,7 +32,7 @@ public class JavassistMethodHandler_UT {
         Method floatMethod = Integer.class.getDeclaredMethod("floatValue");
 
         // no NPEs means success
-        float fakeFloat = (Float)handler.invoke(null, floatMethod, null, null);
+        float fakeFloat = (Float)handler.invoke(anInt, floatMethod, null, null);
     }
 
     @Test
@@ -39,7 +40,7 @@ public class JavassistMethodHandler_UT {
         Method longMethod = Integer.class.getDeclaredMethod("longValue");
 
         // no NPEs means success
-        long fakeLong = (Long)handler.invoke(null, longMethod, null, null);
+        long fakeLong = (Long)handler.invoke(anInt, longMethod, null, null);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class JavassistMethodHandler_UT {
         Method doubleMethod = Integer.class.getDeclaredMethod("doubleValue");
 
         // no NPEs means success
-        double fakeDouble = (Double)handler.invoke(null, doubleMethod, null, null);
+        double fakeDouble = (Double)handler.invoke(anInt, doubleMethod, null, null);
     }
 
     @Test
@@ -55,7 +56,7 @@ public class JavassistMethodHandler_UT {
         Method shortMethod = Integer.class.getDeclaredMethod("shortValue");
 
         // no NPEs means success
-        short fakeShort = (Short)handler.invoke(null, shortMethod, null, null);
+        short fakeShort = (Short)handler.invoke(anInt, shortMethod, null, null);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class JavassistMethodHandler_UT {
         Method byteMethod = Integer.class.getDeclaredMethod("byteValue");
 
         // no NPEs means success
-        byte fakeByte = (Byte)handler.invoke(null, byteMethod, null, null);
+        byte fakeByte = (Byte)handler.invoke(anInt, byteMethod, null, null);
     }
 
     @Test
@@ -71,6 +72,6 @@ public class JavassistMethodHandler_UT {
         Method booleanMethod = Class.class.getDeclaredMethod("isInterface");
 
         // no NPEs means success
-        boolean fakeBoolean = (Boolean)handler.invoke(null, booleanMethod, null, null);
+        boolean fakeBoolean = (Boolean)handler.invoke(Class.class, booleanMethod, null, null);
     }
 }

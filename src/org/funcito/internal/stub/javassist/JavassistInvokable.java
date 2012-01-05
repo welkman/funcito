@@ -23,12 +23,12 @@ import java.lang.reflect.Method;
 public class JavassistInvokable<T, V> implements Invokable<T, V> {
 
     private Method method;
-    private Class declaringClass;
+    private Class targetClass;
 
-    public JavassistInvokable(Method method) {
+    public JavassistInvokable(Method method, Class targetClass) {
         method.setAccessible(true);
         this.method = method;
-        this.declaringClass = method.getDeclaringClass();
+        this.targetClass = targetClass;
     }
 
     @SuppressWarnings({"unchecked"})
@@ -36,11 +36,11 @@ public class JavassistInvokable<T, V> implements Invokable<T, V> {
         try {
             return (V) method.invoke(from, args);
         } catch (Throwable e) {
-            if (e instanceof IllegalArgumentException && !declaringClass.isInstance(from)) {
+            if (e instanceof IllegalArgumentException && !targetClass.isInstance(from)) {
                 throw new FuncitoException("You attempted to invoke method " +
                         from.getClass().getName() + "." + getMethodName() + "() " +
                         "but defined Funcito invokable was for method " +
-                        declaringClass.getName() +  "." + getMethodName() + "() ", e);
+                        targetClass.getName() +  "." + getMethodName() + "() ", e);
             }
             throw new FuncitoException("Caught throwable " + e.getClass().getName() +
                     " invoking Funcito Invokable for Method " +

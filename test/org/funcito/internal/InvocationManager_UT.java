@@ -1,6 +1,5 @@
 package org.funcito.internal;
 
-import net.sf.cglib.asm.Type;
 import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -11,8 +10,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import java.lang.reflect.Method;
+
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -45,16 +46,17 @@ public class InvocationManager_UT {
     }
 
     @Test(expected = FuncitoException.class)
-    public void testPushInvocation_nonZeroArgsNotAllowed() {
-        when(sig.getArgumentTypes()).thenReturn(new Type[1]);
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
+    public void testPushInvocation_nonZeroArgsNotAllowed() throws NoSuchMethodException {
+        Method method = Class.class.getMethod("cast", Object.class );
+        assertEquals(1, method.getParameterTypes().length);
+
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, method));
     }
 
     @Test(expected = FuncitoException.class)
-    public void testPushInvocation_multiCglibCallsNotAllowed() {
-        when(sig.getArgumentTypes()).thenReturn(new Type[0]);
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class));
+    public void testPushInvocation_multiCglibCallsNotAllowed() throws NoSuchMethodException {
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName")));
+        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName")));
     }
     
     @Test(expected = FuncitoException.class)
@@ -64,8 +66,7 @@ public class InvocationManager_UT {
 
     @Test
     public void testExtractInvokable_cglibInvokableWrapsInvocationMethodProxy() throws Throwable {
-        when(sig.getArgumentTypes()).thenReturn(new Type[0]);
-        CglibInvokable<?, ?> invocation = new CglibInvokable<Object, Object>(mProxy, Object.class);
+        CglibInvokable<?, ?> invocation = new CglibInvokable<Object, Object>(mProxy, Object.class, Class.class.getMethod("getName"));
         mgr.pushInvokable(invocation);
 
         CglibInvokable<?, ?> invokable = (CglibInvokable<?, ?>) mgr.extractInvokable("");

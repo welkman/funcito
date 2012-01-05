@@ -46,7 +46,7 @@ public class JavassistInvokable_UT {
         thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1
-        JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(thing1Method);
+        JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(thing1Method, Thing1.class);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
@@ -69,7 +69,7 @@ public class JavassistInvokable_UT {
         ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler(), ThrowsThrowable.class);
         ttObj.doStuff(); // mock call intercepted and MethodProxy extracted
 
-        JavassistInvokable invokable = new JavassistInvokable<ThrowsThrowable, String>(method);
+        JavassistInvokable invokable = new JavassistInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");

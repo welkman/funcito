@@ -19,14 +19,19 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
+import java.lang.reflect.Method;
+
 public class CglibInvokable<T,V> implements Invokable<T,V> {
 
     private MethodProxy methodProxy;
-    private Class declaringClass;
+    private Class targetClass;
+    private Method method;
 
-    public CglibInvokable(MethodProxy methodProxy, Class declaringClass) {
+    public CglibInvokable(MethodProxy methodProxy, Class targetClass, Method method) {
         this.methodProxy = methodProxy; // we keep MethodProxy because it executes faster than Method
-        this.declaringClass = declaringClass;
+        this.targetClass = targetClass;
+        this.method = method; // but we need method to get argument count and method name
+        // if we tried to use methodProxy.getSignature (an ASM class) we can get ASM library collisions
     }
 
     @SuppressWarnings({"unchecked"})
@@ -34,11 +39,11 @@ public class CglibInvokable<T,V> implements Invokable<T,V> {
         try {
             return (V)methodProxy.invoke(from, args);
         } catch (Throwable e) {
-            if (e instanceof ClassCastException && !declaringClass.isInstance(from)) {
+            if (e instanceof ClassCastException && !targetClass.isInstance(from)) {
                 throw new FuncitoException("You attempted to invoke method " +
                         from.getClass().getName() + "." + getMethodName() + "() " +
                         "but defined Funcito invokable was for method " +
-                        declaringClass.getName() +  "." + getMethodName() + "() ", e);
+                        targetClass.getName() +  "." + getMethodName() + "() ", e);
             }
             throw new FuncitoException("Caught throwable " + e.getClass().getName() +
                     " invoking Funcito Invokable for Method " +
@@ -46,6 +51,11 @@ public class CglibInvokable<T,V> implements Invokable<T,V> {
         }
     }
 
-    public int getArgumentsLength() { return methodProxy.getSignature().getArgumentTypes().length; }
-    public String getMethodName() { return methodProxy.getSignature().getName(); }
+    public int getArgumentsLength() {
+        return method.getParameterTypes().length;
+    }
+
+    public String getMethodName() {
+        return method.getName();
+    }
 }
