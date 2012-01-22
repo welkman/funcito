@@ -16,16 +16,16 @@
 
 package org.funcito.internal.stub;
 
+import com.google.common.collect.Maps;
 import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.utils.StubUtils;
+
+import java.util.Map;
 
 public abstract class StubFactory {
     private static StubFactory instance = null;
     private static StubUtils stubUtils = new StubUtils();
-    
-    public static void setInstance(StubFactory newInstance) {
-        StubFactory.instance = newInstance;
-    }
+    private Map<Class, Object> stubsCache = Maps.newHashMap();
 
     public static StubFactory instance() {
         if (instance == null) {
@@ -46,10 +46,14 @@ public abstract class StubFactory {
         return instance;
     }
 
-    public abstract <T> T stub(Class<T> clazz);
-    
-    // for testing
-    static void setStringUtils(StubUtils stubUtils) {
-        StubFactory.stubUtils = stubUtils;
+    public <T> T stub(Class<T> clazz) {
+        T stub = clazz.cast(stubsCache.get(clazz));
+        if (stub == null) {
+            stub = stubImpl(clazz);
+            stubsCache.put(clazz, stub);
+        }
+        return stub;
     }
+
+    protected abstract <T> T stubImpl(Class<T> clazz);
 }

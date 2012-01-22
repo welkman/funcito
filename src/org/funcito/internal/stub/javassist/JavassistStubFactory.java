@@ -16,29 +16,19 @@
 
 package org.funcito.internal.stub.javassist;
 
-import com.google.common.collect.Maps;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
 
-import java.util.Map;
-
 public class JavassistStubFactory extends StubFactory {
 
-    private Map<Class, Object> stubsCache = Maps.newHashMap();
     private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
-    public <T> T stub(Class<T> clazz) {
-        T stub = clazz.cast(stubsCache.get(clazz));
-        if (stub == null) {
-
-            JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
-            if (!imposterizer.canImposterise(clazz)) {
-                throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
-            }
-            stub = imposterizer.imposterise(handler, clazz);
-            stubsCache.put(clazz, stub);
+    protected <T> T stubImpl(Class<T> clazz) {
+        JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
+        if (!imposterizer.canImposterise(clazz)) {
+            throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return stub;
+        return imposterizer.imposterise(handler, clazz);
     }
 
 }

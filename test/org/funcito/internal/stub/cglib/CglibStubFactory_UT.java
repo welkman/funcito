@@ -47,7 +47,7 @@ public class CglibStubFactory_UT {
     @Test
     public void testStub_UnstubbableClassesThrowFuncitoException() {
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Cannot mock");
+        thrown.expectMessage("Cannot proxy");
 
         factory.stub(String.class); // String is final, should not be stubbable
     }

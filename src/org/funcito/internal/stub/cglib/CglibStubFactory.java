@@ -16,29 +16,19 @@
 
 package org.funcito.internal.stub.cglib;
 
-import java.util.Map;
-
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
-import com.google.common.collect.Maps;
 
 public class CglibStubFactory extends StubFactory {
 
-    private Map<Class, Object> stubsCache = Maps.newHashMap();
-
     private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
 
-    public <T> T stub(Class<T> clazz) {
-        T stub = clazz.cast(stubsCache.get(clazz));
-        if (stub == null) {
-            CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
-            if (!imposterizer.canImposterise(clazz)) {
-                throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
-            }
-            stub = imposterizer.imposterise(interceptor, clazz);
-            stubsCache.put(clazz, stub);
+    protected <T> T stubImpl(Class<T> clazz) {
+        CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
+        if (!imposterizer.canImposterise(clazz)) {
+            throw new FuncitoException("Cannot proxy this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return stub;
+        return imposterizer.imposterise(interceptor, clazz);
     }
 
 }
