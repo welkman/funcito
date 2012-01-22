@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.*;
 import org.funcito.internal.stub.cglib.CglibStubFactory;
+import org.funcito.internal.stub.javaproxy.JavaProxyStubFactory;
 import org.funcito.internal.stub.javassist.JavassistStubFactory;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
@@ -51,7 +52,7 @@ public class StubUtils_UT {
         // test
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
         
-        assertNull(result);
+        assertTrue(result instanceof CglibStubFactory);
     }
 
     @Test
@@ -81,11 +82,10 @@ public class StubUtils_UT {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
 
-        thrown.expect(FuncitoException.class);
-        thrown.expectMessage(StubUtils.NONE_ON_CLASSPATH_EXCEPTION);
-        
         // test
-        stubUtils.getExactlyOneFactoryFromClasspath();
+        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+
+        assertTrue(result instanceof JavaProxyStubFactory);
     }
 
     @Test
@@ -118,6 +118,16 @@ public class StubUtils_UT {
         assertTrue(result instanceof JavassistStubFactory);
     }
     
+    @Test
+    public void testGetOverrideBySystemProperty_JavaProxy() {
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVAPROXY);
+
+        // test
+        StubFactory result = stubUtils.getOverrideBySystemProperty();
+
+        assertTrue(result instanceof JavaProxyStubFactory);
+    }
+
     @Test
     public void testGetOverrideBySystemProperty_IllegalValue() {
         System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, "bogus");
