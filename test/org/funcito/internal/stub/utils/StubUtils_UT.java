@@ -100,6 +100,7 @@ public class StubUtils_UT {
     
     @Test
     public void testGetOverrideBySystemProperty_Cglib() {
+        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
         System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.CGLIB);
 
         // test
@@ -109,7 +110,20 @@ public class StubUtils_UT {
     }
 
     @Test
+    public void testGetOverrideBySystemProperty_CglibSpecifiedButNotPresent() {
+        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.CGLIB);
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("matching library is not found on the classpath");
+
+        // test
+        StubFactory result = stubUtils.getOverrideBySystemProperty();
+    }
+
+    @Test
     public void testGetOverrideBySystemProperty_Javassist() {
+        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
         System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVASSIST);
 
         // test
@@ -117,7 +131,19 @@ public class StubUtils_UT {
         
         assertTrue(result instanceof JavassistStubFactory);
     }
-    
+
+    @Test
+    public void testGetOverrideBySystemProperty_JavassistSpecifiedButNotPresent() {
+        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
+        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVASSIST);
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("matching library is not found on the classpath");
+
+        // test
+        StubFactory result = stubUtils.getOverrideBySystemProperty();
+    }
+
     @Test
     public void testGetOverrideBySystemProperty_JavaProxy() {
         System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVAPROXY);

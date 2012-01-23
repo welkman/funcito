@@ -40,7 +40,7 @@ public class StubUtils {
     public StubFactory getExactlyOneFactoryFromClasspath() {
         boolean foundCglib = classFinder.findOnClasspath(CGLIB_CLASS);
         boolean foundJavassist = classFinder.findOnClasspath(JAVASSIST_CLASS);
-        
+
         if (foundCglib) {
             if (foundJavassist) {
                 // if both code-gen libs available on classpath, Funcito defaults to Cglib
@@ -63,9 +63,13 @@ public class StubUtils {
         String prop = propertyFinder.findProperty(FUNCITO_CODEGEN_LIB);
         
         if (prop != null) {
+            boolean foundCglib = classFinder.findOnClasspath(CGLIB_CLASS);
+            boolean foundJavassist = classFinder.findOnClasspath(JAVASSIST_CLASS);
             if (prop.toUpperCase().equals(CGLIB)) {
+                validateSystemProperty(foundCglib, CGLIB);
                 result = new CglibStubFactory();
             } else if (prop.toUpperCase().equals(JAVASSIST)) {
+                validateSystemProperty(foundJavassist, JAVASSIST);
                 result = new JavassistStubFactory();
             } else if (prop.toUpperCase().equals(JAVAPROXY)) {
                 result = new JavaProxyStubFactory();
@@ -75,5 +79,11 @@ public class StubUtils {
         }
         
         return result;
+    }
+
+    private void validateSystemProperty(boolean libraryFound, String libraryChoice) {
+        if (!libraryFound) {
+            throw new FuncitoException("System property " + FUNCITO_CODEGEN_LIB + " has been set to " + libraryChoice + " but a matching library is not found on the classpath.");
+        }
     }
 }
