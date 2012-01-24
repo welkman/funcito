@@ -51,7 +51,7 @@ public class StubUtils {
         } else if (foundJavassist) {
             return new JavassistStubFactory();
         }
-        // if both available on classpath, Funcito defaults to Cglib
+        // if neither available on classpath, Funcito defaults to Java dynamic Proxy, which only proxies interfaces.
         System.err.println("Warning: found neither CgLib nor Javassist on classpath. Using Java dynamic Proxies: "
                 + "if you need to wrap methods on classes instead of only interfaces, please include either Cglib or Javasssist in classpath");
         return new JavaProxyStubFactory();
