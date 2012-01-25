@@ -129,7 +129,10 @@ task binaryJar(dependsOn: test) << {
 
     // use jarjar to build jar and obfuscate org.objenesis
     ant.jarjar(jarfile: targetJar) {
-        ant.fileset(dir: classesDir)
+        ant.fileset(dir: classesDir) {
+            exclude(name: 'org/funcito/example/**/*')
+            exclude(name: 'org/funcito/example')
+        }
 
         ant.fileset(dir: 'resources') {
             include(name: PROP_FILE)
@@ -180,6 +183,8 @@ test.doFirst { task ->
         fileset(dir: classesDir)
     }
     
+    ant.delete(dir: "${classesDir}/org/funcito/example")
+    
     // define Cobertura task
     ant.taskdef(resource: 'tasks.properties') {
         classpath {
@@ -191,7 +196,7 @@ test.doFirst { task ->
     ant.'cobertura-instrument' {
         // only instrument the relevant classes
         fileset(dir: classesDir,
-                includes: "org/funcito/**/*.class",
+                includes: "org/funcito/**/*.class", 
                 excludes: "org/funcito/thirdparty/**/*.class")
     }        
 }
