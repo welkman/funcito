@@ -29,7 +29,10 @@ import org.funcito.jedi.JediDelegate;
  * <p>
  * <pre>
  * <code>
- *     import org.funcito.Funcito.*;
+ *     import static org.funcito.Funcito.*;
+ *     import com.google.common.base.Function;
+ *     import jedi.functional.Functor;
+ *     import fj.F;
  *
  *     Function<MyClass,RetType> function = guava().functionFor( callsTo(MyClass.class).someMethod());
  *     Functor<MyClass,RetType>  functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());

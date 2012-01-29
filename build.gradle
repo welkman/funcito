@@ -92,6 +92,16 @@ task buildInfo() {
    }
 }
 
+javadoc {
+    options.use = true
+    options.links = links = [
+        'http://docs.oracle.com/javase/1.5.0/docs/api/',
+        'http://docs.guava-libraries.googlecode.com/git-history/v11.0.1/javadoc/',
+        'http://functionaljava.googlecode.com/svn/artifacts/3.0/javadoc/',
+        'http://jedi.codehaus.org/javadoc/'
+    ]
+}
+
 // build src jar
 task srcJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     archiveName = vars.srcJarFilename
