@@ -22,17 +22,21 @@ import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.javaproxy.JavaProxyStubFactory;
 import org.funcito.internal.stub.javassist.JavassistStubFactory;
 
-public class StubUtils {    
-    public static final String FUNCITO_CODEGEN_LIB = "funcito.codegen.lib";
+public class StubUtils {
+    /** System property that forces selection of a specific proxy provider */
+    public static final String FUNCITO_PROXY_PROVIDER_PROP = "funcito.proxy.provider";
 
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force CGLib as proxy provider */
     public static final String CGLIB = "CGLIB";
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force Javassist as proxy provider */
     public static final String JAVASSIST = "JAVASSIST";
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force J2SE dynamic proxies as proxy provider */
     public static final String JAVAPROXY = "JAVAPROXY";
 
     static final String CGLIB_CLASS = "net.sf.cglib.proxy.Enhancer";
     static final String JAVASSIST_CLASS = "javassist.util.proxy.ProxyFactory";
     
-    static final String OVERRIDE_EXCEPTION = "unknown value for system property: " + FUNCITO_CODEGEN_LIB;
+    static final String OVERRIDE_EXCEPTION = "unknown value for system property: " + FUNCITO_PROXY_PROVIDER_PROP;
 
     private ClassFinder classFinder = new ClassFinder();
     private PropertyFinder propertyFinder = new PropertyFinder();
@@ -45,7 +49,7 @@ public class StubUtils {
             if (foundJavassist) {
                 // if both code-gen libs available on classpath, Funcito defaults to Cglib
                 System.err.println("Warning: found both CgLib and Javassist on classpath. Using CgLib: "
-                        + "set System property 'funcito.codegen.lib' to change.");
+                        + "set System property '" + StubUtils.FUNCITO_PROXY_PROVIDER_PROP + "' to change.");
             }
             return new CglibStubFactory();
         } else if (foundJavassist) {
@@ -60,7 +64,7 @@ public class StubUtils {
     public StubFactory getOverrideBySystemProperty() {
         StubFactory result = null;
     
-        String prop = propertyFinder.findProperty(FUNCITO_CODEGEN_LIB);
+        String prop = propertyFinder.findProperty(FUNCITO_PROXY_PROVIDER_PROP);
         
         if (prop != null) {
             boolean foundCglib = classFinder.findOnClasspath(CGLIB_CLASS);
@@ -83,7 +87,7 @@ public class StubUtils {
 
     private void validateSystemProperty(boolean libraryFound, String libraryChoice) {
         if (!libraryFound) {
-            throw new FuncitoException("System property " + FUNCITO_CODEGEN_LIB + " has been set to " + libraryChoice + " but a matching library is not found on the classpath.");
+            throw new FuncitoException("System property " + FUNCITO_PROXY_PROVIDER_PROP + " has been set to " + libraryChoice + " but a matching library is not found on the classpath.");
         }
     }
 }

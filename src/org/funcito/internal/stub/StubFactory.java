@@ -17,7 +17,6 @@
 package org.funcito.internal.stub;
 
 import com.google.common.collect.Maps;
-import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.utils.StubUtils;
 
 import java.util.Map;
@@ -30,19 +29,10 @@ public abstract class StubFactory {
     public static StubFactory instance() {
         if (instance == null) {
             instance = stubUtils.getOverrideBySystemProperty();
-            
             if (instance == null) {
                 instance = stubUtils.getExactlyOneFactoryFromClasspath();
-                
-                if (instance == null) {
-                    // both available on classpath
-                    System.err.println("Warning: found both CgLib and Javassist on classpath. Using CgLib: "
-                            + "set System property 'funcito.codegen.lib' to change.");
-                    instance = new CglibStubFactory();
-                }
             }
         }
-        
         return instance;
     }
 

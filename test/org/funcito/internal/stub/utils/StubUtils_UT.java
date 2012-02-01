@@ -90,7 +90,7 @@ public class StubUtils_UT {
 
     @Test
     public void testGetOverrideBySystemProperty_None() {
-        assertNull(System.getProperty(StubUtils.FUNCITO_CODEGEN_LIB));
+        assertNull(System.getProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP));
 
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -101,7 +101,7 @@ public class StubUtils_UT {
     @Test
     public void testGetOverrideBySystemProperty_Cglib() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.CGLIB);
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.CGLIB);
 
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -112,7 +112,7 @@ public class StubUtils_UT {
     @Test
     public void testGetOverrideBySystemProperty_CglibSpecifiedButNotPresent() {
         when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.CGLIB);
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.CGLIB);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("matching library is not found on the classpath");
@@ -124,7 +124,7 @@ public class StubUtils_UT {
     @Test
     public void testGetOverrideBySystemProperty_Javassist() {
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVASSIST);
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVASSIST);
 
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -135,7 +135,7 @@ public class StubUtils_UT {
     @Test
     public void testGetOverrideBySystemProperty_JavassistSpecifiedButNotPresent() {
         when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVASSIST);
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVASSIST);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("matching library is not found on the classpath");
@@ -146,7 +146,7 @@ public class StubUtils_UT {
 
     @Test
     public void testGetOverrideBySystemProperty_JavaProxy() {
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, StubUtils.JAVAPROXY);
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVAPROXY);
 
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
@@ -156,7 +156,7 @@ public class StubUtils_UT {
 
     @Test
     public void testGetOverrideBySystemProperty_IllegalValue() {
-        System.setProperty(StubUtils.FUNCITO_CODEGEN_LIB, "bogus");
+        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, "bogus");
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage(StubUtils.OVERRIDE_EXCEPTION);
