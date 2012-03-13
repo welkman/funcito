@@ -1,7 +1,7 @@
 
 Prerequisites:
 
-gradle 1.0-milestone-5
+gradle 1.0-milestone-8
 available here: http://www.gradle.org/
 
 - set GRADLE_HOME

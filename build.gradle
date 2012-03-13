@@ -1,5 +1,10 @@
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'com.googlecode.funcito'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -7,6 +12,10 @@ repositories {
 
 configurations {
     jarjar
+}
+
+artifacts {
+    archives jar
 }
 
 dependencies {
@@ -59,6 +68,7 @@ println "***** Funcito v ${version}"
 // CI server versus local
 
 vars.srcJarFilename = "${project.name}-src-${version}.jar"
+vars.docJarFilename = "${project.name}-doc-${version}.jar"
 vars.binaryJarFilename = "/${project.name}-${version}.jar"
 
 vars.isJenkins = vars.envMap.keySet().contains(BUILD_NUMBER)
@@ -103,7 +113,7 @@ javadoc {
 }
 
 // build src jar
-task srcJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
+task sourcesJar(type: Jar, dependsOn: [buildInfo,test]) {
     archiveName = vars.srcJarFilename
 
     from(sourceSets.main.java.srcDirs) {
@@ -119,7 +129,16 @@ task srcJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
         include 'ReadMe.txt'
         include 'License.txt'
     }
-    
+}
+
+task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
+    archiveName = vars.docJarFilename
+
+    from('docs') {
+        include 'ReadMe.txt'
+        include 'License.txt'
+    }
+
     into('docs') {
         from('build/docs') {
             include '**/*.*'
@@ -164,7 +183,7 @@ task binaryJar(dependsOn: test) << {
 }
 
 // build binary jar
-task jar(overwrite: true, dependsOn: [srcJar,binaryJar] ) << {
+task jar(overwrite: true, dependsOn: [sourcesJar,javadocJar,binaryJar] ) << {
     // no-op
 }
 
@@ -226,6 +245,61 @@ test.doLast {
     } 
 }
 
+signing {
+    sign configurations.archives
+}
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+              authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+               name 'Funcito'
+               packaging 'jar'
+               description 'Funcito is a library for wrapping Java methods as Function-object in FP libraries'
+               url 'http://funcito.googlecode.com/'
+
+               scm {
+                   url 'scm:git:https://code.google.com/p/funcito/'
+                   connection 'scm:git:https://code.google.com/p/funcito/'
+                   developerConnection 'scm:git:https://code.google.com/p/funcito/'
+               }
+
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+
+               developers {
+                   developer {
+                       name 'Kevin Welker'
+                   }
+               }
+            }
+            //mess with the generated pom to set the 'packaging' tag
+            pom.withXml { XmlProvider xmlProvider ->
+               def xml = xmlProvider.asString()
+               def pomXml = new XmlParser().parse(new ByteArrayInputStream(xml.toString().bytes))
+
+               pomXml.version[0] + { packaging('jar') }
+
+               def newXml = new StringWriter()
+               def printer = new XmlNodePrinter(new PrintWriter(newXml))
+               printer.preserveWhitespace = true
+               printer.print(pomXml)
+               xml.setLength(0)
+               xml.append(newXml.toString())
+            }
+        }
+    }
+}
 
 
