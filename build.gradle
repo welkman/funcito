@@ -247,6 +247,8 @@ test.doLast {
 
 signing {
     sign configurations.archives
+    sign sourcesJar
+    sign javadocJar
 }
 
 uploadArchives {
