@@ -146,44 +146,46 @@ task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     }
 }
 
-task binaryJar(dependsOn: test) << {
+task binaryJar(type: Jar, dependsOn: test) {
     def targetDir = "build/libs"
     def targetJar = targetDir + vars.binaryJarFilename
     def classesDir = "build/classes/main"
     
-    ant.mkdir(dir: targetDir)
-    
-    // define jarjar
-    ant.taskdef(name: 'jarjar', classname: 'com.tonicsystems.jarjar.JarJarTask', classpath: configurations.jarjar.asPath)
+    doLast {
+        mkdir(dir: targetDir)
+        project.ant {
+            // define jarjar
+            taskdef name: "jarjar", classname: "com.tonicsystems.jarjar.JarJarTask", classpath: configurations.jarjar.asPath
+            jarjar(jarfile: targetJar) {
 
-    // use jarjar to build jar and obfuscate org.objenesis
-    ant.jarjar(jarfile: targetJar) {
-        ant.fileset(dir: classesDir) {
-            exclude(name: 'org/funcito/example/**/*')
-            exclude(name: 'org/funcito/example')
-        }
+                fileset(dir: classesDir) {
+                    exclude(name: 'org/funcito/example/**/*')
+                    exclude(name: 'org/funcito/example')
+                }
 
-        ant.fileset(dir: 'resources') {
-            include(name: PROP_FILE)
-            include(name: BUILD_INFO_FILE) 
-        }
-        
-        ant.fileset(dir: 'docs') {
-            include(name: 'ReadMe.txt')
-            include(name: 'License.txt')
-        }
-        
-        configurations.compile.findAll {
-            if (it.name =~ /objenesis/) { 
-                zipfileset(src: "${it.path}") 
+                fileset(dir: 'resources') {
+                    include(name: PROP_FILE)
+                    include(name: BUILD_INFO_FILE)
+                }
+
+                fileset(dir: 'docs') {
+                    include(name: 'ReadMe.txt')
+                    include(name: 'License.txt')
+                }
+
+                configurations.compile.findAll {
+                    if (it.name =~ /objenesis/) {
+                        zipfileset(src: "${it.path}")
+                    }
+                }
+                rule(pattern: 'org.objenesis.**', result: 'org.funcito.thirdparty.objenesis.@1')
             }
-        } 
-        ant.rule(pattern: 'org.objenesis.**', result: 'org.funcito.thirdparty.objenesis.@1')
+        }
     }
 }
 
-// build binary jar
-task jar(overwrite: true, dependsOn: [sourcesJar,javadocJar,binaryJar] ) << {
+// build all jars
+task jarAll(overwrite: true, dependsOn: [sourcesJar,javadocJar,binaryJar] ) << {
     // no-op
 }
 
@@ -246,9 +248,14 @@ test.doLast {
 }
 
 signing {
-    sign configurations.archives
+    sign binaryJar
     sign sourcesJar
     sign javadocJar
+}
+
+// sign all jars
+task signAll(overwrite: true, dependsOn: [jarAll,signBinaryJar,signJavadocJar,signSourcesJar] ) << {
+    // no-op
 }
 
 uploadArchives {
