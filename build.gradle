@@ -13,10 +13,6 @@ configurations {
     jarjar
 }
 
-artifacts {
-    archives jar
-}
-
 dependencies {
     // functional APIs
     compile group: 'com.google.guava', name: 'guava', version: 'r08'
@@ -114,6 +110,7 @@ javadoc {
 
 // build src jar
 task sourcesJar(type: Jar, dependsOn: [buildInfo,test]) {
+    classifier = 'sources'
     archiveName = vars.srcJarFilename
 
     from(sourceSets.main.java.srcDirs) {
@@ -132,6 +129,7 @@ task sourcesJar(type: Jar, dependsOn: [buildInfo,test]) {
 }
 
 task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
+    classifier = 'javadoc'
     archiveName = vars.docJarFilename
 
     from('docs') {
@@ -182,6 +180,12 @@ task binaryJar(type: Jar, dependsOn: test) {
             }
         }
     }
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
 }
 
 // build all jars
