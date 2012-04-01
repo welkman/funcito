@@ -16,15 +16,15 @@
 
 package org.funcito.internal.stub;
 
-import com.google.common.collect.Maps;
 import org.funcito.internal.stub.utils.StubUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class StubFactory {
     private static StubFactory instance = null;
     private static StubUtils stubUtils = new StubUtils();
-    private Map<Class, Object> stubsCache = Maps.newHashMap();
+    private Map<Class, Object> stubsCache = new HashMap<Class, Object>();
 
     public static StubFactory instance() {
         if (instance == null) {

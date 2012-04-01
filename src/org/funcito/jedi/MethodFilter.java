@@ -15,9 +15,7 @@
  */
 package org.funcito.jedi;
 
-import com.google.common.base.Predicate;
 import jedi.functional.Filter;
-import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
 public class MethodFilter<T> implements Filter<T> {
