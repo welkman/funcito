@@ -24,4 +24,6 @@ gradle test
     - runs tests, writes reports to 'build/reports' dir
 gradle jar
     - uses build/classes/main to create build/lib/funcito.jar
+gradle uploadArchives
+    - signs artifacts, and uploads to Sonatype OSSRH staging area (requires PGP secret keyring)
 
