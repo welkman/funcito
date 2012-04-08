@@ -3,7 +3,6 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'com.googlecode.funcito'
-version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -31,7 +30,7 @@ dependencies {
     testRuntime group: 'net.sourceforge.cobertura', name: 'cobertura', version: '1.9.4.1'
     
     // packaging    
-    jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'    
+    jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'
 }
 
 // sourceSets
@@ -176,6 +175,14 @@ task binaryJar(type: Jar, dependsOn: test) {
                     }
                 }
                 rule(pattern: 'org.objenesis.**', result: 'org.funcito.thirdparty.objenesis.@1')
+            }
+            mkdir(dir: "build/exploded")
+            unzip(src: targetJar, dest: "build/exploded")
+            copy (includeemptydirs: false, todir: "build/unpolluted") {
+                fileset(dir: "build/exploded")
+            }
+            jar(destfile: targetJar) {
+                fileset(dir: "build/unpolluted")
             }
         }
     }
