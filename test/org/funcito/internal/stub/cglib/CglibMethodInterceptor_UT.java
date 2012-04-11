@@ -1,4 +1,4 @@
-package org.funcito.internal.stub.javassist;
+package org.funcito.internal.stub.cglib;
 
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
@@ -10,24 +10,25 @@ import java.util.Stack;
 
 import static org.junit.Assert.assertNull;
 
-public class JavassistMethodHandler_UT {
+public class CglibMethodInterceptor_UT {
 
-    private JavassistMethodHandler handler = new JavassistMethodHandler();
+    private CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
     private FuncitoDelegate delegate = new FuncitoDelegate();
 
     @After
     public void tearDown() {
-        // pop last method pushed, between each test
-        delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        try {
+            // pop last method pushed, between each test
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        } catch (Throwable t) {}
     }
 
     @Test
     public void testInvoke_noExceptionForObject() throws Throwable {
         Method objMethod = Stack.class.getDeclaredMethod("pop");
 
-        Object fakeObj = handler.invoke(new Stack(), objMethod, null, null);
+        Object fakeObj = interceptor.intercept(new Stack(), objMethod, null, null);
 
         assertNull(fakeObj);
     }
-
 }
