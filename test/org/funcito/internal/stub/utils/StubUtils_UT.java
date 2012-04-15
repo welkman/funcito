@@ -90,7 +90,7 @@ public class StubUtils_UT {
 
     @Test
     public void testGetOverrideBySystemProperty_None() {
-        assertNull(System.getProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP));
+        System.clearProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP);
 
         // test
         StubFactory result = stubUtils.getOverrideBySystemProperty();
