@@ -33,6 +33,7 @@ public class JavassistInvokable_UT {
     public ExpectedException thrown= ExpectedException.none();
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         class Thing1 {
             public String getVal() { return "abc"; }
@@ -42,7 +43,7 @@ public class JavassistInvokable_UT {
         } // same signature but not a subclass
         Method thing1Method = Thing1.class.getMethod("getVal");
 
-        Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler(), Thing1.class);
+        Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
 
         // Type erasure means we could queue up calls to other than Thing1
@@ -66,7 +67,7 @@ public class JavassistInvokable_UT {
         }
         Method method = ThrowsThrowable.class.getMethod("doStuff");
 
-        ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler(), ThrowsThrowable.class);
+        ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), ThrowsThrowable.class);
         ttObj.doStuff(); // mock call intercepted and MethodProxy extracted
 
         JavassistInvokable invokable = new JavassistInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
@@ -77,9 +78,13 @@ public class JavassistInvokable_UT {
         invokable.invoke(new ThrowsThrowable());
     }
 
-    class Handler implements MethodHandler {
+    class Handler<T> implements MethodHandler {
+        T retVal;
+        public Handler(T retVal) {
+            this.retVal = retVal;
+        }
         public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-            return null;
+            return retVal;
         }
     }
 }

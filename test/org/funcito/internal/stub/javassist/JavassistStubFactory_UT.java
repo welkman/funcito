@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
@@ -65,6 +66,7 @@ public class JavassistStubFactory_UT {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testStub_BridgeMethods() throws Exception {
         FuncitoDelegate delegate = new FuncitoDelegate();
 
@@ -85,6 +87,50 @@ public class JavassistStubFactory_UT {
 
         Invokable<D,String> nonBridgeInvokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
         assertEquals("D", nonBridgeInvokable.invoke(new D()));
+    }
+
+    /**
+     * This is maybe an integration test, because it depends on what the return values are for the
+     * JavassistMethodHandler used internally to the JavassistStubFactory
+     */
+    @Test
+    public void testInvoke_noExceptionForPrimitiveNumbers() {
+        FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
+        try {
+            Number numberStub = factory.stub(Number.class);
+
+            // no NPEs means success
+            numberStub.intValue();
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            numberStub.longValue();
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            numberStub.byteValue();
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            numberStub.doubleValue();
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            numberStub.floatValue();
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            numberStub.shortValue();
+        } finally {
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+        }
+    }
+
+    /**
+     * This is maybe an integration test, because it depends on what the return values are for the
+     * JavassistMethodHandler used internally to the JavassistStubFactory
+     */
+    @Test
+    public void testInvoke_noExceptionForPrimitiveBoolean() {
+        FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
+        try {
+            Iterator iterStub = factory.stub(Iterator.class);
+
+            // no NPEs means success
+            iterStub.hasNext();
+        } finally {
+            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+        }
     }
 
 }
