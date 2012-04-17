@@ -3,7 +3,6 @@ package org.funcito.internal.stub.javaproxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,12 +32,19 @@ public class JavaProxyStubFactory_UT {
 
     private JavaProxyStubFactory factory = new JavaProxyStubFactory();
 
-    interface MyInterface { }
+    interface NumberInterface {
+        public int intValue();
+        public long longValue();
+        public float floatValue();
+        public double doubleValue();
+        public byte byteValue();
+        public short shortValue();
+    }
 
     @Test
     public void testStub_CachesInstancesOfSameClass() {
-        MyInterface inst1 = factory.stub(MyInterface.class);
-        MyInterface inst2 = factory.stub(MyInterface.class);
+        NumberInterface inst1 = factory.stub(NumberInterface.class);
+        NumberInterface inst2 = factory.stub(NumberInterface.class);
 
         assertSame(inst1, inst2);
     }
@@ -50,7 +56,7 @@ public class JavaProxyStubFactory_UT {
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Cannot proxy");
 
-        factory.stub(MyClass.class); // MyClass is class, should not be stubbable
+        factory.stub(MyClass.class); // MyClass is not interface, should not be stubbable by Java Proxy
     }
 
     /**
@@ -58,11 +64,10 @@ public class JavaProxyStubFactory_UT {
      * JavaProxyMethodHandler used internally to the JavaProxyStubFactory
      */
     @Test
-    @Ignore /* Not sure why this isn't working */
     public void testInvoke_noExceptionForPrimitiveNumbers() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
-            Number numberStub = factory.stub(Number.class);
+            NumberInterface numberStub = factory.stub(NumberInterface.class);
 
             // no NPEs means success
             numberStub.intValue();
