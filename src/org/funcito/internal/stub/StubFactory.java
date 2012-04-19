@@ -36,6 +36,13 @@ public abstract class StubFactory {
         return instance;
     }
 
+    /**
+     * Exists for benchmarks suite, to try with different proxy providers
+     */
+    public static void reset() {
+        instance = null;
+    }
+
     public <T> T stub(Class<T> clazz) {
         T stub = clazz.cast(stubsCache.get(clazz));
         if (stub == null) {
