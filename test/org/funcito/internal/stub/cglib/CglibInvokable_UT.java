@@ -37,16 +37,16 @@ public class CglibInvokable_UT {
     @SuppressWarnings("unchecked")
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         class Thing1 {
-            public String getVal() { return ""; }
+            public String getVal() { return "abc"; }
         }
         class Thing2 {
-            public String getVal() { return ""; }
+            public String getVal() { return "abc"; }
         } // same signature as Thing1.getVal(), but Thing2 does not extend Thing1
 
         Thing1 thing1Mock = CglibImposterizer.INSTANCE.imposterise(interceptor, Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and Method extracted
         Method thing1Method = Thing1.class.getMethod("getVal");
-        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(null, Thing1.class, thing1Method);
+        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(thing1Method, Thing1.class);
 
         // preassert that above test setup works ok with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
@@ -67,7 +67,7 @@ public class CglibInvokable_UT {
         ThrowsThrowable ttObj = CglibImposterizer.INSTANCE.imposterise(interceptor, ThrowsThrowable.class);
         ttObj.doStuff(); // mock call intercepted and Method registered, without throwing the exception yet
         Method method = ThrowsThrowable.class.getMethod("doStuff");
-        CglibInvokable<ThrowsThrowable, String> invokable = new CglibInvokable<ThrowsThrowable, String>(null, ThrowsThrowable.class, method);
+        CglibInvokable<ThrowsThrowable, String> invokable = new CglibInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
@@ -86,7 +86,7 @@ public class CglibInvokable_UT {
         ThrowsCastException tceObj = CglibImposterizer.INSTANCE.imposterise(interceptor, ThrowsCastException.class);
         tceObj.doStuff(); // calling this on the imposter registers the Method without throwing the exception
         Method m = ThrowsCastException.class.getMethod("doStuff");
-        CglibInvokable<ThrowsCastException, String> invokable = new CglibInvokable<ThrowsCastException, String>(null, ThrowsCastException.class, m);
+        CglibInvokable<ThrowsCastException, String> invokable = new CglibInvokable<ThrowsCastException, String>(m, ThrowsCastException.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");

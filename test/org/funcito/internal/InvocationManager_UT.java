@@ -50,13 +50,13 @@ public class InvocationManager_UT {
         Method method = Class.class.getMethod("cast", Object.class );
         assertEquals(1, method.getParameterTypes().length);
 
-        mgr.pushInvokable(new CglibInvokable<Object,Object>(mProxy, Object.class, method));
+        mgr.pushInvokable(new CglibInvokable<Object,Object>(method, Object.class));
     }
 
     @Test(expected = FuncitoException.class)
     public void testPushInvocation_multiCglibCallsNotAllowed() throws NoSuchMethodException {
-        mgr.pushInvokable(new CglibInvokable<Object,String>(mProxy, Object.class, Class.class.getMethod("getName")));
-        mgr.pushInvokable(new CglibInvokable<Object,String>(mProxy, Object.class, Class.class.getMethod("getName")));
+        mgr.pushInvokable(new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class));
+        mgr.pushInvokable(new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class));
     }
     
     @Test(expected = FuncitoException.class)

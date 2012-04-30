@@ -35,10 +35,10 @@ public class JavassistInvokable_UT {
     @SuppressWarnings("unchecked")
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         class Thing1 {
-            public String getVal() { return ""; }
+            public String getVal() { return "abc"; }
         }
         class Thing2 {
-            public String getVal() { return ""; }
+            public String getVal() { return "abc"; }
         } // same signature as Thing1.getVal() but not a subclass
 
         Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), Thing1.class);

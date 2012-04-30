@@ -15,7 +15,6 @@
  */
 package org.funcito.internal.stub.cglib;
 
-import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
@@ -27,7 +26,7 @@ public class CglibInvokable<T,V> implements Invokable<T,V> {
     private Class<T> targetClass;
     private Method method;
 
-    public CglibInvokable(MethodProxy methodProxy, Class<T> targetClass, Method method) {
+    public CglibInvokable(Method method, Class<T> targetClass) {
         method.setAccessible(true);
         this.targetClass = targetClass;
         this.method = method;

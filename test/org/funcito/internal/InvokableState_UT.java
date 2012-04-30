@@ -2,13 +2,11 @@ package org.funcito.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import net.sf.cglib.proxy.MethodProxy;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 /**
@@ -31,13 +29,10 @@ public class InvokableState_UT {
     private InvokableState state = new InvokableState();
     private Invokable invokable = null;
     
-    @Mock
-    private MethodProxy mProxy;
-
     @Before
     public void setUp() throws NoSuchMethodException {
         MockitoAnnotations.initMocks(this);
-        invokable = new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName"));
+        invokable = new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class);
     }
 
     @Test
@@ -61,7 +56,7 @@ public class InvokableState_UT {
     @Test(expected = FuncitoException.class)
     public void testGet_Empty() {
         // test
-        Invokable result = state.get();
+        state.get();
     }
 
     @Test(expected = FuncitoException.class)
