@@ -1,4 +1,4 @@
-package org.funcito.internal.stub.javassist;
+package org.funcito.internal;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import javassist.util.proxy.MethodHandler;
 
 import org.funcito.FuncitoException;
+import org.funcito.internal.stub.javassist.JavassistImposterizer;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -26,7 +27,7 @@ import org.junit.rules.ExpectedException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class JavassistInvokable_UT {
+public class Invokable_UT {
 
     @Rule
     public ExpectedException thrown= ExpectedException.none();
@@ -44,7 +45,7 @@ public class JavassistInvokable_UT {
         Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
         Method thing1Method = Thing1.class.getMethod("getVal");
-        JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(thing1Method, Thing1.class);
+        Invokable invokableForThing1 = new Invokable<Thing1, String>(thing1Method, Thing1.class);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
@@ -65,7 +66,7 @@ public class JavassistInvokable_UT {
         ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsThrowable.class);
         ttObj.doStuff(); // mock call intercepted and Method registered, without throwing the exception yet
         Method method = ThrowsThrowable.class.getMethod("doStuff");
-        JavassistInvokable<ThrowsThrowable, String> invokable = new JavassistInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
+        Invokable<ThrowsThrowable, String> invokable = new Invokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
@@ -85,7 +86,7 @@ public class JavassistInvokable_UT {
         ThrowsCastException tceObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsCastException.class);
         tceObj.doStuff(); // calling this on the imposter registers the Method without throwing the exception
         Method m = ThrowsCastException.class.getMethod("doStuff");
-        JavassistInvokable<ThrowsCastException, String> invokable = new JavassistInvokable<ThrowsCastException, String>(m, ThrowsCastException.class);
+        Invokable<ThrowsCastException, String> invokable = new Invokable<ThrowsCastException, String>(m, ThrowsCastException.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");

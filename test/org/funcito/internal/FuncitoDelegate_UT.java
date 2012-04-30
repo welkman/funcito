@@ -1,7 +1,6 @@
 package org.funcito.internal;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.javassist.JavassistInvokable;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -32,8 +31,8 @@ public class FuncitoDelegate_UT {
     public void testPutGetInvokable_threadSafety() throws Exception {
         Method method1 = MyClass.class.getDeclaredMethod("getString1");
         Method method2 = MyClass.class.getDeclaredMethod("getString2");
-        final JavassistInvokable<MyClass,String> invokable1 = new JavassistInvokable<MyClass,String>(method1,MyClass.class);
-        final JavassistInvokable<MyClass,String> invokable2 = new JavassistInvokable<MyClass,String>(method2,MyClass.class);
+        final Invokable<MyClass,String> invokable1 = new Invokable<MyClass,String>(method1,MyClass.class);
+        final Invokable<MyClass,String> invokable2 = new Invokable<MyClass,String>(method2,MyClass.class);
         final Semaphore lock1 = new Semaphore(1, true);
         final Semaphore lock2 = new Semaphore(1, true);
         final Invokable<?,?>[] ret2 = new Invokable[1];

@@ -21,11 +21,12 @@ import javassist.util.proxy.MethodHandler;
 
 import org.funcito.google.guava.common.base.Defaults;
 import org.funcito.internal.FuncitoDelegate;
+import org.funcito.internal.Invokable;
 
 public class JavassistMethodHandler implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-        new FuncitoDelegate().putInvokable(new JavassistInvokable(method, o.getClass()));
+        new FuncitoDelegate().putInvokable(new Invokable(method, o.getClass()));
         
         return Defaults.defaultValue(method.getReturnType());
     }

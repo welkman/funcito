@@ -4,7 +4,6 @@ import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -50,13 +49,13 @@ public class InvocationManager_UT {
         Method method = Class.class.getMethod("cast", Object.class );
         assertEquals(1, method.getParameterTypes().length);
 
-        mgr.pushInvokable(new CglibInvokable<Object,Object>(method, Object.class));
+        mgr.pushInvokable(new Invokable<Object,Object>(method, Object.class));
     }
 
     @Test(expected = FuncitoException.class)
-    public void testPushInvocation_multiCglibCallsNotAllowed() throws NoSuchMethodException {
-        mgr.pushInvokable(new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class));
-        mgr.pushInvokable(new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class));
+    public void testPushInvocation_multiCallsNotAllowed() throws NoSuchMethodException {
+        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class));
+        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class));
     }
     
     @Test(expected = FuncitoException.class)

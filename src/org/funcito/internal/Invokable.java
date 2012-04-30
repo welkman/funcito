@@ -15,11 +15,49 @@
  */
 package org.funcito.internal;
 
-public interface Invokable<T,V> {
+import org.funcito.FuncitoException;
 
-    V invoke(T from, Object... args);
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-    int getArgumentsLength();
+public class Invokable<T,V> {
 
-    String getMethodName();
+    private Method method;
+    private Class<T> targetClass;
+
+    public Invokable(Method method, Class<T> targetClass) {
+        method.setAccessible(true);
+        this.method = method;
+        this.targetClass = targetClass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public V invoke(T from, Object... args) {
+        try {
+            return (V) method.invoke(from, args);
+        } catch (Throwable e) {
+            if (e instanceof IllegalArgumentException && !targetClass.isInstance(from)) {
+                throw new FuncitoException("You attempted to invoke method " +
+                        from.getClass().getName() + "." + getMethodName() + "() " +
+                        "but defined Funcito invokable was for method " +
+                        targetClass.getName() +  "." + getMethodName() + "() ", e);
+            }
+            if (e instanceof InvocationTargetException) {
+                throw new FuncitoException("Caught throwable " + e.getCause().getClass().getName() +
+                    " invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
+            }
+            throw new FuncitoException("Caught throwable " + e.getClass().getName() +
+                    " invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
+        }
+    }
+
+    public int getArgumentsLength() {
+        return method.getParameterTypes().length;
+    }
+
+    public String getMethodName() {
+        return method.getName();
+    }
 }

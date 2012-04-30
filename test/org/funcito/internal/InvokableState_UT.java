@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.cglib.CglibInvokable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -32,7 +31,7 @@ public class InvokableState_UT {
     @Before
     public void setUp() throws NoSuchMethodException {
         MockitoAnnotations.initMocks(this);
-        invokable = new CglibInvokable<Object,String>(Class.class.getMethod("getName"), Object.class);
+        invokable = new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class);
     }
 
     @Test
