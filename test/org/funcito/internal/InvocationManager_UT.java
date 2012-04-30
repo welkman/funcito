@@ -50,28 +50,17 @@ public class InvocationManager_UT {
         Method method = Class.class.getMethod("cast", Object.class );
         assertEquals(1, method.getParameterTypes().length);
 
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, method));
+        mgr.pushInvokable(new CglibInvokable<Object,Object>(mProxy, Object.class, method));
     }
 
     @Test(expected = FuncitoException.class)
     public void testPushInvocation_multiCglibCallsNotAllowed() throws NoSuchMethodException {
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName")));
-        mgr.pushInvokable(new CglibInvokable(mProxy, Object.class, Class.class.getMethod("getName")));
+        mgr.pushInvokable(new CglibInvokable<Object,String>(mProxy, Object.class, Class.class.getMethod("getName")));
+        mgr.pushInvokable(new CglibInvokable<Object,String>(mProxy, Object.class, Class.class.getMethod("getName")));
     }
     
     @Test(expected = FuncitoException.class)
     public void testExtractInvokable_cannotCallWhenEmpty() {
         mgr.extractInvokable("");
-    }
-
-    @Test
-    public void testExtractInvokable_cglibInvokableWrapsInvocationMethodProxy() throws Throwable {
-        CglibInvokable<?, ?> invocation = new CglibInvokable<Object, Object>(mProxy, Object.class, Class.class.getMethod("getName"));
-        mgr.pushInvokable(invocation);
-
-        CglibInvokable<?, ?> invokable = (CglibInvokable<?, ?>) mgr.extractInvokable("");
-
-        invokable.invoke(null); // verify that the invokable wraps the MethodProxy from pushed Invocation
-        verify(mProxy).invoke(null, new Object[0]);
     }
 }

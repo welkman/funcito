@@ -1,7 +1,6 @@
 package org.funcito.internal.stub.cglib;
 
 import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -29,42 +29,45 @@ import static org.junit.Assert.*;
 public class CglibInvokable_UT {
 
     @Rule
-    public ExpectedException thrown= ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
+
+    private MethodInterceptor interceptor = mock(MethodInterceptor.class);
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         class Thing1 {
-            public String getVal() { return "abc"; }
+            public String getVal() { return ""; }
         }
         class Thing2 {
-            public String getVal() { return "abc"; }
-        } // same signature but not a subclass
-        Thing1 thing1Mock = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), Thing1.class);
-        thing1Mock.getVal(); // mock call intercepted and MethodProxy/Method extracted
-        Method m1 = Thing1.class.getMethod("getVal");
+            public String getVal() { return ""; }
+        } // same signature as Thing1.getVal(), but Thing2 does not extend Thing1
 
-        // Type erasure means we could queue up calls to other than Thing1
-        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(proxy[0], Thing1.class, m1);
+        Thing1 thing1Mock = CglibImposterizer.INSTANCE.imposterise(interceptor, Thing1.class);
+        thing1Mock.getVal(); // mock call intercepted and Method extracted
+        Method thing1Method = Thing1.class.getMethod("getVal");
+        CglibInvokable invokableForThing1 = new CglibInvokable<Thing1, String>(null, Thing1.class, thing1Method);
 
-        // preassert that above test setup works properly with the proper type
+        // preassert that above test setup works ok with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
 
+        // Type erasure means we could queue up calls to other than Thing1.
+        // Try invoking on wrong type
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("You attempted to invoke");
-            // Try invoking on wrong type
         invokableForThing1.invoke(new Thing2(), (Object[]) null);
     }
 
     @Test
     public void testInvoke_rethrowsThrowableInternalToMethodAsFuncitoException() throws Throwable {
-        class MyThrowable extends Throwable{};
+        class MyThrowable extends Throwable{}
         class ThrowsThrowable {
             public Integer doStuff() throws Throwable { throw new MyThrowable(); }
         }
-        ThrowsThrowable ttObj = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), ThrowsThrowable.class);
-        ttObj.doStuff(); // calling this on the imposter registers the Method/MethodProxy without throwing the exception
-        Method m = ThrowsThrowable.class.getMethod("doStuff");
-        CglibInvokable invokable = new CglibInvokable<ThrowsThrowable, String>(proxy[0], ThrowsThrowable.class, m);
+        ThrowsThrowable ttObj = CglibImposterizer.INSTANCE.imposterise(interceptor, ThrowsThrowable.class);
+        ttObj.doStuff(); // mock call intercepted and Method registered, without throwing the exception yet
+        Method method = ThrowsThrowable.class.getMethod("doStuff");
+        CglibInvokable<ThrowsThrowable, String> invokable = new CglibInvokable<ThrowsThrowable, String>(null, ThrowsThrowable.class, method);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
@@ -76,26 +79,18 @@ public class CglibInvokable_UT {
     public void testInvoke_internalClassCastExceptionDifferentFromErasureError() throws NoSuchMethodException {
         class ThrowsCastException{
             public Integer doStuff() {
-                Boolean b = true;
-                Object o = b;
+                Object o = Boolean.TRUE;
                 return (Integer)o; // should throw ClassCastException
             }
         }
-        ThrowsCastException tceObj = CglibImposterizer.INSTANCE.imposterise(new Interceptor(), ThrowsCastException.class);
-        tceObj.doStuff(); // calling this on the imposter registers the Method/MethodProxy without throwing the exception
+        ThrowsCastException tceObj = CglibImposterizer.INSTANCE.imposterise(interceptor, ThrowsCastException.class);
+        tceObj.doStuff(); // calling this on the imposter registers the Method without throwing the exception
         Method m = ThrowsCastException.class.getMethod("doStuff");
-        CglibInvokable invokable = new CglibInvokable<ThrowsCastException, String>(proxy[0], ThrowsCastException.class, m);
+        CglibInvokable<ThrowsCastException, String> invokable = new CglibInvokable<ThrowsCastException, String>(null, ThrowsCastException.class, m);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
         invokable.invoke(new ThrowsCastException());
     }
 
-    final MethodProxy[] proxy = new MethodProxy[1];
-    class Interceptor implements MethodInterceptor {
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            proxy[0] = methodProxy;
-            return null;
-        }
-    }
 }

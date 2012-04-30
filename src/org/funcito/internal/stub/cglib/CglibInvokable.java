@@ -19,31 +19,35 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class CglibInvokable<T,V> implements Invokable<T,V> {
 
-    private MethodProxy methodProxy;
-    private Class targetClass;
+    private Class<T> targetClass;
     private Method method;
 
-    public CglibInvokable(MethodProxy methodProxy, Class targetClass, Method method) {
-        this.methodProxy = methodProxy; // we keep MethodProxy because it executes faster than Method
+    public CglibInvokable(MethodProxy methodProxy, Class<T> targetClass, Method method) {
+        method.setAccessible(true);
         this.targetClass = targetClass;
-        this.method = method; // but we need method to get argument count and method name
-        // if we tried to use methodProxy.getSignature (an ASM class) we can get ASM library collisions
+        this.method = method;
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public V invoke(T from, Object... args) {
         try {
-            return (V)methodProxy.invoke(from, args);
+            return (V)method.invoke(from, args);
         } catch (Throwable e) {
-            if (e instanceof ClassCastException && !targetClass.isInstance(from)) {
+            if (e instanceof IllegalArgumentException && !targetClass.isInstance(from)) {
                 throw new FuncitoException("You attempted to invoke method " +
                         from.getClass().getName() + "." + getMethodName() + "() " +
                         "but defined Funcito invokable was for method " +
                         targetClass.getName() +  "." + getMethodName() + "() ", e);
+            }
+            if (e instanceof InvocationTargetException) {
+                throw new FuncitoException("Caught throwable " + e.getCause().getClass().getName() +
+                    " invoking Funcito Invokable for Method " +
+                    from.getClass().getName() + "." + getMethodName() + "()", e);
             }
             throw new FuncitoException("Caught throwable " + e.getClass().getName() +
                     " invoking Funcito Invokable for Method " +

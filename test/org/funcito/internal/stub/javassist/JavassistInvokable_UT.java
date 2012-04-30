@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import javassist.util.proxy.MethodHandler;
 
 import org.funcito.FuncitoException;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -36,46 +35,61 @@ public class JavassistInvokable_UT {
     @SuppressWarnings("unchecked")
     public void testInvoke_catchesTypeErasureAtRuntime() throws Throwable {
         class Thing1 {
-            public String getVal() { return "abc"; }
+            public String getVal() { return ""; }
         }
         class Thing2 {
-            public String getVal() { return "abc"; }
-        } // same signature but not a subclass
-        Method thing1Method = Thing1.class.getMethod("getVal");
+            public String getVal() { return ""; }
+        } // same signature as Thing1.getVal() but not a subclass
 
         Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
-
-        // Type erasure means we could queue up calls to other than Thing1
+        Method thing1Method = Thing1.class.getMethod("getVal");
         JavassistInvokable invokableForThing1 = new JavassistInvokable<Thing1, String>(thing1Method, Thing1.class);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
 
+        // Type erasure means we could queue up calls to other than Thing1
+        // Try invoking on wrong type
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("You attempted to invoke");
-        // Try invoking on wrong type
         invokableForThing1.invoke(new Thing2(), (Object[]) null);
     }
 
-    @Ignore("still working on this functionality")
     @Test
     public void testInvoke_rethrowsThrowableInternalToMethodAsFuncitoException() throws Throwable {
-        class MyThrowable extends Throwable{};
+        class MyThrowable extends Throwable{}
         class ThrowsThrowable {
             public Integer doStuff() throws MyThrowable { throw new MyThrowable(); }
         }
+        ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsThrowable.class);
+        ttObj.doStuff(); // mock call intercepted and Method registered, without throwing the exception yet
         Method method = ThrowsThrowable.class.getMethod("doStuff");
-
-        ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), ThrowsThrowable.class);
-        ttObj.doStuff(); // mock call intercepted and MethodProxy extracted
-
-        JavassistInvokable invokable = new JavassistInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
+        JavassistInvokable<ThrowsThrowable, String> invokable = new JavassistInvokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
         thrown.expectMessage("MyThrowable");
         invokable.invoke(new ThrowsThrowable());
+    }
+
+
+    @Test
+    public void testInvoke_internalClassCastExceptionDifferentFromErasureError() throws NoSuchMethodException {
+        class ThrowsCastException{
+            public Integer doStuff() {
+                Object o = Boolean.TRUE;
+                return (Integer)o; // should throw ClassCastException
+            }
+        }
+        ThrowsCastException tceObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsCastException.class);
+        tceObj.doStuff(); // calling this on the imposter registers the Method without throwing the exception
+        Method m = ThrowsCastException.class.getMethod("doStuff");
+        JavassistInvokable<ThrowsCastException, String> invokable = new JavassistInvokable<ThrowsCastException, String>(m, ThrowsCastException.class);
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Caught throwable ");
+        invokable.invoke(new ThrowsCastException());
     }
 
     class Handler<T> implements MethodHandler {
