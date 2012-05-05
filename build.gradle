@@ -33,7 +33,7 @@ dependencies {
     testRuntime group: 'net.sourceforge.cobertura', name: 'cobertura', version: '1.9.4.1'
     
     // packaging    
-    jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.1'
+    jarjar group: 'com.googlecode.jarjar', name: 'jarjar', version: '1.3'
 }
 
 // sourceSets
@@ -179,6 +179,9 @@ task binaryJar(type: Jar, dependsOn: test) {
                 }
                 rule(pattern: 'org.objenesis.**', result: 'org.funcito.thirdparty.objenesis.@1')
             }
+            // JarJar has a bug as of 1.1 that leaves the original directories (now empty) in the jarfile
+            // There was a changelist released in 1.3 that was supposed to fix this, but it doesn't seem
+            // to work.  If it gets fixed in later releases, we can remove the below lines
             mkdir(dir: "build/exploded")
             unzip(src: targetJar, dest: "build/exploded")
             copy (includeemptydirs: false, todir: "build/unpolluted") {
