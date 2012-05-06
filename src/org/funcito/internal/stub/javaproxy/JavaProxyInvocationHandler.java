@@ -23,8 +23,8 @@ import java.lang.reflect.Method;
  * limitations under the License.
  */
 public class JavaProxyInvocationHandler implements InvocationHandler {
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        new FuncitoDelegate().putInvokable(new Invokable(method, proxy.getClass()));
+    public Object invoke(Object proxyTarget, Method method, Object[] bindArgs) throws Throwable {
+        new FuncitoDelegate().putInvokable(new Invokable(method, proxyTarget.getClass(), bindArgs));
 
         return Defaults.defaultValue(method.getReturnType());
     }

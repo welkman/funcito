@@ -1,8 +1,11 @@
 package org.funcito;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.funcito.FuncitoGuava.*;
 import static org.junit.Assert.*;
@@ -15,9 +18,7 @@ public class FuncitoGuavaFunction_UT {
         protected String myString;
 
         public StringThing(String myString) { this.myString = myString; }
-
         public int size() { return myString.length(); }
-
         public String toString() { return myString; }
     }
 
@@ -44,9 +45,7 @@ public class FuncitoGuavaFunction_UT {
     @Test
     public void testFunctionFor_MethodHasPrimitiveWrapperRetType() {
         class IntegerWrapperRet {
-            public Integer getVal() {
-                return 123;
-            }
+            public Integer getVal() { return 123; }
         }
         Function<IntegerWrapperRet, Integer> wrapperIntFunc = functionFor(callsTo(IntegerWrapperRet.class).getVal());
         assertEquals(123, wrapperIntFunc.apply(new IntegerWrapperRet()).intValue());
@@ -55,9 +54,7 @@ public class FuncitoGuavaFunction_UT {
     @Test
     public void testFunctionFor_MethodHasPrimitiveRetType() {
         class PrimitiveIntRet {
-            public int getVal() {
-                return 123;
-            }
+            public int getVal() { return 123; }
         }
         Function<PrimitiveIntRet, Integer> primIntFunc = functionFor(callsTo(PrimitiveIntRet.class).getVal());
         assertEquals(123, primIntFunc.apply(new PrimitiveIntRet()).intValue());
@@ -66,9 +63,7 @@ public class FuncitoGuavaFunction_UT {
     @Test
     public void testFunctionFor_ValidateDetectsMismatchedGenericTypes() {
         class Generic<T> {
-            public Integer getVal() {
-                return 123;
-            }
+            public Integer getVal() { return 123; }
         }
         Function<Generic<String>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
         Generic<Integer> integerGeneric = new Generic<Integer>();
@@ -80,9 +75,7 @@ public class FuncitoGuavaFunction_UT {
     @Test
     public void testFunctionFor_AllowUpcastToExtensionGenericType() {
         class Generic<T> {
-            public Integer getVal() {
-                return 123;
-            }
+            public Integer getVal() { return 123; }
         }
         Function<Generic<? extends Object>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
         Generic<Integer> integerGeneric = new Generic<Integer>();
@@ -106,12 +99,23 @@ public class FuncitoGuavaFunction_UT {
 
     @Test
     public void testFunctionFor_ExpressionsWithOperatorsAreUnsupported() {
-        Function<StringThing,String> pluralFunc = functionFor(CALLS_TO_STRING_THING.toString() + "S");
+        Function<StringThing,String> pluralFunc = functionFor(CALLS_TO_STRING_THING.toString() + "s");
         StringThing dog = new StringThing("dog");
 
         // NOTE: this test is a test that proves and documents a limitation of Funcito
         assertFalse("dogs".equals( pluralFunc.apply(dog)));
         assertEquals("dog", pluralFunc.apply(dog));
+    }
+
+    @Test
+    public void testFunctionFor_SingleArgBinding() {
+        List<String> callsToList = callsTo(List.class);
+        Function<List<String>,String> getElem0Func = functionFor(callsToList.get(0));
+        Function<List<String>,String> getElem2Func = functionFor(callsToList.get(2));
+        List<String> list = Lists.newArrayList("Zero", "One", "Two");
+
+        assertEquals("Zero", getElem0Func.apply(list));
+        assertEquals("Two", getElem2Func.apply(list));
     }
 }
 

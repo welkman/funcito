@@ -1,76 +1,107 @@
 package org.funcito.internal.stub.cglib;
 
 import org.funcito.internal.FuncitoDelegate;
+import org.funcito.internal.Invokable;
 import org.funcito.internal.WrapperType;
-import org.junit.After;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class CglibMethodInterceptor_UT {
     private CglibMethodInterceptor handler = new CglibMethodInterceptor();
     private FuncitoDelegate delegate = new FuncitoDelegate();
-    private Integer anInt = 1;
+    private Number aNumber = 1;
 
-    @After
-    public void tearDown() {
-        // pop last method pushed, between each test
-        delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+    @Test
+    public void testInvoke_methodWithArgReturningNonPrimitive() throws Throwable {
+        Method intMethod = List.class.getDeclaredMethod("get", int.class);
+
+        Object o = handler.intercept(aNumber, intMethod, new Object[] {1}, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("get", invokable.getMethodName());
+    }
+
+    @Test
+    public void testInvoke_noArgMethodReturningNonPrimitive() throws Throwable {
+        Method intMethod = Object.class.getDeclaredMethod("getClass");
+
+        Class c = (Class)handler.intercept(aNumber, intMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("getClass", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveInt() throws Throwable {
-        Method intMethod = Integer.class.getDeclaredMethod("intValue");
+        Method intMethod = Number.class.getDeclaredMethod("intValue");
 
-        // no NPEs means success
-        int fakeInt = (Integer)handler.intercept(anInt, intMethod, null, null);
+        int fakeInt = (Integer)handler.intercept(aNumber, intMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("intValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveFloat() throws Throwable {
-        Method floatMethod = Integer.class.getDeclaredMethod("floatValue");
+        Method floatMethod = Number.class.getDeclaredMethod("floatValue");
 
-        // no NPEs means success
-        float fakeFloat = (Float)handler.intercept(anInt, floatMethod, null, null);
+        float fakeFloat = (Float)handler.intercept(aNumber, floatMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("floatValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveLong() throws Throwable {
-        Method longMethod = Integer.class.getDeclaredMethod("longValue");
+        Method longMethod = Number.class.getDeclaredMethod("longValue");
 
-        // no NPEs means success
-        long fakeLong = (Long)handler.intercept(anInt, longMethod, null, null);
+        long fakeLong = (Long)handler.intercept(aNumber, longMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("longValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveDouble() throws Throwable {
-        Method doubleMethod = Integer.class.getDeclaredMethod("doubleValue");
+        Method doubleMethod = Number.class.getDeclaredMethod("doubleValue");
 
-        // no NPEs means success
-        double fakeDouble = (Double)handler.intercept(anInt, doubleMethod, null, null);
+        double fakeDouble = (Double)handler.intercept(aNumber, doubleMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("doubleValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveShort() throws Throwable {
-        Method shortMethod = Integer.class.getDeclaredMethod("shortValue");
+        Method shortMethod = Number.class.getDeclaredMethod("shortValue");
 
-        // no NPEs means success
-        short fakeShort = (Short)handler.intercept(anInt, shortMethod, null, null);
+        short fakeShort = (Short)handler.intercept(aNumber, shortMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("shortValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveByte() throws Throwable {
-        Method byteMethod = Integer.class.getDeclaredMethod("byteValue");
+        Method byteMethod = Number.class.getDeclaredMethod("byteValue");
 
-        // no NPEs means success
-        byte fakeByte = (Byte)handler.intercept(anInt, byteMethod, null, null);
+        byte fakeByte = (Byte)handler.intercept(aNumber, byteMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("byteValue", invokable.getMethodName());
     }
 
     @Test
     public void testInvoke_noExceptionForPrimitiveBoolean() throws Throwable {
         Method booleanMethod = Class.class.getDeclaredMethod("isInterface");
 
-        // no NPEs means success
         boolean fakeBoolean = (Boolean)handler.intercept(Class.class, booleanMethod, null, null);
+
+        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        assertEquals("isInterface", invokable.getMethodName());
     }
 }

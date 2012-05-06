@@ -1,18 +1,12 @@
 package org.funcito.internal;
 
-import net.sf.cglib.core.Signature;
-import net.sf.cglib.proxy.MethodProxy;
-
 import org.funcito.FuncitoException;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.*;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -31,25 +25,40 @@ import static org.mockito.Mockito.*;
  */
 public class InvocationManager_UT {
 
+    public static final String DUMMY_ARG = "WrapperType string for error logging only";
     private InvocationManager mgr = new InvocationManager();
 
-    @Mock
-    private MethodProxy mProxy;
-    @Mock
-    private Signature sig;
+    @Test
+    public void testPushInvocation_noArgMethodAllowed() throws NoSuchMethodException {
+        Method method = List.class.getMethod("size");
+        assertEquals(0, method.getParameterTypes().length);
+        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class);
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        when(mProxy.getSignature()).thenReturn(sig);
+        mgr.pushInvokable(invokable);
+
+        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
     }
 
-    @Test(expected = FuncitoException.class)
-    public void testPushInvocation_nonZeroArgsNotAllowed() throws NoSuchMethodException {
-        Method method = Class.class.getMethod("cast", Object.class );
+    @Test
+    public void testPushInvocation_oneArgMethodAllowed() throws NoSuchMethodException {
+        Method method = List.class.getMethod("get", int.class );
         assertEquals(1, method.getParameterTypes().length);
+        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class, 0);
 
-        mgr.pushInvokable(new Invokable<Object,Object>(method, Object.class));
+        mgr.pushInvokable(invokable);
+
+        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
+    }
+
+    @Test
+    public void testPushInvocation_multiArgMethodAllowed() throws NoSuchMethodException {
+        Method method = CharSequence.class.getMethod("subSequence", int.class, int.class );
+        assertEquals(2, method.getParameterTypes().length);
+        Invokable<CharSequence, CharSequence> invokable = new Invokable<CharSequence, CharSequence>(method, CharSequence.class, 1, 2);
+
+        mgr.pushInvokable(invokable);
+
+        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
     }
 
     @Test(expected = FuncitoException.class)

@@ -24,40 +24,35 @@ public class Invokable<T,V> {
 
     private Method method;
     private Class<T> targetClass;
+    private Object[] bindArgs;
 
-    public Invokable(Method method, Class<T> targetClass) {
+    public Invokable(Method method, Class<T> targetClass, Object... bindArgs) {
         method.setAccessible(true);
         this.method = method;
         this.targetClass = targetClass;
+        this.bindArgs = bindArgs;
     }
 
     @SuppressWarnings("unchecked")
-    public V invoke(T from, Object... args) {
+    public V invoke(T target) {
         try {
-            return (V) method.invoke(from, args);
+            return (V) method.invoke(target, bindArgs);
+        } catch (InvocationTargetException e) {
+            throw new FuncitoException("Caught throwable " + e.getCause().getClass().getName() +
+                " invoking Funcito Invokable for Method " +
+                target.getClass().getName() + "." + getMethodName() + "()", e);
         } catch (Throwable e) {
-            if (e instanceof IllegalArgumentException && !targetClass.isInstance(from)) {
+            if (e instanceof IllegalArgumentException && !targetClass.isInstance(target)) {
                 throw new FuncitoException("You attempted to invoke method " +
-                        from.getClass().getName() + "." + getMethodName() + "() " +
+                        target.getClass().getName() + "." + getMethodName() + "() " +
                         "but defined Funcito invokable was for method " +
                         targetClass.getName() +  "." + getMethodName() + "() ", e);
             }
-            if (e instanceof InvocationTargetException) {
-                throw new FuncitoException("Caught throwable " + e.getCause().getClass().getName() +
-                    " invoking Funcito Invokable for Method " +
-                    from.getClass().getName() + "." + getMethodName() + "()", e);
-            }
             throw new FuncitoException("Caught throwable " + e.getClass().getName() +
                     " invoking Funcito Invokable for Method " +
-                    from.getClass().getName() + "." + getMethodName() + "()", e);
+                    target.getClass().getName() + "." + getMethodName() + "()", e);
         }
     }
 
-    public int getArgumentsLength() {
-        return method.getParameterTypes().length;
-    }
-
-    public String getMethodName() {
-        return method.getName();
-    }
+    public String getMethodName() { return method.getName(); }
 }

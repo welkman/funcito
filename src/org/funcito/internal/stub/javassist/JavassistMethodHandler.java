@@ -25,8 +25,8 @@ import org.funcito.internal.Invokable;
 
 public class JavassistMethodHandler implements MethodHandler {
 
-    public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
-        new FuncitoDelegate().putInvokable(new Invokable(method, o.getClass()));
+    public Object invoke(Object proxyTarget, Method method, Method method1, Object[] bindArgs) throws Throwable {
+        new FuncitoDelegate().putInvokable(new Invokable(method, proxyTarget.getClass(), bindArgs));
         
         return Defaults.defaultValue(method.getReturnType());
     }

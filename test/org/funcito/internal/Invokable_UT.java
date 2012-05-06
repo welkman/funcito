@@ -48,13 +48,13 @@ public class Invokable_UT {
         Invokable invokableForThing1 = new Invokable<Thing1, String>(thing1Method, Thing1.class);
 
         // prove that above test setup works properly with the proper type
-        assertEquals("abc", invokableForThing1.invoke(new Thing1(), (Object[]) null));
+        assertEquals("abc", invokableForThing1.invoke(new Thing1()));
 
         // Type erasure means we could queue up calls to other than Thing1
         // Try invoking on wrong type
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("You attempted to invoke");
-        invokableForThing1.invoke(new Thing2(), (Object[]) null);
+        invokableForThing1.invoke(new Thing2());
     }
 
     @Test

@@ -25,10 +25,6 @@ class InvocationManager {
         if (state.isFull()) {
             throwEx("A method call to a Funcito stub was detected outside of acceptable scope.  This likely means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
         }
-        if (invokable.getArgumentsLength() != 0) {
-            throwEx("Failed to wrap method invocation.  Signature of method call on Funcito stub has arguments, when only no-arg methods are wrappable.");
-        }
-        
         state.put(invokable);
     }
 
