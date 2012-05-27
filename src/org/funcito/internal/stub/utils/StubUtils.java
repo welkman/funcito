@@ -22,7 +22,12 @@ import org.funcito.internal.stub.cglib.CglibStubFactory;
 import org.funcito.internal.stub.javaproxy.JavaProxyStubFactory;
 import org.funcito.internal.stub.javassist.JavassistStubFactory;
 
+import java.util.logging.Logger;
+
 public class StubUtils {
+
+    Logger logger = Logger.getLogger(StubUtils.class.getName());
+
     /** System property that forces selection of a specific proxy provider */
     public static final String FUNCITO_PROXY_PROVIDER_PROP = "funcito.proxy.provider";
 
@@ -48,7 +53,7 @@ public class StubUtils {
         if (foundCglib) {
             if (foundJavassist) {
                 // if both code-gen libs available on classpath, Funcito defaults to Cglib
-                System.err.println("Warning: found both CgLib and Javassist on classpath. Using CgLib: "
+                logger.warning("Found both CgLib and Javassist on classpath. Using CgLib: "
                         + "set System property '" + StubUtils.FUNCITO_PROXY_PROVIDER_PROP + "' to change.");
             }
             return new CglibStubFactory();
@@ -56,7 +61,7 @@ public class StubUtils {
             return new JavassistStubFactory();
         }
         // if neither available on classpath, Funcito defaults to Java dynamic Proxy, which only proxies interfaces.
-        System.err.println("Warning: found neither CgLib nor Javassist on classpath. Using Java dynamic Proxies: "
+        logger.warning("Found neither CgLib nor Javassist on classpath. Using Java dynamic Proxies: "
                 + "if you need to wrap methods on classes instead of only interfaces, please include either Cglib or Javasssist in classpath");
         return new JavaProxyStubFactory();
     }

@@ -28,6 +28,10 @@ import org.junit.rules.ExpectedException;
 
 import org.mockito.*;
 
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
 import static org.mockito.Mockito.*;
 
 public class StubUtils_UT {
@@ -38,10 +42,14 @@ public class StubUtils_UT {
     ClassFinder classFinder;
 
     @InjectMocks private StubUtils stubUtils = new StubUtils();
+    @Mock Handler logHandler;
+    @Captor ArgumentCaptor<LogRecord> logCaptor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        Logger logger = Logger.getLogger(StubUtils.class.getName());
+        logger.addHandler(logHandler);
     }
 
     @Test
@@ -53,6 +61,8 @@ public class StubUtils_UT {
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
         
         assertTrue(result instanceof CglibStubFactory);
+        verify(logHandler).publish(logCaptor.capture());
+        assertTrue(logCaptor.getValue().getMessage().contains("Found both CgLib and Javassist"));
     }
 
     @Test
@@ -86,6 +96,8 @@ public class StubUtils_UT {
         StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
 
         assertTrue(result instanceof JavaProxyStubFactory);
+        verify(logHandler).publish(logCaptor.capture());
+        assertTrue(logCaptor.getValue().getMessage().contains("Found neither CgLib nor Javassist"));
     }
 
     @Test

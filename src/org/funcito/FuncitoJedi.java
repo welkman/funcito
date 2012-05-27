@@ -63,8 +63,7 @@ public class FuncitoJedi {
      * @return a Jedi Filter object that wraps the method call.
      */
     public static <T> Filter<T> filterFor(Boolean stubbedMethodCall) {
-        Filter<T> tFilter = jediDelegate.filterFor(stubbedMethodCall);
-        return tFilter;
+        return jediDelegate.filterFor(stubbedMethodCall);
     }
 
     public static JediDelegate delegate() {
