@@ -23,12 +23,12 @@ public class JavassistStubFactory extends StubFactory {
 
     private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
-    protected <T> T stubImpl(Class<T> clazz) {
+    protected <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
         JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
-        if (!imposterizer.canImposterise(clazz)) {
+        if (!canImposterise(clazz)) {
             throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return imposterizer.imposterise(handler, clazz);
+        return imposterizer.imposterise(handler, clazz, additionalInterfaces);
     }
 
 }

@@ -52,6 +52,27 @@ public class CglibStubFactory_UT {
         factory.stub(String.class); // String is final, should not be stubbable
     }
 
+    interface SomeInterface {}
+    enum MyEnum {}
+    @Test
+    public void shouldKnowIfCanImposterize() throws Exception {
+        final class FinalClass {}
+        class SomeClass {}
+        class ClassWithConstructorThatNeedsNonNullArg {
+            public ClassWithConstructorThatNeedsNonNullArg(String str) {
+                str.length(); // would normally throw NPE if str was null
+            }
+        }
+
+        assertFalse(factory.canImposterise(FinalClass.class));
+        assertFalse(factory.canImposterise(int.class));
+        assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
+
+        assertTrue(factory.canImposterise(SomeClass.class));
+        assertTrue(factory.canImposterise(SomeInterface.class));
+        assertTrue(factory.canImposterise(ClassWithConstructorThatNeedsNonNullArg.class));
+    }
+
     static class A {
         public String foo() { return "A"; }
     }
@@ -73,7 +94,7 @@ public class CglibStubFactory_UT {
         factory.stub(C.class).foo();
         // The main assert is just that we get past the above line without an IllegalArgumentException from Cglib
 
-        Invokable<C,String> bridgeInvokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable<C,String> bridgeInvokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("A", bridgeInvokable.invoke(new C()));
 
         // now double check method that overrides bridge method
@@ -82,7 +103,7 @@ public class CglibStubFactory_UT {
 
         factory.stub(D.class).foo();
 
-        Invokable<D,String> nonBridgeInvokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable<D,String> nonBridgeInvokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("D", nonBridgeInvokable.invoke(new D()));
     }
 

@@ -3,7 +3,7 @@ package org.funcito.jedi;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
 
 import static org.funcito.internal.WrapperType.*;
 
@@ -24,12 +24,12 @@ import static org.funcito.internal.WrapperType.*;
  */
 public class JediDelegate extends FuncitoDelegate {
     public <T,V> Functor<T,V> functorFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = getInvokable(JEDI_FUNCTOR);
-        return new MethodFunctor<T, V>(invokable);
+        final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
+        return new MethodFunctor<T, V>(state);
     }
 
     public <T> Filter<T> filterFor(Boolean ignoredRetVal) {
-        final Invokable<T,Boolean> invokable = getInvokable(JEDI_FILTER);
-        return new MethodFilter<T>(invokable);
+        final InvokableState state = extractInvokableState(JEDI_FILTER);
+        return new MethodFilter<T>(state);
     }
 }

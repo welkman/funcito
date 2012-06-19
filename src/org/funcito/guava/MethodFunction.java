@@ -18,15 +18,32 @@ package org.funcito.guava;
 import com.google.common.base.Function;
 
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 public class MethodFunction<T, V> implements Function<T,V> {
-    private Invokable<T,V> invokable;
+    final private InvokableState state;
+    final private Invokable<T,V> firstInvokable;
+    final private boolean unchained;
 
-    public MethodFunction(Invokable<T,V> invokable) {
-        this.invokable = invokable;
+    public MethodFunction(InvokableState state) {
+        this.state = state;
+        Iterator<Invokable> iter = state.iterator();
+        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.unchained = !iter.hasNext();
     }
 
     public V apply(T from) {
-        return invokable.invoke(from);
+        Object retVal = (V) firstInvokable.invoke(from);
+        if (unchained) {
+            return (V)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        return (V)retVal;
     }
 }

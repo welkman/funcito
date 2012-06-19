@@ -21,7 +21,7 @@ public class CglibMethodInterceptor_UT {
 
         Object o = handler.intercept(aNumber, intMethod, new Object[] {1}, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("get", invokable.getMethodName());
     }
 
@@ -31,7 +31,7 @@ public class CglibMethodInterceptor_UT {
 
         Class c = (Class)handler.intercept(aNumber, intMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("getClass", invokable.getMethodName());
     }
 
@@ -41,7 +41,7 @@ public class CglibMethodInterceptor_UT {
 
         int fakeInt = (Integer)handler.intercept(aNumber, intMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("intValue", invokable.getMethodName());
     }
 
@@ -51,7 +51,7 @@ public class CglibMethodInterceptor_UT {
 
         float fakeFloat = (Float)handler.intercept(aNumber, floatMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("floatValue", invokable.getMethodName());
     }
 
@@ -61,7 +61,7 @@ public class CglibMethodInterceptor_UT {
 
         long fakeLong = (Long)handler.intercept(aNumber, longMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("longValue", invokable.getMethodName());
     }
 
@@ -71,7 +71,7 @@ public class CglibMethodInterceptor_UT {
 
         double fakeDouble = (Double)handler.intercept(aNumber, doubleMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("doubleValue", invokable.getMethodName());
     }
 
@@ -81,7 +81,7 @@ public class CglibMethodInterceptor_UT {
 
         short fakeShort = (Short)handler.intercept(aNumber, shortMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("shortValue", invokable.getMethodName());
     }
 
@@ -91,7 +91,7 @@ public class CglibMethodInterceptor_UT {
 
         byte fakeByte = (Byte)handler.intercept(aNumber, byteMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("byteValue", invokable.getMethodName());
     }
 
@@ -101,7 +101,7 @@ public class CglibMethodInterceptor_UT {
 
         boolean fakeBoolean = (Boolean)handler.intercept(Class.class, booleanMethod, null, null);
 
-        Invokable invokable = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("isInterface", invokable.getMethodName());
     }
 }

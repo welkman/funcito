@@ -25,12 +25,18 @@ public class Invokable<T,V> {
     private Method method;
     private Class<T> targetClass;
     private Object[] bindArgs;
+    private boolean chainable;
 
-    public Invokable(Method method, Class<T> targetClass, Object... bindArgs) {
+    public Invokable(Method method, Class<T> targetClass, boolean chainable, Object... bindArgs) {
         method.setAccessible(true);
         this.method = method;
         this.targetClass = targetClass;
         this.bindArgs = bindArgs;
+        this.chainable = chainable;
+    }
+
+    public boolean isChainable() {
+        return chainable;
     }
 
     @SuppressWarnings("unchecked")

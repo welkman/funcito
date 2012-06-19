@@ -23,12 +23,12 @@ public class CglibStubFactory extends StubFactory {
 
     private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
 
-    protected <T> T stubImpl(Class<T> clazz) {
+    protected <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
         CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
-        if (!imposterizer.canImposterise(clazz)) {
-            throw new FuncitoException("Cannot proxy this class.  Typical causes: final class, anonymous class, or primitive class.");
+        if (!canImposterise(clazz)) {
+            throw new FuncitoException("Cannot proxy this class [" + clazz.getName() +"].  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return imposterizer.imposterise(interceptor, clazz);
+        return imposterizer.imposterise(interceptor, clazz, additionalInterfaces);
     }
 
 }

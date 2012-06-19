@@ -3,6 +3,9 @@ package org.funcito.functionaljava;
 import fj.F;
 
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 /*
  * Copyright 2011 Project Funcito Contributors
@@ -20,14 +23,28 @@ import org.funcito.internal.Invokable;
  * limitations under the License.
  */
 public class MethodF<T,V> extends F<T,V> {
-    private Invokable<T,V> invokable;
+    final private InvokableState state;
+    private Invokable<T,V> firstInvokable;
+    private boolean unchained;
 
-    public MethodF(Invokable<T,V> invokable) {
-        this.invokable = invokable;
+    public MethodF(InvokableState state) {
+        this.state = state;
+        Iterator<Invokable> iter = state.iterator();
+        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.unchained = !iter.hasNext();
     }
 
     @Override
     public V f(T from) {
-        return invokable.invoke(from);
+        Object retVal = (V) firstInvokable.invoke(from);
+        if (unchained) {
+            return (V)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        return (V)retVal;
     }
 }

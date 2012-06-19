@@ -3,8 +3,10 @@ package org.funcito.functionaljava;
 import fj.F;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
 
 import static org.funcito.internal.WrapperType.FJ_F;
+import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
 
 /*
  * Copyright 2011 Project Funcito Contributors
@@ -24,7 +26,8 @@ import static org.funcito.internal.WrapperType.FJ_F;
 public class FJDelegate extends FuncitoDelegate {
 
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = getInvokable(FJ_F);
-        return new MethodF<T, V>(invokable);
+//        final Invokable<T,V> invokable = getInvokable(FJ_F);
+        InvokableState state = extractInvokableState(FJ_F);
+        return new MethodF<T, V>(state);
     }
 }

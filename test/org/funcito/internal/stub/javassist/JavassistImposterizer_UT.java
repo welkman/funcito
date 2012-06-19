@@ -85,25 +85,9 @@ public class JavassistImposterizer_UT {
         assertNotSame(cglibFactoryOne.getHandler(), cglibFactoryTwo.getHandler());
     }
 
-    final class FinalClass {
-    }
+    class SomeClass {}
 
-    class SomeClass {
-    }
-
-    protected interface SomeInterface {
-    }
-
-    @Test
-    public void shouldKnowIfCanImposterize() throws Exception {
-        assertFalse(imposterizer.canImposterise(FinalClass.class));
-        assertFalse(imposterizer.canImposterise(int.class));
-        assertFalse(imposterizer.canImposterise(MyEnum.class)); // because enums are final
-
-        assertTrue(imposterizer.canImposterise(SomeClass.class));
-        assertTrue(imposterizer.canImposterise(SomeInterface.class));
-        assertTrue(imposterizer.canImposterise(ClassWithConstructorThatNeedsNonNullArg.class));
-    }
+    protected interface SomeInterface {}
 
     private class ClassWithConstructorThatNeedsNonNullArg {
         public ClassWithConstructorThatNeedsNonNullArg(String str) {
@@ -111,17 +95,12 @@ public class JavassistImposterizer_UT {
         }
     }
 
-    private class ClassWithoutConstructor {
-    }
+    private class ClassWithoutConstructor {}
 
     private class ClassWithDodgyConstructor {
         public ClassWithDodgyConstructor() {
             throw new RuntimeException();
         }
-    }
-
-    enum MyEnum {
-        E1, E2;
     }
 
     private final class MethodHandlerStub implements MethodHandler {

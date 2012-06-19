@@ -45,7 +45,7 @@ public class Invokable_UT {
         Thing1 thing1Mock = JavassistImposterizer.INSTANCE.imposterise(new Handler<String>("A"), Thing1.class);
         thing1Mock.getVal(); // mock call intercepted and MethodProxy extracted
         Method thing1Method = Thing1.class.getMethod("getVal");
-        Invokable invokableForThing1 = new Invokable<Thing1, String>(thing1Method, Thing1.class);
+        Invokable invokableForThing1 = new Invokable<Thing1, String>(thing1Method, Thing1.class, false);
 
         // prove that above test setup works properly with the proper type
         assertEquals("abc", invokableForThing1.invoke(new Thing1()));
@@ -66,7 +66,7 @@ public class Invokable_UT {
         ThrowsThrowable ttObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsThrowable.class);
         ttObj.doStuff(); // mock call intercepted and Method registered, without throwing the exception yet
         Method method = ThrowsThrowable.class.getMethod("doStuff");
-        Invokable<ThrowsThrowable, String> invokable = new Invokable<ThrowsThrowable, String>(method, ThrowsThrowable.class);
+        Invokable<ThrowsThrowable, String> invokable = new Invokable<ThrowsThrowable, String>(method, ThrowsThrowable.class, false);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");
@@ -86,7 +86,7 @@ public class Invokable_UT {
         ThrowsCastException tceObj = JavassistImposterizer.INSTANCE.imposterise(new Handler<Integer>(1), ThrowsCastException.class);
         tceObj.doStuff(); // calling this on the imposter registers the Method without throwing the exception
         Method m = ThrowsCastException.class.getMethod("doStuff");
-        Invokable<ThrowsCastException, String> invokable = new Invokable<ThrowsCastException, String>(m, ThrowsCastException.class);
+        Invokable<ThrowsCastException, String> invokable = new Invokable<ThrowsCastException, String>(m, ThrowsCastException.class, false);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Caught throwable ");

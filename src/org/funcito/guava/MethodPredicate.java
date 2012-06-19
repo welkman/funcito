@@ -19,21 +19,42 @@ import com.google.common.base.Predicate;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 public class MethodPredicate<T> implements Predicate<T> {
-    final protected Invokable<T,Boolean> invokable;
+    final protected InvokableState state;
+    final protected Invokable<T,Boolean> firstInvokable;
+    final protected boolean unchained;
 
-    public MethodPredicate(Invokable<T,Boolean> initInvokable) {
-        this.invokable = initInvokable;
+    public MethodPredicate(InvokableState state) {
+        this.state = state;
+        Iterator<Invokable> iter = state.iterator();
+        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.unchained = !iter.hasNext();
     }
 
     public boolean apply(T from) {
-        try {
-            return invokable.invoke(from);
-        } catch (NullPointerException npe) {
+        Object retVal = firstInvokable.invoke(from);
+        if (unchained) {
+            checkNullBoolean(retVal);
+            return (Boolean)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        checkNullBoolean(retVal);
+        return (Boolean)retVal;
+    }
+
+    private void checkNullBoolean(Object retVal) {
+        if (retVal==null) {
             throw new FuncitoException("Predicate had a null Boolean return value; " +
                     "Guava Predicates expect a non-null Boolean so that it can be autoboxed to a primitive boolean.\n" +
-                    "You might consider the alternate method: predicateFor(Boolean stubbedMethodCall, boolean defaultForNull)", npe);
+                    "You might consider the alternate method: predicateFor(Boolean stubbedMethodCall, boolean defaultForNull)");
         }
     }
 }

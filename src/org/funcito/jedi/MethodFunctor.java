@@ -17,15 +17,32 @@ package org.funcito.jedi;
 
 import jedi.functional.Functor;
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 public class MethodFunctor<T, V> implements Functor<T,V> {
-    private Invokable<T,V> invokable;
+    final private InvokableState state;
+    private Invokable<T,V> firstInvokable;
+    private boolean unchained;
 
-    public MethodFunctor(Invokable<T, V> invokable) {
-        this.invokable = invokable;
+    public MethodFunctor(InvokableState state) {
+        this.state = state;
+        Iterator<Invokable> iter = state.iterator();
+        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.unchained = !iter.hasNext();
     }
 
     public V execute(T from) {
-        return invokable.invoke(from);
+        Object retVal = (V) firstInvokable.invoke(from);
+        if (unchained) {
+            return (V)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        return (V)retVal;
     }
 }

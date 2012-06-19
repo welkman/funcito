@@ -9,7 +9,9 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Iterator;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /*
  * Copyright 2012 Project Funcito Contributors
@@ -71,18 +73,18 @@ public class JavaProxyStubFactory_UT {
 
             // no NPEs means success
             numberStub.intValue();
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION); // cleanup after each
             numberStub.longValue();
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION); // etc.
             numberStub.byteValue();
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
             numberStub.doubleValue();
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
             numberStub.floatValue();
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
             numberStub.shortValue();
         } finally {
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
         }
     }
 
@@ -99,7 +101,21 @@ public class JavaProxyStubFactory_UT {
             // no NPEs means success
             iterStub.hasNext();
         } finally {
-            delegate.getInvokable(WrapperType.GUAVA_FUNCTION); // cleanup InvocationManager
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
         }
     }
+
+    interface SomeInterface {}
+    enum MyEnum {}
+    @Test
+    public void shouldKnowIfCanImposterize() throws Exception {
+        class SomeClass {}
+
+        assertFalse(factory.canImposterise(int.class));
+        assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
+        assertFalse(factory.canImposterise(SomeClass.class));
+
+        assertTrue(factory.canImposterise(SomeInterface.class));
+    }
+
 }

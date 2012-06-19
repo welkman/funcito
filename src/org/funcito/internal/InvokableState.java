@@ -17,40 +17,41 @@ package org.funcito.internal;
 
 import org.funcito.FuncitoException;
 
-class InvokableState {
-    private Invokable invokable = null;
-    
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+// TODO: probably rename InvokablesChain
+public class InvokableState {
+    private List<Invokable> invokablesList = new ArrayList<Invokable>();
+
     void put(Invokable invokable) {
         if (invokable == null) {
             throw new FuncitoException("Internal error: attempt to 'put' null invokable");
         }
-        if (isFull()) {
-            throw new FuncitoException("Internal error: consecutive attempts to 'put' invokable");            
+        if (!isAppendable()){
+            // TODO: maybe more intelligence in the error message(s) to output here, see also InvocationManager
+            throw new FuncitoException("Internal error: consecutive attempts to 'put' invokable");
         }
-        
-        this.invokable = invokable;
+
+        invokablesList.add(invokable);
     }
-   
-    Invokable get() {        
-        if (isEmpty()) {
-            throw new FuncitoException("Internal error: consecutive attempts to 'get' invokable");            
-        }
-        
-        Invokable result = invokable;        
-        invokable = null;
-        
-        return result;
+
+    public boolean isAppendable() {
+        return isEmpty() || invokablesList.get(invokablesList.size()-1).isChainable();
     }
+
+    boolean isPopulated() {
+        return !invokablesList.isEmpty();
+    }
+
+    public Iterator<Invokable> iterator() { return invokablesList.iterator(); }
     
-    boolean isFull() {
-        return invokable != null;
-    }
-    
-    boolean isEmpty() {
-        return invokable == null;
+    public boolean isEmpty() {
+        return invokablesList.isEmpty();
     }
     
     void clear() {
-        invokable = null;
+        invokablesList.clear();
     }
 }

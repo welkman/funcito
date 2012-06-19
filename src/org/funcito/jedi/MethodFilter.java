@@ -15,17 +15,35 @@
  */
 package org.funcito.jedi;
 
+import fj.data.vector.V;
 import jedi.functional.Filter;
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 public class MethodFilter<T> implements Filter<T> {
-    final protected Invokable<T,Boolean> invokable;
+    final private InvokableState state;
+    final private Invokable<T,V> firstInvokable;
+    final private boolean unchained;
 
-    public MethodFilter(Invokable<T, Boolean> initInvokable) {
-        this.invokable = initInvokable;
+    public MethodFilter(InvokableState state) {
+        this.state = state;
+        Iterator<Invokable> iter = state.iterator();
+        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.unchained = !iter.hasNext();
     }
 
     public Boolean execute(T from) {
-        return invokable.invoke(from);
+        Object retVal = firstInvokable.invoke(from);
+        if (unchained) {
+            return (Boolean)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        return (Boolean)retVal;
     }
 }

@@ -19,15 +19,13 @@ import java.lang.reflect.Method;
 
 import javassist.util.proxy.MethodHandler;
 
-import org.funcito.google.guava.common.base.Defaults;
-import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
+import org.funcito.internal.stub.ProxyMethodHandler;
 
 public class JavassistMethodHandler implements MethodHandler {
 
+    private final ProxyMethodHandler proxyMethodHandler = new ProxyMethodHandler();
+
     public Object invoke(Object proxyTarget, Method method, Method method1, Object[] bindArgs) throws Throwable {
-        new FuncitoDelegate().putInvokable(new Invokable(method, proxyTarget.getClass(), bindArgs));
-        
-        return Defaults.defaultValue(method.getReturnType());
+        return proxyMethodHandler.handleProxyMethod(proxyTarget, method, bindArgs);
     }
 }

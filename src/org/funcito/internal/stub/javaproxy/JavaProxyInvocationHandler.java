@@ -1,8 +1,6 @@
 package org.funcito.internal.stub.javaproxy;
 
-import org.funcito.google.guava.common.base.Defaults;
-import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
+import org.funcito.internal.stub.ProxyMethodHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -23,9 +21,9 @@ import java.lang.reflect.Method;
  * limitations under the License.
  */
 public class JavaProxyInvocationHandler implements InvocationHandler {
-    public Object invoke(Object proxyTarget, Method method, Object[] bindArgs) throws Throwable {
-        new FuncitoDelegate().putInvokable(new Invokable(method, proxyTarget.getClass(), bindArgs));
+    private final ProxyMethodHandler proxyMethodHandler = new ProxyMethodHandler();
 
-        return Defaults.defaultValue(method.getReturnType());
+    public Object invoke(Object proxyTarget, Method method, Object[] bindArgs) throws Throwable {
+        return proxyMethodHandler.handleProxyMethod(proxyTarget, method, bindArgs);
     }
 }

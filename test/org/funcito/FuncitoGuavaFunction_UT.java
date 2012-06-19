@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.funcito.FuncitoGuava.*;
@@ -20,12 +21,20 @@ public class FuncitoGuavaFunction_UT {
         public StringThing(String myString) { this.myString = myString; }
         public int size() { return myString.length(); }
         public String toString() { return myString; }
+        public StringThing plusABC() { return new StringThing(this.toString() + "ABC"); }
     }
 
     @Test
-    public void testFunctionFor_AssignToFunctionWithMatchingTypes() {
+    public void testFunctionFor_AssignToFunctionWithMatchingTypes() { // I.e. vanilla happy path
         Function<StringThing, Integer> superTypeRet = functionFor(CALLS_TO_STRING_THING.size());
         assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
+    }
+
+    @Test
+    public void testFunctionFor_RepeatedUsage() {
+        Function<StringThing, Integer> superTypeRet = functionFor(CALLS_TO_STRING_THING.size());
+        assertEquals(3, superTypeRet.apply(new StringThing("ABC")).intValue());
+        assertEquals(6, superTypeRet.apply(new StringThing("ABCDEF")).intValue());
     }
 
     @Test
@@ -62,14 +71,13 @@ public class FuncitoGuavaFunction_UT {
 
     @Test
     public void testFunctionFor_ValidateDetectsMismatchedGenericTypes() {
-        class Generic<T> {
-            public Integer getVal() { return 123; }
-        }
-        Function<Generic<String>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
-        Generic<Integer> integerGeneric = new Generic<Integer>();
+        Function<List<String>, Integer> stringListFunc = functionFor(callsTo(List.class).size());
+        List<Integer> integerList = new ArrayList<Integer>();
 
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        stringFunc.apply(integerGeneric);
+        // The below can't actually be compiled, which proves the test passes: compile time mismatch detection
+        // One of these days I hope to write the code to use JDK compiler to prove that the above compiles
+        // but the below does not.
+//        stringListFunc.apply(integerList);
     }
 
     @Test
@@ -84,15 +92,15 @@ public class FuncitoGuavaFunction_UT {
     }
 
     @Test
-    public void testFunctionFor_MethodChainingUnsupported() {
+    public void testFunctionFor_MethodChainingAttemptWithUnproxyableInterimType() {
         try {
             // NOTE: this test is a test that proves and documents a limitation of Funcito
-            // It may be possible to eliminate this restriction where each element in the chain is mockable.
+            // It may be possible to eliminate this restriction where each element in the chain is proxyable.
             functionFor(CALLS_TO_STRING_THING.toString().length());
             fail("Should have thrown NPE");
         } catch (NullPointerException e) {
             // cleanup aftermath of test
-            delegate().getInvokable(WrapperType.GUAVA_FUNCTION);
+            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
         }
 
     }
@@ -116,6 +124,31 @@ public class FuncitoGuavaFunction_UT {
 
         assertEquals("Zero", getElem0Func.apply(list));
         assertEquals("Two", getElem2Func.apply(list));
+    }
+
+    @Test
+    public void testFunctionFor_methodChain() {
+        Function<StringThing,Integer> f = functionFor(CALLS_TO_STRING_THING.plusABC().size());
+        StringThing before = new StringThing("XYZ");
+
+        int afterSize = f.apply(before);
+
+        assertEquals(6, afterSize);
+    }
+
+    @Test
+    public void testFunctionFor_methodChainMultipleCalls() {
+        Function<StringThing,Integer> f = functionFor(CALLS_TO_STRING_THING.plusABC().size());
+        StringThing before1 = new StringThing("XYZ");
+        StringThing before2 = new StringThing("XYZXYZ");
+
+        int afterSize = f.apply(before1);
+
+        assertEquals(6, afterSize);
+
+        afterSize = f.apply(before2);
+
+        assertEquals(9, afterSize);
     }
 }
 

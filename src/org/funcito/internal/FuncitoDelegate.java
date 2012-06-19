@@ -15,6 +15,7 @@
  */
 package org.funcito.internal;
 
+import org.funcito.FuncitoException;
 import org.funcito.internal.stub.StubFactory;
 
 public class FuncitoDelegate {
@@ -39,8 +40,12 @@ public class FuncitoDelegate {
     public void putInvokable(Invokable invokable) {
         getManager().pushInvokable(invokable);
     }
-    
-    public Invokable getInvokable(WrapperType wrapperType) {
-        return getManager().extractInvokable(wrapperType.toString());
+
+    public InvokableState extractInvokableState(WrapperType wrapperType) {
+        InvokableState state = getManager().extractState();
+        if (state.isEmpty()) {
+            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
+        }
+        return state;
     }
 }

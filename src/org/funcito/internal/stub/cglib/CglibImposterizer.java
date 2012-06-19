@@ -41,8 +41,7 @@ public class CglibImposterizer extends AbstractClassImposterizer {
 
     private ObjenesisStd objenesis = new ObjenesisStd();
 
-    private CglibImposterizer() {
-    }
+    private CglibImposterizer() {}
 
     private static final NamingPolicy NAMING_POLICY_THAT_ALLOWS_IMPOSTERISATION_OF_CLASSES_IN_SIGNED_PACKAGES = new CglibNamingPolicy() {
         @Override
@@ -51,17 +50,17 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         }
     };
 
-    public <T> T imposterise(final MethodInterceptor interceptor, Class<T> mockedType) {
+    public <T> T imposterise(final MethodInterceptor interceptor, Class<T> mockedType, Class<?>... additionalInterfaces) {
         try {
             setConstructorsAccessible(mockedType, true);
-            Class<?> proxyClass = createProxyClass(mockedType);
+            Class<?> proxyClass = createProxyClass(mockedType, additionalInterfaces);
             return mockedType.cast(createProxy(proxyClass, interceptor));
         } finally {
             setConstructorsAccessible(mockedType, false);
         }
     }
 
-    private <T> Class<?> createProxyClass(Class<?> mockedType) {
+    private <T> Class<?> createProxyClass(Class<?> mockedType, Class<?>... additionalInterfaces) {
         // NOTE: this was part of the original ClassImposterizer, but it doesn't seem to be needed
 //        if (mockedType == Object.class) {
 //            mockedType = ClassWithSuperclassToWorkAroundCglibBug.class;
@@ -78,8 +77,10 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         enhancer.setUseFactory(true);
         if (mockedType.isInterface()) {
             enhancer.setSuperclass(Object.class);
-            enhancer.setInterfaces(prepend(mockedType));
+            enhancer.setInterfaces(prepend(mockedType, additionalInterfaces));
         } else {
+            Class<?>[] addInterfaces = additionalInterfaces.length==0 ? null : additionalInterfaces;
+            enhancer.setInterfaces(addInterfaces);
             enhancer.setSuperclass(mockedType);
         }
 //        enhancer.setCallbackTypes(new Class[]{MethodInterceptor.class, NoOp.class});

@@ -31,8 +31,8 @@ public class FuncitoDelegate_UT {
     public void testPutGetInvokable_threadSafety() throws Exception {
         Method method1 = MyClass.class.getDeclaredMethod("getString1");
         Method method2 = MyClass.class.getDeclaredMethod("getString2");
-        final Invokable<MyClass,String> invokable1 = new Invokable<MyClass,String>(method1,MyClass.class);
-        final Invokable<MyClass,String> invokable2 = new Invokable<MyClass,String>(method2,MyClass.class);
+        final Invokable<MyClass,String> invokable1 = new Invokable<MyClass,String>(method1,MyClass.class,false);
+        final Invokable<MyClass,String> invokable2 = new Invokable<MyClass,String>(method2,MyClass.class,false);
         final Semaphore lock1 = new Semaphore(1, true);
         final Semaphore lock2 = new Semaphore(1, true);
         final Invokable<?,?>[] ret2 = new Invokable[1];
@@ -42,7 +42,7 @@ public class FuncitoDelegate_UT {
                     delegate.putInvokable(invokable2);
                     lock1.acquire();
                     lock2.release();
-                    ret2[0] = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+                    ret2[0] = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
                     lock1.release();
                 } catch (InterruptedException e) {
                     throw new RuntimeException();
@@ -58,7 +58,7 @@ public class FuncitoDelegate_UT {
         Thread t = new Thread(runnable);
         t.start();
         while (lock2.availablePermits()==0) {}
-        Invokable ret1 = delegate.getInvokable(WrapperType.GUAVA_FUNCTION);
+        Invokable ret1 = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertSame(invokable1, ret1);
         lock1.acquire();
         assertSame(invokable2, ret2[0]);

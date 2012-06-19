@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
 
 import static org.funcito.internal.WrapperType.GUAVA_PREDICATE;
 import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
@@ -25,17 +26,17 @@ import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
  */
 public class GuavaDelegate extends FuncitoDelegate {
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
-        final Invokable<T,V> invokable = getInvokable(GUAVA_FUNCTION);
-        return new MethodFunction<T, V>(invokable);
+        final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
+        return new MethodFunction<T, V>(state);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
-        final Invokable<T,Boolean> invokable = getInvokable(GUAVA_PREDICATE);
-        return new MethodPredicate<T>(invokable);
+        final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
+        return new MethodPredicate<T>(state);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        final Invokable<T,Boolean> invokable = getInvokable(GUAVA_PREDICATE);
-        return new DefaultableMethodPredicate<T>(invokable, defaultForNull);
+        final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
+        return new DefaultableMethodPredicate<T>(state, defaultForNull);
     }
 }

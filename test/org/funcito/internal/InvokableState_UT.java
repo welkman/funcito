@@ -1,12 +1,15 @@
 package org.funcito.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.funcito.FuncitoException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Deque;
+import java.util.Iterator;
+
+import static org.junit.Assert.*;
 
 /**
  * Copyright 2011 Project Funcito Contributors
@@ -27,51 +30,79 @@ public class InvokableState_UT {
 
     private InvokableState state = new InvokableState();
     private Invokable invokable = null;
-    
+    private Invokable invokable2 = null;
+
     @Before
     public void setUp() throws NoSuchMethodException {
         MockitoAnnotations.initMocks(this);
-        invokable = new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class);
+        invokable  = new Invokable<Deque,Object>(Deque.class.getMethod("pop"), Deque.class, true);
+        invokable2 = new Invokable<Object,String>(Object.class.getMethod("toString"), Object.class, false);
     }
 
     @Test
     public void testPut_Basic() {
         // test
         state.put(invokable);
-        assertTrue(state.isFull());
+        assertTrue(state.isPopulated());
     }
 
     @Test
-    public void testGet_Basic() {
-        state.put(invokable);
+    public void testIterator_empty() {
+        Iterator<Invokable> iter = state.iterator();
         
-        // test
-        Invokable result = state.get();
-        
-        assertTrue(state.isEmpty());
-        assertEquals(invokable, result);
-    }
-    
-    @Test(expected = FuncitoException.class)
-    public void testGet_Empty() {
-        // test
-        state.get();
+        assertFalse(iter.hasNext());
     }
 
-    @Test(expected = FuncitoException.class)
-    public void testGet_Twice() {
+    @Test
+    public void testIterator_one() {
         state.put(invokable);
-        assertTrue(state.isFull());
-        state.get();        
-        // test
-        state.get();
+
+        Iterator<Invokable> iter = state.iterator();
+
+        assertTrue(iter.hasNext());
+        assertEquals(invokable, iter.next());
+        assertFalse(iter.hasNext());
     }
-    
-    @Test(expected = FuncitoException.class)
-    public void testPut_Twice() {
+
+    @Test
+    public void testIterator_repeatable() {
         state.put(invokable);
+
+        Iterator<Invokable> iter = state.iterator();
+
+        assertTrue(iter.hasNext());
+        assertEquals(invokable, iter.next());
+        assertFalse(iter.hasNext());
+
+        iter = state.iterator(); // get a fresh iterator
+
+        assertTrue(iter.hasNext());
+        assertEquals(invokable, iter.next());
+        assertFalse(iter.hasNext());
+    }
+
+    @Test
+    public void testIterator_multiWhenChainable() {
+        assertTrue(invokable.isChainable());
+        state.put(invokable);
+        state.put(invokable2);
+
+        Iterator<Invokable> iter = state.iterator();
+
+        assertTrue(iter.hasNext());
+        assertSame(invokable, iter.next());
+
+        assertTrue(iter.hasNext());
+        assertSame(invokable2, iter.next());
+        assertFalse(iter.hasNext());
+    }
+
+
+    @Test(expected = FuncitoException.class)
+    public void testPut_multiWhenUnchainable() {
+        assertFalse(invokable2.isChainable());
+        state.put(invokable2);
         // put
         state.put(invokable);
     }
-
 }

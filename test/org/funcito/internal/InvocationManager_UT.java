@@ -25,50 +25,50 @@ import static junit.framework.Assert.*;
  */
 public class InvocationManager_UT {
 
-    public static final String DUMMY_ARG = "WrapperType string for error logging only";
     private InvocationManager mgr = new InvocationManager();
 
     @Test
     public void testPushInvocation_noArgMethodAllowed() throws NoSuchMethodException {
         Method method = List.class.getMethod("size");
         assertEquals(0, method.getParameterTypes().length);
-        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class);
+        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class, false);
 
         mgr.pushInvokable(invokable);
 
-        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
+        assertSame(invokable, mgr.extractState().iterator().next());
     }
 
     @Test
     public void testPushInvocation_oneArgMethodAllowed() throws NoSuchMethodException {
         Method method = List.class.getMethod("get", int.class );
         assertEquals(1, method.getParameterTypes().length);
-        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class, 0);
+        Invokable<List, Object> invokable = new Invokable<List, Object>(method, List.class, true, 0);
 
         mgr.pushInvokable(invokable);
 
-        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
+        assertSame(invokable, mgr.extractState().iterator().next());
     }
 
     @Test
     public void testPushInvocation_multiArgMethodAllowed() throws NoSuchMethodException {
         Method method = CharSequence.class.getMethod("subSequence", int.class, int.class );
         assertEquals(2, method.getParameterTypes().length);
-        Invokable<CharSequence, CharSequence> invokable = new Invokable<CharSequence, CharSequence>(method, CharSequence.class, 1, 2);
+        Invokable<CharSequence, CharSequence> invokable = new Invokable<CharSequence, CharSequence>(method, CharSequence.class, true, 1, 2);
 
         mgr.pushInvokable(invokable);
 
-        assertSame(invokable, mgr.extractInvokable(DUMMY_ARG));
+        assertSame(invokable, mgr.extractState().iterator().next());
     }
 
     @Test(expected = FuncitoException.class)
     public void testPushInvocation_multiCallsNotAllowed() throws NoSuchMethodException {
-        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class));
-        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class));
+        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class, false));
+        mgr.pushInvokable(new Invokable<Object,String>(Class.class.getMethod("getName"), Object.class, false));
     }
     
-    @Test(expected = FuncitoException.class)
-    public void testExtractInvokable_cannotCallWhenEmpty() {
-        mgr.extractInvokable("");
+    @Test
+    public void testExtractInvokable_canCallWhenEmpty() {
+        InvokableState state = mgr.extractState();
+        assertTrue(state.isEmpty());
     }
 }

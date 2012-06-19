@@ -19,23 +19,22 @@ import org.funcito.FuncitoException;
 
 class InvocationManager {
 
-    private final InvokableState state = new InvokableState();
+    private InvokableState state = new InvokableState();
 
     void pushInvokable(Invokable invokable) {
-        if (state.isFull()) {
+        if (!state.isAppendable()) {
+            // TODO: maybe more intelligence in the error message(s) to output here, see also InvocationManager
             throwEx("A method call to a Funcito stub was detected outside of acceptable scope.  This likely means you attempted to invoke methods on the stub without wrapping it in one of the Funcito static wrapping methods.");
         }
         state.put(invokable);
     }
 
-    Invokable extractInvokable(String wrapperType) {
-        if (state.isEmpty()) {
-            throwEx("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
-        }
-        
-        return state.get();
+    public InvokableState extractState() {
+        InvokableState oldState = this.state;
+        state = new InvokableState();
+        return oldState;
     }
-    
+
     private void throwEx(String msg) {
         state.clear();
         throw new FuncitoException(msg);

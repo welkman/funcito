@@ -20,15 +20,13 @@ import java.lang.reflect.Method;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.funcito.google.guava.common.base.Defaults;
-import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
+import org.funcito.internal.stub.ProxyMethodHandler;
 
 public class CglibMethodInterceptor implements MethodInterceptor {
-    public Object intercept(Object proxyTarget, Method method, Object[] bindArgs, MethodProxy methodProxy) throws Throwable {
-        new FuncitoDelegate().putInvokable(new Invokable(method, proxyTarget.getClass(), bindArgs));
+    private final ProxyMethodHandler proxyMethodHandler = new ProxyMethodHandler();
 
-        return Defaults.defaultValue(method.getReturnType());
+    public Object intercept(Object proxyTarget, Method method, Object[] bindArgs, MethodProxy methodProxy) throws Throwable {
+        return proxyMethodHandler.handleProxyMethod(proxyTarget, method, bindArgs);
     }
 
 }

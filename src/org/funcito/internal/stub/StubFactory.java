@@ -18,6 +18,7 @@ package org.funcito.internal.stub;
 
 import org.funcito.internal.stub.utils.StubUtils;
 
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,14 +44,18 @@ public abstract class StubFactory {
         instance = null;
     }
 
-    public <T> T stub(Class<T> clazz) {
+    public <T> T stub(Class<T> clazz, Class<?>... additionalInterfaces) {
         T stub = clazz.cast(stubsCache.get(clazz));
-        if (stub == null) {
-            stub = stubImpl(clazz);
+        if (stub == null || (additionalInterfaces!=null && additionalInterfaces.length>0)) {
+            stub = stubImpl(clazz, additionalInterfaces);
             stubsCache.put(clazz, stub);
         }
         return stub;
     }
 
-    protected abstract <T> T stubImpl(Class<T> clazz);
+    protected abstract <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces);
+
+    public boolean canImposterise(Class<?> type) {
+        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
+    }
 }

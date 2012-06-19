@@ -1,6 +1,9 @@
 package org.funcito.guava;
 
 import org.funcito.internal.Invokable;
+import org.funcito.internal.InvokableState;
+
+import java.util.Iterator;
 
 /*
  * Copyright 2011 Project Funcito Contributors
@@ -20,14 +23,21 @@ import org.funcito.internal.Invokable;
 public class DefaultableMethodPredicate<T> extends MethodPredicate<T> {
     private boolean defaultForNull;
 
-    public DefaultableMethodPredicate(Invokable<T, Boolean> initInvokable, boolean defaultForNull) {
-        super(initInvokable);
+    public DefaultableMethodPredicate(InvokableState state, boolean defaultForNull) {
+        super(state);
         this.defaultForNull = defaultForNull;
     }
 
-    @Override
     public boolean apply(T from) {
-        Boolean value = invokable.invoke(from);
-        return (value==null) ? defaultForNull : value;
+        Object retVal = firstInvokable.invoke(from);
+        if (unchained) {
+            return (retVal==null) ? defaultForNull : (Boolean)retVal;
+        }
+        Iterator<Invokable> iter = state.iterator();
+        iter.next(); // skip the head which has already been processed
+        while (iter.hasNext()) {
+            retVal = iter.next().invoke(retVal);
+        }
+        return (retVal==null) ? defaultForNull : (Boolean)retVal;
     }
 }
