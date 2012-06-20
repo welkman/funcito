@@ -85,24 +85,11 @@ public class FuncitoGuavaFunction_UT {
         class Generic<T> {
             public Integer getVal() { return 123; }
         }
-        Function<Generic<? extends Object>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
-        Generic<Integer> integerGeneric = new Generic<Integer>();
+        class AnyOldClass{}
+        Function<Generic<?>, Integer> stringFunc = functionFor(callsTo(Generic.class).getVal());
+        Generic<AnyOldClass> anyOldGeneric = new Generic<AnyOldClass>();
 
-        assertEquals(123, stringFunc.apply(integerGeneric).intValue());
-    }
-
-    @Test
-    public void testFunctionFor_MethodChainingAttemptWithUnproxyableInterimType() {
-        try {
-            // NOTE: this test is a test that proves and documents a limitation of Funcito
-            // It may be possible to eliminate this restriction where each element in the chain is proxyable.
-            functionFor(CALLS_TO_STRING_THING.toString().length());
-            fail("Should have thrown NPE");
-        } catch (NullPointerException e) {
-            // cleanup aftermath of test
-            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
-        }
-
+        assertEquals(123, stringFunc.apply(anyOldGeneric).intValue());
     }
 
     @Test
@@ -149,6 +136,20 @@ public class FuncitoGuavaFunction_UT {
         afterSize = f.apply(before2);
 
         assertEquals(9, afterSize);
+    }
+
+    @Test
+    public void testFunctionFor_MethodChainingAttemptWithUnproxyableInterimType() {
+        try {
+            // NOTE: this test is a test that proves and documents a limitation of Funcito
+            // It may be possible to eliminate this restriction where each element in the chain is proxyable.
+            functionFor(CALLS_TO_STRING_THING.toString().length());
+            fail("Should have thrown NPE");
+        } catch (NullPointerException e) {
+            // cleanup aftermath of test
+            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
+        }
+
     }
 }
 

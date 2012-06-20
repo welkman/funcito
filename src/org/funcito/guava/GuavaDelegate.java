@@ -3,7 +3,6 @@ package org.funcito.guava;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
 
 import static org.funcito.internal.WrapperType.GUAVA_PREDICATE;
