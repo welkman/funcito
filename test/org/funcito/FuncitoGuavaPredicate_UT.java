@@ -2,7 +2,6 @@ package org.funcito;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -111,7 +110,6 @@ public class FuncitoGuavaPredicate_UT {
         assertFalse( boolInstancePred.apply(falseThing) ); // does not return true because operator not captured
     }
 
-    @Ignore // Having problems with type erasure on Generics, now that stub does not return null for Objects
     @Test
     public void testPredicateFor_SingleArgBinding() {
         List<Boolean> CALLS_TO_LIST = callsTo(List.class);

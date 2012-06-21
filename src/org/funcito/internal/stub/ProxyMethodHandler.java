@@ -20,23 +20,35 @@ import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.Invokable;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
 
 public class ProxyMethodHandler {
-    public ProxyMethodHandler() {
-    }
 
     public Object handleProxyMethod(Object proxyTarget, Method method, Object[] bindArgs) {
         boolean chainable = false;
-        Object retVal = Defaults.defaultValue(method.getReturnType());
-        if (retVal == null) {
+        Class<?> returnType = method.getReturnType();
+        // Try to generate a default Primitive-wrapper return value for primitive return types
+        Object retVal = Defaults.defaultValue(returnType);
+        // if not primitive see if return type is candidate for proxying, to support chaining
+        if (retVal == null && returnTypeIsNotGenericTypeVariable(method)) {
             StubFactory factory = StubFactory.instance();
-            if (factory.canImposterise(method.getReturnType())) {
-                retVal = factory.stub(method.getReturnType(), ProxyReturnValue.class);
+            if (factory.canImposterise(returnType)) {
+                retVal = factory.stub(returnType, ProxyReturnValue.class);
                 chainable = true;
             }
         }
         Invokable invokable = new Invokable(method, proxyTarget.getClass(), chainable, bindArgs);
         new FuncitoDelegate().putInvokable(invokable);
         return retVal;
+    }
+
+    // GenericTypeVariable return types (i.e. returns <T>) indicate that at runtime, type-erasure would
+    // cause proxying of the return type, resulting in a proxy of Object.class.  That causes an assignment
+    // typecast error in the wrapping-code for non-chained methods, AND for chained methods it causes a
+    // method not found error.  So we cut our losses by not proxying this kind of return type and instead
+    // default to null.  Now non-chained calls will continue to work.  But chained method calls with
+    // GenericTypeVariable return types will generate NPE.
+    private boolean returnTypeIsNotGenericTypeVariable(Method method) {
+        return ! (method.getGenericReturnType() instanceof TypeVariable);
     }
 }
