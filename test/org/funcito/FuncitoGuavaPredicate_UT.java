@@ -2,6 +2,7 @@ package org.funcito;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.funcito.internal.WrapperType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class FuncitoGuavaPredicate_UT {
 
+    public static final BooleanThing CALL_TO_BOOL_THING = callsTo(BooleanThing.class);
     @Rule
     public ExpectedException thrown= ExpectedException.none();
 
@@ -22,24 +24,26 @@ public class FuncitoGuavaPredicate_UT {
         public BooleanThing(Boolean myVal) { this.myVal = myVal; }
 
         public Boolean getVal() { return myVal; }
+
+        public BooleanThing invert() { return new BooleanThing(!myVal.booleanValue());}
     }
 
     @Test
     public void testPredicateFor__AssignToPredicateWithMatchingTypes() { // I.e. vanilla happy path
-        Predicate<BooleanThing> superTypeRet = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<BooleanThing> superTypeRet = predicateFor(CALL_TO_BOOL_THING.getVal());
         assertTrue(superTypeRet.apply(new BooleanThing(true)));
     }
 
     @Test
     public void testPredicateFor_RepeatedUsage() {
-        Predicate<BooleanThing> superTypeRet = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<BooleanThing> superTypeRet = predicateFor(CALL_TO_BOOL_THING.getVal());
         assertTrue(superTypeRet.apply(new BooleanThing(true)));
         assertFalse(superTypeRet.apply(new BooleanThing(false)));
     }
 
     @Test
     public void testPredicateFor_AssignToPredicateWithSourceSuperType() {
-        Predicate<Object> superTypeRet = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<Object> superTypeRet = predicateFor(CALL_TO_BOOL_THING.getVal());
         assertTrue(superTypeRet.apply(new BooleanThing(true)));
     }
 
@@ -81,7 +85,7 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testApply_ReturnNullBooleanWrapper() {
-        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal());
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal());
         BooleanThing nullThing = new BooleanThing(null);
 
         thrown.expect(FuncitoException.class);
@@ -93,21 +97,20 @@ public class FuncitoGuavaPredicate_UT {
     public void testPredicateFor_SafeVersion() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        Predicate<BooleanThing> pred = predicateFor(callsTo(BooleanThing.class).getVal(), true);
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), true);
         assertTrue(pred.apply(nullThing));
 
         // do the same test for "false"
-        pred = predicateFor(callsTo(BooleanThing.class).getVal(), false);
+        pred = predicateFor(CALL_TO_BOOL_THING.getVal(), false);
         assertFalse(pred.apply(nullThing));
     }
 
     @Test
     public void testFunctionFor_ExpressionsWithOperatorsAreUnsupported() {
-        Predicate<BooleanThing> boolInstancePred = predicateFor( callsTo(BooleanThing.class).getVal() instanceof Boolean);
-        BooleanThing falseThing = new BooleanThing(false);
+        Predicate<BooleanThing> boolInstancePred = predicateFor( CALL_TO_BOOL_THING.getVal() instanceof Boolean);
 
         // NOTE: this test is a test that proves and documents a limitation of Funcito
-        assertFalse( boolInstancePred.apply(falseThing) ); // does not return true because operator not captured
+        assertFalse( boolInstancePred.apply(new BooleanThing(false)) ); // does not return true because operator not captured
     }
 
     @Test
@@ -119,6 +122,35 @@ public class FuncitoGuavaPredicate_UT {
         List<Boolean> list = Lists.newArrayList(true, false);
         assertTrue(item0Pred.apply(list));
         assertFalse(item1Pred.apply(list));
+    }
+
+    @Test
+    public void testPredicateFor_methodChain() {
+        Predicate<BooleanThing> invertValPred = predicateFor(CALL_TO_BOOL_THING.invert().getVal());
+
+        assertTrue(invertValPred.apply(new BooleanThing(false)));
+        assertFalse(invertValPred.apply(new BooleanThing(true)));
+    }
+
+    @Test
+    public void testPredicateFor_methodMultiChain() {
+        Predicate<BooleanThing> doubleInvertValPred = predicateFor(CALL_TO_BOOL_THING.invert().invert().getVal());
+
+        assertTrue(doubleInvertValPred.apply(new BooleanThing(true)));
+        assertFalse(doubleInvertValPred.apply(new BooleanThing(false)));
+    }
+
+    @Test
+    public void testPredicateFor_MethodChainingAttemptWithUnproxyableInterimType() {
+        try {
+            // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
+            // is final, hence non-proxyable
+            predicateFor(CALL_TO_BOOL_THING.toString().isEmpty());
+            fail("Should have thrown NPE");
+        } catch (NullPointerException e) {
+            // cleanup aftermath of test
+            delegate().extractInvokableState(WrapperType.GUAVA_PREDICATE);
+        }
     }
 
     class PrimitiveBoolRetGeneric<T> {

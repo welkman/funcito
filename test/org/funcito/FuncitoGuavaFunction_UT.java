@@ -115,41 +115,35 @@ public class FuncitoGuavaFunction_UT {
 
     @Test
     public void testFunctionFor_methodChain() {
-        Function<StringThing,Integer> f = functionFor(CALLS_TO_STRING_THING.plusABC().size());
-        StringThing before = new StringThing("XYZ");
+        Function<StringThing,Integer> sizePlus3Func = functionFor(CALLS_TO_STRING_THING.plusABC().size());
+        StringThing origLength3 = new StringThing("123");
+        StringThing origLength6 = new StringThing("123456");
 
-        int afterSize = f.apply(before);
-
-        assertEquals(6, afterSize);
+        assertEquals(6, (int)sizePlus3Func.apply(origLength3));
+        assertEquals(9, (int) sizePlus3Func.apply(origLength6));
     }
 
     @Test
-    public void testFunctionFor_methodChainMultipleCalls() {
-        Function<StringThing,Integer> f = functionFor(CALLS_TO_STRING_THING.plusABC().size());
-        StringThing before1 = new StringThing("XYZ");
-        StringThing before2 = new StringThing("XYZXYZ");
+    public void testFunctionFor_methodMultiChain() {
+        Function<StringThing,Integer> sizePlus3Plus3Func = functionFor(CALLS_TO_STRING_THING.plusABC().plusABC().size());
+        StringThing origLength3 = new StringThing("123");
+        StringThing origLength6 = new StringThing("123456");
 
-        int afterSize = f.apply(before1);
-
-        assertEquals(6, afterSize);
-
-        afterSize = f.apply(before2);
-
-        assertEquals(9, afterSize);
+        assertEquals(9, (int)sizePlus3Plus3Func.apply(origLength3));
+        assertEquals(12, (int) sizePlus3Plus3Func.apply(origLength6));
     }
 
     @Test
     public void testFunctionFor_MethodChainingAttemptWithUnproxyableInterimType() {
         try {
-            // NOTE: this test is a test that proves and documents a limitation of Funcito
-            // It may be possible to eliminate this restriction where each element in the chain is proxyable.
+            // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
+            // is final, hence non-proxyable
             functionFor(CALLS_TO_STRING_THING.toString().length());
             fail("Should have thrown NPE");
         } catch (NullPointerException e) {
             // cleanup aftermath of test
             delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
         }
-
     }
 }
 
