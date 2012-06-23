@@ -22,17 +22,12 @@
 package org.funcito.internal.stub;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 
 /**
  * Thanks to Mockito guys (and indirectly, jMock) for this handy class that wraps all the cglib magic.
- * The orginal class has been divided between here and CglibImposterizer (and mimicked in JavassistImposterizer)
+ * The original class has been divided between here and CglibImposterizer (and mimicked in JavassistImposterizer)
  */
 abstract public class AbstractClassImposterizer {
-
-    public boolean canImposterise(Class<?> type) {
-        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
-    }
 
     protected void setConstructorsAccessible(Class<?> mockedType, boolean accessible) {
         for (Constructor<?> constructor : mockedType.getDeclaredConstructors()) {
