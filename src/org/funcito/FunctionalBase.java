@@ -20,20 +20,20 @@ import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-// TODO: probably write UT class
 public class FunctionalBase<T, V> {
     final protected InvokableState state;
-    final protected Invokable<T,V> firstInvokable;
+    final protected Invokable<T,?> firstInvokable;
     final protected boolean unchained;
 
     public FunctionalBase(InvokableState state) {
         this.state = state;
         Iterator<Invokable> iter = state.iterator();
-        this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
+        this.firstInvokable = iter.next(); // for performance for unchained invocations, extract ahead of time
         this.unchained = !iter.hasNext();
     }
 
     public V applyImpl(T from) {
+        // unroll the first loop, to provide performance for the "90%": unchained wrapped methods
         Object retVal = firstInvokable.invoke(from);
         if (unchained) {
             validateReturnValue(retVal);

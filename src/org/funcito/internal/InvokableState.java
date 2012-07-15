@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// TODO: probably write a UT class, especially, re: chaining and null Invokable
-// TODO: probably rename InvokablesChain
+// TODO: maybe rename InvokablesChain
 public class InvokableState {
     private List<Invokable> invokablesList = new ArrayList<Invokable>();
 
@@ -37,7 +36,9 @@ public class InvokableState {
         }
 
         if (!isEmpty()) {
+            // validate attempt to chain
             Object tail = invokablesList.get(invokablesList.size()-1).getRetVal();
+            // tail of chain must exactly match the target of next call
             if (tail!=invokable.getTarget()) {
                 throw new FuncitoException("Registered a proxy method call that was not chained to the result " +
                         "of previous proxy method call.\n  This was likely due to one or more accidental calls to a Funcito proxy" +
@@ -46,13 +47,7 @@ public class InvokableState {
         }
     }
 
-    boolean isPopulated() {
-        return !invokablesList.isEmpty();
-    }
-
     public Iterator<Invokable> iterator() { return invokablesList.iterator(); }
     
-    public boolean isEmpty() {
-        return invokablesList.isEmpty();
-    }
+    public boolean isEmpty() { return invokablesList.isEmpty(); }
 }

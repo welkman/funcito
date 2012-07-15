@@ -5,7 +5,6 @@ import org.funcito.internal.Invokable;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
-import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;

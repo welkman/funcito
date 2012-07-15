@@ -40,7 +40,7 @@ public class InvokableState_UT {
     public void testPut_Basic() {
         // test
         state.put(invokable);
-        assertTrue(state.isPopulated());
+        assertFalse(state.isEmpty());
     }
 
     @Test
