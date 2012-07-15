@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.guava;
-
-import com.google.common.base.Function;
+package org.funcito;
 
 import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-public class MethodFunction<T, V> implements Function<T,V> {
-    final private InvokableState state;
-    final private Invokable<T,V> firstInvokable;
-    final private boolean unchained;
+// TODO: probably write UT class
+public class FunctionalBase<T, V> {
+    final protected InvokableState state;
+    final protected Invokable<T,V> firstInvokable;
+    final protected boolean unchained;
 
-    public MethodFunction(InvokableState state) {
+    public FunctionalBase(InvokableState state) {
         this.state = state;
         Iterator<Invokable> iter = state.iterator();
         this.firstInvokable = iter.next(); // for efficiency for unchained invocations, extract ahead of time
         this.unchained = !iter.hasNext();
     }
 
-    public V apply(T from) {
-        Object retVal = (V) firstInvokable.invoke(from);
+    public V applyImpl(T from) {
+        Object retVal = firstInvokable.invoke(from);
         if (unchained) {
+            validateReturnValue(retVal);
             return (V)retVal;
         }
         Iterator<Invokable> iter = state.iterator();
@@ -44,6 +44,10 @@ public class MethodFunction<T, V> implements Function<T,V> {
         while (iter.hasNext()) {
             retVal = iter.next().invoke(retVal);
         }
+        validateReturnValue(retVal);
         return (V)retVal;
     }
+
+    protected void validateReturnValue(Object retVal) {}; //default action is nothing
+
 }

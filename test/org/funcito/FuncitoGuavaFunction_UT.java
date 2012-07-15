@@ -3,6 +3,7 @@ package org.funcito;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.funcito.internal.WrapperType;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,6 +23,14 @@ public class FuncitoGuavaFunction_UT {
         public int size() { return myString.length(); }
         public String toString() { return myString; }
         public StringThing plusABC() { return new StringThing(this.toString() + "ABC"); }
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            // cleanup aftermath of failed tests
+            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
+        } catch (Throwable t) {}
     }
 
     @Test
@@ -67,6 +76,24 @@ public class FuncitoGuavaFunction_UT {
         }
         Function<PrimitiveIntRet, Integer> primIntFunc = functionFor(callsTo(PrimitiveIntRet.class).getVal());
         assertEquals(123, primIntFunc.apply(new PrimitiveIntRet()).intValue());
+    }
+
+    @Test
+    public void testFunctionFor_MethodHasNonPrimitiveArrayRetType() {
+        class NonPrimArrayRet {
+            public Object[] getVal() { return new Object[] {"ABC", Integer.MAX_VALUE}; }
+        }
+        Function<NonPrimArrayRet, Object[]> wrapperIntFunc = functionFor(callsTo(NonPrimArrayRet.class).getVal());
+        assertEquals(2, wrapperIntFunc.apply(new NonPrimArrayRet()).length);
+    }
+
+    @Test
+    public void testFunctionFor_MethodHasPrimitiveArrayRetType() {
+        class PrimArrayRet {
+            public int[] getVal() { return new int[] {1,2,3}; }
+        }
+        Function<PrimArrayRet, int[]> wrapperIntFunc = functionFor(callsTo(PrimArrayRet.class).getVal());
+        assertEquals(3, wrapperIntFunc.apply(new PrimArrayRet()).length);
     }
 
     @Test
@@ -133,17 +160,11 @@ public class FuncitoGuavaFunction_UT {
         assertEquals(12, (int) sizePlus3Plus3Func.apply(origLength6));
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testFunctionFor_MethodChainingAttemptWithUnproxyableInterimType() {
-        try {
-            // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
-            // is final, hence non-proxyable
-            functionFor(CALLS_TO_STRING_THING.toString().length());
-            fail("Should have thrown NPE");
-        } catch (NullPointerException e) {
-            // cleanup aftermath of test
-            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
-        }
+        // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
+        // is final, hence non-proxyable
+        functionFor(CALLS_TO_STRING_THING.toString().length());
     }
 }
 

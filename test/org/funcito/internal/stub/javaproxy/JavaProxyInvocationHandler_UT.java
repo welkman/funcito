@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /*
  * Copyright 2012 Project Funcito Contributors
@@ -42,7 +40,7 @@ public class JavaProxyInvocationHandler_UT {
         Object o = handler.invoke(new ArrayList<Object>(), intArgMethod, new Object[] {1});
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("get", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".List.get("));
     }
 
     @Test
@@ -52,18 +50,18 @@ public class JavaProxyInvocationHandler_UT {
         Iterator<Object> i = (Iterator<Object>)handler.invoke(new ArrayList<Object>(), iteratorMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("iterator", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".List.iterator("));
         assertNotNull(i);
     }
 
     @Test
     public void testInvoke_noArgMethodReturningNonPrimitiveFinal() throws Throwable {
-        Method stringMethod = Number.class.getMethod("toString");
+        Method stringMethod = Object.class.getMethod("toString");
 
         String s = (String)handler.invoke(aNumber, stringMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("toString", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Object.toString("));
         assertNull(s); // return type String is final, may not be proxied for chaining
     }
 
@@ -74,7 +72,7 @@ public class JavaProxyInvocationHandler_UT {
         int fakeInt = (Integer)handler.invoke(aNumber, intMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("intValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.intValue("));
     }
 
     @Test
@@ -84,7 +82,7 @@ public class JavaProxyInvocationHandler_UT {
         float fakeFloat = (Float)handler.invoke(aNumber, floatMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("floatValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.floatValue("));
     }
 
     @Test
@@ -94,7 +92,7 @@ public class JavaProxyInvocationHandler_UT {
         long fakeLong = (Long)handler.invoke(aNumber, longMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("longValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.longValue("));
     }
 
     @Test
@@ -104,7 +102,7 @@ public class JavaProxyInvocationHandler_UT {
         double fakeDouble = (Double)handler.invoke(aNumber, doubleMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("doubleValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.doubleValue("));
     }
 
     @Test
@@ -114,7 +112,7 @@ public class JavaProxyInvocationHandler_UT {
         short fakeShort = (Short)handler.invoke(aNumber, shortMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("shortValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.shortValue("));
     }
 
     @Test
@@ -124,7 +122,7 @@ public class JavaProxyInvocationHandler_UT {
         byte fakeByte = (Byte)handler.invoke(aNumber, byteMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("byteValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.byteValue("));
     }
 
     @Test
@@ -134,6 +132,6 @@ public class JavaProxyInvocationHandler_UT {
         boolean fakeBoolean = (Boolean)handler.invoke(Class.class, booleanMethod, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("isInterface", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Class.isInterface("));
     }
 }

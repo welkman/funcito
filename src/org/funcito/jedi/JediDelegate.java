@@ -25,11 +25,11 @@ import static org.funcito.internal.WrapperType.*;
 public class JediDelegate extends FuncitoDelegate {
     public <T,V> Functor<T,V> functorFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
-        return new MethodFunctor<T, V>(state);
+        return new JediFunctor<T, V>(state);
     }
 
     public <T> Filter<T> filterFor(Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(JEDI_FILTER);
-        return new MethodFilter<T>(state);
+        return new JediFilter<T>(state);
     }
 }

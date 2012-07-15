@@ -21,24 +21,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// TODO: probably write a UT class, especially, re: chaining and null Invokable
 // TODO: probably rename InvokablesChain
 public class InvokableState {
     private List<Invokable> invokablesList = new ArrayList<Invokable>();
 
     void put(Invokable invokable) {
-        if (invokable == null) {
-            throw new FuncitoException("Internal error: attempt to 'put' null invokable");
-        }
-        if (!isAppendable()){
-            // TODO: maybe more intelligence in the error message(s) to output here, see also InvocationManager
-            throw new FuncitoException("Internal error: consecutive attempts to 'put' invokable");
-        }
-
+        validate(invokable);
         invokablesList.add(invokable);
     }
 
-    public boolean isAppendable() {
-        return isEmpty() || invokablesList.get(invokablesList.size()-1).isChainable();
+    private void validate(Invokable invokable) {
+        if (invokable == null) {
+            throw new FuncitoException("Internal error: attempt to 'put' null invokable");
+        }
+
+        if (!isEmpty()) {
+            Object tail = invokablesList.get(invokablesList.size()-1).getRetVal();
+            if (tail!=invokable.getTarget()) {
+                throw new FuncitoException("Registered a proxy method call that was not chained to the result " +
+                        "of previous proxy method call.\n  This was likely due to one or more accidental calls to a Funcito proxy" +
+                        " outside of one of the \"functionFor()\"-like methods");
+            }
+        }
     }
 
     boolean isPopulated() {
@@ -49,9 +54,5 @@ public class InvokableState {
     
     public boolean isEmpty() {
         return invokablesList.isEmpty();
-    }
-    
-    void clear() {
-        invokablesList.clear();
     }
 }

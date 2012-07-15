@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal;
+package org.funcito.jedi;
 
-class InvocationManager {
+import jedi.functional.Functor;
+import org.funcito.FunctionalBase;
+import org.funcito.internal.InvokableState;
 
-    private InvokableState state = new InvokableState();
+public class JediFunctor<T, V> implements Functor<T,V> {
 
-    void pushInvokable(Invokable invokable) {
-        state.put(invokable);
+    private FunctionalBase<T,V> functionalBase;
+
+    public JediFunctor(InvokableState state) {
+        functionalBase = new FunctionalBase<T, V>(state);
     }
 
-    public InvokableState extractState() {
-        InvokableState oldState = this.state;
-        state = new InvokableState();
-        return oldState;
+    public V execute(T from) {
+        return functionalBase.applyImpl(from);
     }
 }

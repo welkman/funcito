@@ -23,21 +23,22 @@ import java.lang.reflect.Method;
 public class Invokable<T,V> {
 
     private Method method;
+    private T target;
+    private V retVal;
     private Class<T> targetClass;
     private Object[] bindArgs;
-    private boolean chainable;
 
-    public Invokable(Method method, Class<T> targetClass, boolean chainable, Object... bindArgs) {
+    public Invokable(Method method, T target, V retVal, Object... bindArgs) {
         method.setAccessible(true);
         this.method = method;
-        this.targetClass = targetClass;
+        this.target = target;
+        this.retVal = retVal;
+        this.targetClass = (Class<T>)target.getClass();
         this.bindArgs = bindArgs;
-        this.chainable = chainable;
     }
 
-    public boolean isChainable() {
-        return chainable;
-    }
+    public Object getTarget() { return this.target; }
+    public Object getRetVal() { return this.retVal; }
 
     @SuppressWarnings("unchecked")
     public V invoke(T target) {
@@ -45,20 +46,31 @@ public class Invokable<T,V> {
             return (V) method.invoke(target, bindArgs);
         } catch (InvocationTargetException e) {
             throw new FuncitoException("Caught throwable " + e.getCause().getClass().getName() +
-                " invoking Funcito Invokable for Method " +
-                target.getClass().getName() + "." + getMethodName() + "()", e);
+                    " \n" +
+                    "while invoking Funcito Invokable for method " + getMethodName(), e);
         } catch (Throwable e) {
             if (e instanceof IllegalArgumentException && !targetClass.isInstance(target)) {
-                throw new FuncitoException("You attempted to invoke method " +
-                        target.getClass().getName() + "." + getMethodName() + "() " +
-                        "but defined Funcito invokable was for method " +
-                        targetClass.getName() +  "." + getMethodName() + "() ", e);
+                throw new FuncitoException("You attempted to invoke method " + getInvokedMethodName(target)+
+                        " \n" +
+                        "but defined Funcito invokable was for method " + getMethodName() +
+                        ". \n" +
+                        "Probable Cause: identical method signatures not inherited from common base class", e);
             }
             throw new FuncitoException("Caught throwable " + e.getClass().getName() +
-                    " invoking Funcito Invokable for Method " +
-                    target.getClass().getName() + "." + getMethodName() + "()", e);
+                    " \n" +
+                    "while invoking Funcito Invokable for method " + getMethodName(), e);
         }
     }
 
-    public String getMethodName() { return method.getName(); }
+    private String getInvokedMethodName(Object invokedTarget) {
+        Method m = null;
+        try {
+            m = invokedTarget.getClass().getMethod(method.getName());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return m.toGenericString();
+    }
+
+    public String getMethodName() { return method.toGenericString(); }
 }

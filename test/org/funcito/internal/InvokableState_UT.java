@@ -1,12 +1,10 @@
 package org.funcito.internal;
 
-import org.funcito.FuncitoException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Deque;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -30,13 +28,12 @@ public class InvokableState_UT {
 
     private InvokableState state = new InvokableState();
     private Invokable invokable = null;
-    private Invokable invokable2 = null;
 
     @Before
     public void setUp() throws NoSuchMethodException {
         MockitoAnnotations.initMocks(this);
-        invokable  = new Invokable<Deque,Object>(Deque.class.getMethod("pop"), Deque.class, true);
-        invokable2 = new Invokable<Object,String>(Object.class.getMethod("toString"), Object.class, false);
+        Method method = CharSequence.class.getMethod("subSequence", int.class, int.class);
+        invokable  = new Invokable<CharSequence,CharSequence>(method, "abc", "bc");
     }
 
     @Test
@@ -79,30 +76,5 @@ public class InvokableState_UT {
         assertTrue(iter.hasNext());
         assertEquals(invokable, iter.next());
         assertFalse(iter.hasNext());
-    }
-
-    @Test
-    public void testIterator_multiWhenChainable() {
-        assertTrue(invokable.isChainable());
-        state.put(invokable);
-        state.put(invokable2);
-
-        Iterator<Invokable> iter = state.iterator();
-
-        assertTrue(iter.hasNext());
-        assertSame(invokable, iter.next());
-
-        assertTrue(iter.hasNext());
-        assertSame(invokable2, iter.next());
-        assertFalse(iter.hasNext());
-    }
-
-
-    @Test(expected = FuncitoException.class)
-    public void testPut_multiWhenUnchainable() {
-        assertFalse(invokable2.isChainable());
-        state.put(invokable2);
-        // put
-        state.put(invokable);
     }
 }

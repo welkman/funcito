@@ -1,9 +1,8 @@
 package org.funcito.guava;
 
-import org.funcito.internal.Invokable;
+import com.google.common.base.Predicate;
+import org.funcito.FunctionalBase;
 import org.funcito.internal.InvokableState;
-
-import java.util.Iterator;
 
 /*
  * Copyright 2011 Project Funcito Contributors
@@ -20,24 +19,19 @@ import java.util.Iterator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class DefaultableMethodPredicate<T> extends MethodPredicate<T> {
+public class GuavaDefaultablePredicate<T> implements Predicate<T> {
+
+    private FunctionalBase<T,Boolean> functionalBase;
     private boolean defaultForNull;
 
-    public DefaultableMethodPredicate(InvokableState state, boolean defaultForNull) {
-        super(state);
+    public GuavaDefaultablePredicate(InvokableState state, boolean defaultForNull) {
+        functionalBase = new FunctionalBase<T, Boolean>(state);
         this.defaultForNull = defaultForNull;
     }
 
     public boolean apply(T from) {
-        Object retVal = firstInvokable.invoke(from);
-        if (unchained) {
-            return (retVal==null) ? defaultForNull : (Boolean)retVal;
-        }
-        Iterator<Invokable> iter = state.iterator();
-        iter.next(); // skip the head which has already been processed
-        while (iter.hasNext()) {
-            retVal = iter.next().invoke(retVal);
-        }
-        return (retVal==null) ? defaultForNull : (Boolean)retVal;
+        Boolean retVal = functionalBase.applyImpl(from);
+        return (retVal==null) ? defaultForNull : retVal;
     }
+
 }

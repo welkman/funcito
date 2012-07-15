@@ -26,7 +26,7 @@ public class JavassistStubFactory extends StubFactory {
     protected <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
         JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {
-            throw new FuncitoException("Cannot mock this class.  Typical causes: final class, anonymous class, or primitive class.");
+            throw new FuncitoException("Cannot proxy this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
         return imposterizer.imposterise(handler, clazz, additionalInterfaces);
     }

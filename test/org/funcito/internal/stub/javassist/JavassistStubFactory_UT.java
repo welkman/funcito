@@ -39,7 +39,6 @@ public class JavassistStubFactory_UT {
     public void testStub_CachesInstancesOfSameClass() {
         class MyClass {
         }
-
         MyClass inst1 = factory.stub(MyClass.class);
         MyClass inst2 = factory.stub(MyClass.class);
 
@@ -49,20 +48,9 @@ public class JavassistStubFactory_UT {
     @Test
     public void testStub_UnstubbableClassesThrowFuncitoException() {
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Cannot mock");
+        thrown.expectMessage("Cannot proxy");
 
         factory.stub(String.class); // String is final, should not be stubbable
-    }
-
-    static class A {
-        public String foo() { return "A"; }
-    }
-    public static class C extends A {
-        // C generates a bridge "foo" method because class D is more visible class
-        // see http://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
-    }
-    public static class D extends A {
-        public String foo() { return "D"; }
     }
 
     @Test
@@ -94,7 +82,7 @@ public class JavassistStubFactory_UT {
      * JavassistMethodHandler used internally to the JavassistStubFactory
      */
     @Test
-    public void testInvoke_noExceptionForPrimitiveNumbers() {
+    public void testInvoke_noExceptionForPrimitiveNumberRetTypes() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
             Number numberStub = factory.stub(Number.class);
@@ -121,7 +109,7 @@ public class JavassistStubFactory_UT {
      * JavassistMethodHandler used internally to the JavassistStubFactory
      */
     @Test
-    public void testInvoke_noExceptionForPrimitiveBoolean() {
+    public void testInvoke_noExceptionForPrimitiveBooleanRetType() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
             Iterator iterStub = factory.stub(Iterator.class);
@@ -135,10 +123,11 @@ public class JavassistStubFactory_UT {
 
     interface SomeInterface {}
     enum MyEnum {}
+
     @Test
     public void shouldKnowIfCanImposterize() throws Exception {
         final class FinalClass {}
-        class SomeClass {}
+        class NonFinalClass {}
         class ClassWithConstructorThatNeedsNonNullArg {
             public ClassWithConstructorThatNeedsNonNullArg(String str) {
                 str.length(); // would normally throw NPE if str was null
@@ -148,10 +137,23 @@ public class JavassistStubFactory_UT {
         assertFalse(factory.canImposterise(FinalClass.class));
         assertFalse(factory.canImposterise(int.class));
         assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
+        assertFalse(factory.canImposterise(Object[].class));
+        assertFalse(factory.canImposterise(int[].class));
 
-        assertTrue(factory.canImposterise(SomeClass.class));
+        assertTrue(factory.canImposterise(NonFinalClass.class));
         assertTrue(factory.canImposterise(SomeInterface.class));
         assertTrue(factory.canImposterise(ClassWithConstructorThatNeedsNonNullArg.class));
+    }
+
+    static class A {
+        public String foo() { return "A"; }
+    }
+    public static class C extends A {
+        // C generates a bridge "foo" method because class D is more visible class
+        // see http://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
+    }
+    public static class D extends A {
+        public String foo() { return "D"; }
     }
 
 }

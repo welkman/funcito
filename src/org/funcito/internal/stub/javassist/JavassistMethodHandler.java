@@ -22,7 +22,6 @@ import javassist.util.proxy.MethodHandler;
 import org.funcito.internal.stub.ProxyMethodHandler;
 
 public class JavassistMethodHandler implements MethodHandler {
-
     private final ProxyMethodHandler proxyMethodHandler = new ProxyMethodHandler();
 
     public Object invoke(Object proxyTarget, Method method, Method method1, Object[] bindArgs) throws Throwable {

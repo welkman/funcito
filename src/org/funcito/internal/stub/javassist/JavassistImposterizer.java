@@ -40,7 +40,7 @@ public class JavassistImposterizer extends AbstractClassImposterizer {
     private JavassistImposterizer() {
     }
 
-// TODO: from CglibImposerizer, it doesn't look like there is an equivalent capability in Javassist ProxyFactory
+// from CglibImposterizer, there is no equivalent capability in Javassist for custom class naming policies
 //    private static final NamingPolicy NAMING_POLICY_THAT_ALLOWS_IMPOSTERISATION_OF_CLASSES_IN_SIGNED_PACKAGES = new CglibNamingPolicy() {
 //        @Override
 //        public String getClassName(String prefix, String source, Object key, Predicate names) {
@@ -74,8 +74,6 @@ public class JavassistImposterizer extends AbstractClassImposterizer {
 
         try {
             return factory.createClass();
-        // we want to handle bridge methods so don't filter them
-//            return factory.createClass(IGNORE_BRIDGE_METHODS);
         } catch (Throwable e) {
             if (Modifier.isPrivate(mockedType.getModifiers())) {
                 throw new FuncitoException("\n"

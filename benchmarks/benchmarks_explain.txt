@@ -1,0 +1,12 @@
+NOTE: the benchmarks are *only* to be considered as relative benchmarks, for development purposes only.
+I use them to track relative changes in performance as features are added or refactorings are made.
+
+These benchmarks are not to be construed as guarantees of performance for you, nor as expressing performance
+limitations of Funcito.  These same benchmarks run by a Google/Guava engineer on better hardware produced
+significantly faster results (1-order of magnitude!).  That is not a performance guarantee either.
+
+Benchmarks are created with a Gradle task to run Google Caliper micro-benchmarking tool.
+
+All benchmarks generated on my lame Toshiba laptop, with WinXP on Intel Core 2 CPU T5200 @1.6 GHz with 2 GB RAM.
+
+Please also notice that performance is significantly better for JVMs running in server mode.

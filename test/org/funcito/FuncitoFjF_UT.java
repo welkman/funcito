@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.funcito.FuncitoFJ.*;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class FuncitoFjF_UT {
 
@@ -51,6 +52,24 @@ public class FuncitoFjF_UT {
         }
         F<PrimitiveIntRet, Integer> primIntFunc = fFor(callsTo(PrimitiveIntRet.class).getVal());
         assertEquals(123, primIntFunc.f(new PrimitiveIntRet()).intValue());
+    }
+
+    @Test
+    public void testFunctionFor_MethodHasNonPrimitiveArrayRetType() {
+        class NonPrimArrayRet {
+            public Object[] getVal() { return new Object[] {"ABC", Integer.MAX_VALUE}; }
+        }
+        F<NonPrimArrayRet, Object[]> wrapperIntFunc = fFor(callsTo(NonPrimArrayRet.class).getVal());
+        assertEquals(2, wrapperIntFunc.f(new NonPrimArrayRet()).length);
+    }
+
+    @Test
+    public void testFunctionFor_MethodHasPrimitiveArrayRetType() {
+        class PrimArrayRet {
+            public int[] getVal() { return new int[] {1,2,3}; }
+        }
+        F<PrimArrayRet, int[]> wrapperIntFunc = fFor(callsTo(PrimArrayRet.class).getVal());
+        assertEquals(3, wrapperIntFunc.f(new PrimArrayRet()).length);
     }
 
     @Test

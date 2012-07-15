@@ -3,6 +3,7 @@ package org.funcito;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import org.funcito.internal.WrapperType;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,8 +16,8 @@ import static org.junit.Assert.*;
 public class FuncitoGuavaPredicate_UT {
 
     public static final BooleanThing CALL_TO_BOOL_THING = callsTo(BooleanThing.class);
-    @Rule
-    public ExpectedException thrown= ExpectedException.none();
+
+    @Rule public ExpectedException thrown = ExpectedException.none();
 
     private static class BooleanThing {
         private Boolean myVal;
@@ -26,6 +27,13 @@ public class FuncitoGuavaPredicate_UT {
         public Boolean getVal() { return myVal; }
 
         public BooleanThing invert() { return new BooleanThing(!myVal.booleanValue());}
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            delegate().extractInvokableState(WrapperType.GUAVA_PREDICATE);
+        } catch (Throwable t) {}
     }
 
     @Test
@@ -140,17 +148,11 @@ public class FuncitoGuavaPredicate_UT {
         assertFalse(doubleInvertValPred.apply(new BooleanThing(false)));
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testPredicateFor_MethodChainingAttemptWithUnproxyableInterimType() {
-        try {
-            // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
-            // is final, hence non-proxyable
-            predicateFor(CALL_TO_BOOL_THING.toString().isEmpty());
-            fail("Should have thrown NPE");
-        } catch (NullPointerException e) {
-            // cleanup aftermath of test
-            delegate().extractInvokableState(WrapperType.GUAVA_PREDICATE);
-        }
+        // NOTE: this test is a test that proves and documents a limitation of Funcito: interim type String
+        // is final, hence non-proxyable
+        predicateFor(CALL_TO_BOOL_THING.toString().isEmpty());
     }
 
     class PrimitiveBoolRetGeneric<T> {

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
@@ -52,39 +53,8 @@ public class CglibStubFactory_UT {
         factory.stub(String.class); // String is final, should not be stubbable
     }
 
-    interface SomeInterface {}
-    enum MyEnum {}
     @Test
-    public void shouldKnowIfCanImposterize() throws Exception {
-        final class FinalClass {}
-        class SomeClass {}
-        class ClassWithConstructorThatNeedsNonNullArg {
-            public ClassWithConstructorThatNeedsNonNullArg(String str) {
-                str.length(); // would normally throw NPE if str was null
-            }
-        }
-
-        assertFalse(factory.canImposterise(FinalClass.class));
-        assertFalse(factory.canImposterise(int.class));
-        assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
-
-        assertTrue(factory.canImposterise(SomeClass.class));
-        assertTrue(factory.canImposterise(SomeInterface.class));
-        assertTrue(factory.canImposterise(ClassWithConstructorThatNeedsNonNullArg.class));
-    }
-
-    static class A {
-        public String foo() { return "A"; }
-    }
-    public static class C extends A {
-        // C generates a bridge "foo" method because class D is more visible class
-        // see http://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
-    }
-    public static class D extends A {
-        public String foo() { return "D"; }
-    }
-
-    @Test
+    @SuppressWarnings("unchecked")
     public void testStub_BridgeMethods() throws Exception {
         FuncitoDelegate delegate = new FuncitoDelegate();
 
@@ -105,6 +75,85 @@ public class CglibStubFactory_UT {
 
         Invokable<D,String> nonBridgeInvokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("D", nonBridgeInvokable.invoke(new D()));
+    }
+
+    /**
+     * This is maybe an integration test, because it depends on what the return values are for the
+     * CglibMethodInterceptor used internally to the CglibStubFactory
+     */
+    @Test
+    public void testInvoke_noExceptionForPrimitiveNumberRetTypes() {
+        FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
+        try {
+            Number numberStub = factory.stub(Number.class);
+
+            // no NPEs means success
+            numberStub.intValue();
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION); // cleanup after each
+            numberStub.longValue();
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION); // etc.
+            numberStub.byteValue();
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
+            numberStub.doubleValue();
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
+            numberStub.floatValue();
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
+            numberStub.shortValue();
+        } finally {
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
+        }
+    }
+
+    /**
+     * This is maybe an integration test, because it depends on what the return values are for the
+     * CglibMethodInterceptor used internally to the CglibStubFactory
+     */
+    @Test
+    public void testInvoke_noExceptionForPrimitiveBooleanRetTypes() {
+        FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
+        try {
+            Iterator iterStub = factory.stub(Iterator.class);
+
+            // no NPEs means success
+            iterStub.hasNext();
+        } finally {
+            delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION);
+        }
+    }
+
+    interface SomeInterface {}
+    enum MyEnum {}
+
+    @Test
+    public void shouldKnowIfCanImposterize() throws Exception {
+        final class FinalClass {}
+        class NonFinalClass {}
+        class ClassWithConstructorThatNeedsNonNullArg {
+            public ClassWithConstructorThatNeedsNonNullArg(String str) {
+                str.length(); // would normally throw NPE if str was null
+            }
+        }
+
+        assertFalse(factory.canImposterise(FinalClass.class));
+        assertFalse(factory.canImposterise(int.class));
+        assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
+        assertFalse(factory.canImposterise(Object[].class));
+        assertFalse(factory.canImposterise(int[].class));
+
+        assertTrue(factory.canImposterise(NonFinalClass.class));
+        assertTrue(factory.canImposterise(SomeInterface.class));
+        assertTrue(factory.canImposterise(ClassWithConstructorThatNeedsNonNullArg.class));
+    }
+
+    static class A {
+        public String foo() { return "A"; }
+    }
+    public static class C extends A {
+        // C generates a bridge "foo" method because class D is more visible class
+        // see http://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
+    }
+    public static class D extends A {
+        public String foo() { return "D"; }
     }
 
 }

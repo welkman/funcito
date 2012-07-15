@@ -5,10 +5,13 @@ import org.funcito.internal.Invokable;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
+import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class JavassistMethodHandler_UT {
 
@@ -23,7 +26,7 @@ public class JavassistMethodHandler_UT {
         Object o = handler.invoke(aNumber, intMethod, null, new Object[] {1});
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("get", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".List.get("));
     }
 
     @Test
@@ -33,7 +36,7 @@ public class JavassistMethodHandler_UT {
         Class c = (Class)handler.invoke(aNumber, intMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("getClass", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Object.getClass("));
     }
 
     @Test
@@ -43,7 +46,7 @@ public class JavassistMethodHandler_UT {
         int fakeInt = (Integer)handler.invoke(aNumber, intMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("intValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.intValue("));
     }
 
     @Test
@@ -53,7 +56,7 @@ public class JavassistMethodHandler_UT {
         float fakeFloat = (Float)handler.invoke(aNumber, floatMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("floatValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.floatValue("));
     }
 
     @Test
@@ -63,7 +66,7 @@ public class JavassistMethodHandler_UT {
         long fakeLong = (Long)handler.invoke(aNumber, longMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("longValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.longValue("));
     }
 
     @Test
@@ -73,7 +76,7 @@ public class JavassistMethodHandler_UT {
         double fakeDouble = (Double)handler.invoke(aNumber, doubleMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("doubleValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.doubleValue("));
     }
 
     @Test
@@ -83,7 +86,7 @@ public class JavassistMethodHandler_UT {
         short fakeShort = (Short)handler.invoke(aNumber, shortMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("shortValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.shortValue("));
     }
 
     @Test
@@ -93,7 +96,7 @@ public class JavassistMethodHandler_UT {
         byte fakeByte = (Byte)handler.invoke(aNumber, byteMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("byteValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.byteValue("));
     }
 
     @Test
@@ -103,6 +106,20 @@ public class JavassistMethodHandler_UT {
         boolean fakeBoolean = (Boolean)handler.invoke(Class.class, booleanMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("isInterface", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Class.isInterface("));
+    }
+
+    @Test
+    public void testInvoke_methodReturningNonPrimitiveArray() throws Throwable {
+        Method arrayMethod = Frame.class.getMethod("getComponents");
+        Frame frame = new Frame();
+        frame.add(new JMenu());
+
+        Component[] fakeComponentArray = (Component[])handler.invoke(frame, arrayMethod, null, null);
+
+        Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
+        assertTrue(invokable.getMethodName().contains(".Container.getComponents("));
+        Component[] ret = (Component[])invokable.invoke(frame);
+        assertEquals(1, ret.length);
     }
 }

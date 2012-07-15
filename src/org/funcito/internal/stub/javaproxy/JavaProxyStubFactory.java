@@ -14,7 +14,6 @@ public class JavaProxyStubFactory extends StubFactory {
         if (!canImposterise(clazz)) {
             throw new FuncitoException("Cannot proxy this class using the Java Proxy Stub Factory because it is not an interface.  If no interface is available for the class, then you will need to include a code-generation library (CGLib or Javassist) in order to be able to proxy this non-interface class.");
         }
-        // TODO: add any additional interfaces (i.e., ProxyReturnValue) to support chaining
         return (T)Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz }, handler);
     }
 

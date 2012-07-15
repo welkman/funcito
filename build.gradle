@@ -115,19 +115,9 @@ task sourcesJar(type: Jar, dependsOn: [buildInfo,test]) {
     classifier = 'sources'
     archiveName = vars.srcJarFilename
 
-    from(sourceSets.main.java.srcDirs) {
-        include '**/*.java'
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.properties'
-        include '**/*.txt'
-    }
-    
-    from('docs') {
-        include 'ReadMe.txt'
-        include 'License.txt'
-    }
+    from(sourceSets.main.java.srcDirs)
+    from(sourceSets.main.resources.srcDirs)
+    from('docs')
 }
 
 task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
@@ -140,9 +130,7 @@ task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     }
 
     into('docs') {
-        from('build/docs') {
-            include '**/*.*'
-        }
+        from('build/docs')
     }
 }
 
@@ -201,9 +189,8 @@ artifacts {
 }
 
 // build all jars
-task jarAll(overwrite: true, dependsOn: [sourcesJar,javadocJar,binaryJar] ) << {
-    // no-op
-}
+allJars  = tasks.withType( Jar )
+task jarAll(overwrite: true, dependsOn: allJars )
 
 task runBenchmark(type: JavaExec, dependsOn: test) {
     def vmVer = System.getProperty('java.version')

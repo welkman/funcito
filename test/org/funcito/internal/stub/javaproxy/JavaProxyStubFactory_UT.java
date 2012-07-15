@@ -109,11 +109,15 @@ public class JavaProxyStubFactory_UT {
     enum MyEnum {}
     @Test
     public void shouldKnowIfCanImposterize() throws Exception {
-        class SomeClass {}
+        final class FinalClass {}
+        class NonFinalClass {}
 
         assertFalse(factory.canImposterise(int.class));
-        assertFalse(factory.canImposterise(MyEnum.class)); // because enums are final
-        assertFalse(factory.canImposterise(SomeClass.class));
+        assertFalse(factory.canImposterise(MyEnum.class));
+        assertFalse(factory.canImposterise(FinalClass.class));
+        assertFalse(factory.canImposterise(NonFinalClass.class));
+        assertFalse(factory.canImposterise(Object[].class));
+        assertFalse(factory.canImposterise(int[].class));
 
         assertTrue(factory.canImposterise(SomeInterface.class));
     }

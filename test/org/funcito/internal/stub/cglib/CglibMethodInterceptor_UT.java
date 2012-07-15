@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CglibMethodInterceptor_UT {
     private CglibMethodInterceptor handler = new CglibMethodInterceptor();
@@ -22,7 +22,7 @@ public class CglibMethodInterceptor_UT {
         Object o = handler.intercept(aNumber, intMethod, new Object[] {1}, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("get", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".List.get("));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class CglibMethodInterceptor_UT {
         Class c = (Class)handler.intercept(aNumber, intMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("getClass", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Object.getClass("));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class CglibMethodInterceptor_UT {
         int fakeInt = (Integer)handler.intercept(aNumber, intMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("intValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.intValue("));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class CglibMethodInterceptor_UT {
         float fakeFloat = (Float)handler.intercept(aNumber, floatMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("floatValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.floatValue("));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CglibMethodInterceptor_UT {
         long fakeLong = (Long)handler.intercept(aNumber, longMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("longValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.longValue("));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CglibMethodInterceptor_UT {
         double fakeDouble = (Double)handler.intercept(aNumber, doubleMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("doubleValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.doubleValue("));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class CglibMethodInterceptor_UT {
         short fakeShort = (Short)handler.intercept(aNumber, shortMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("shortValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.shortValue("));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class CglibMethodInterceptor_UT {
         byte fakeByte = (Byte)handler.intercept(aNumber, byteMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("byteValue", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Number.byteValue("));
     }
 
     @Test
@@ -102,6 +102,6 @@ public class CglibMethodInterceptor_UT {
         boolean fakeBoolean = (Boolean)handler.intercept(Class.class, booleanMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertEquals("isInterface", invokable.getMethodName());
+        assertTrue(invokable.getMethodName().contains(".Class.isInterface("));
     }
 }

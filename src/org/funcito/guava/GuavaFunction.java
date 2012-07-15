@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal;
+package org.funcito.guava;
 
-class InvocationManager {
+import com.google.common.base.Function;
 
-    private InvokableState state = new InvokableState();
+import org.funcito.FunctionalBase;
+import org.funcito.internal.InvokableState;
 
-    void pushInvokable(Invokable invokable) {
-        state.put(invokable);
+public class GuavaFunction<T, V> implements Function<T,V> {
+
+    private FunctionalBase<T,V> functionalBase;
+
+    public GuavaFunction(InvokableState state) {
+        functionalBase = new FunctionalBase<T, V>(state);
     }
 
-    public InvokableState extractState() {
-        InvokableState oldState = this.state;
-        state = new InvokableState();
-        return oldState;
+    public V apply(T from) {
+        return functionalBase.applyImpl(from);
     }
 }

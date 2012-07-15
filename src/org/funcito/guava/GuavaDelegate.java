@@ -26,16 +26,16 @@ import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
 public class GuavaDelegate extends FuncitoDelegate {
     public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
-        return new MethodFunction<T, V>(state);
+        return new GuavaFunction<T, V>(state);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
-        return new MethodPredicate<T>(state);
+        return new GuavaPredicate<T>(state);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
-        return new DefaultableMethodPredicate<T>(state, defaultForNull);
+        return new GuavaDefaultablePredicate<T>(state, defaultForNull);
     }
 }
