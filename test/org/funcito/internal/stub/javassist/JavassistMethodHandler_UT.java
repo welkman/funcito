@@ -5,9 +5,10 @@ import org.funcito.internal.Invokable;
 import org.funcito.internal.WrapperType;
 import org.junit.Test;
 
-import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -111,15 +112,14 @@ public class JavassistMethodHandler_UT {
 
     @Test
     public void testInvoke_methodReturningNonPrimitiveArray() throws Throwable {
-        Method arrayMethod = Frame.class.getMethod("getComponents");
-        Frame frame = new Frame();
-        frame.add(new JMenu());
+        Method arrayMethod = Collection.class.getMethod("toArray");
+        List<Object> list = Arrays.asList(new Object());
 
-        Component[] fakeComponentArray = (Component[])handler.invoke(frame, arrayMethod, null, null);
+        Object[] proxyArray = (Object[])handler.invoke(list, arrayMethod, null, null);
 
         Invokable invokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
-        assertTrue(invokable.getMethodName().contains(".Container.getComponents("));
-        Component[] ret = (Component[])invokable.invoke(frame);
+        assertTrue(invokable.getMethodName().contains(".Collection.toArray("));
+        Object[] ret = (Object[])invokable.invoke(list);
         assertEquals(1, ret.length);
     }
 }
