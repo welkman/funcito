@@ -45,6 +45,16 @@ import org.funcito.jedi.JediDelegate;
  */
 public class Funcito {
 
+    /** System property that forces selection of a specific proxy provider */
+    public static final String FUNCITO_PROXY_PROVIDER_PROP = "funcito.proxy.provider";
+
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force CGLib as proxy provider */
+    public static final String CGLIB = "CGLIB";
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force Javassist as proxy provider */
+    public static final String JAVASSIST = "JAVASSIST";
+    /** Value for property {@link #FUNCITO_PROXY_PROVIDER_PROP} to force J2SE dynamic proxies as proxy provider */
+    public static final String JAVAPROXY = "JAVAPROXY";
+
     private Funcito() {}
 
     /**

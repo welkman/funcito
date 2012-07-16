@@ -33,8 +33,8 @@ public class GuavaPredicate<T> implements Predicate<T> {
         protected void validateReturnValue(Object retVal) {
             if (retVal==null) {
                 throw new FuncitoException("Predicate had a null Boolean return value.\n " +
-                    "Guava Predicates expect a non-null Boolean so that it can be autoboxed to a primitive boolean.\n " +
-                    "You might consider the alternate method: predicateFor(Boolean stubbedMethodCall, boolean defaultForNull)");
+                    "Guava Predicate expects a non-null Boolean so that it can be autoboxed to a primitive boolean.\n " +
+                    "You might consider the alternate method: predicateFor(Boolean proxiedMethodCall, boolean defaultForNull)");
             }
         }
     }

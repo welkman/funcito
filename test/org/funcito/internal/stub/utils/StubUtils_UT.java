@@ -18,11 +18,12 @@ package org.funcito.internal.stub.utils;
 
 import static org.junit.Assert.*;
 
+import org.funcito.Funcito;
 import org.funcito.FuncitoException;
 import org.funcito.internal.stub.*;
-import org.funcito.internal.stub.cglib.CglibStubFactory;
-import org.funcito.internal.stub.javaproxy.JavaProxyStubFactory;
-import org.funcito.internal.stub.javassist.JavassistStubFactory;
+import org.funcito.internal.stub.cglib.CglibProxyFactory;
+import org.funcito.internal.stub.javaproxy.JavaProxyProxyFactory;
+import org.funcito.internal.stub.javassist.JavassistProxyFactory;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -41,140 +42,140 @@ public class StubUtils_UT {
     @Mock
     ClassFinder classFinder;
 
-    @InjectMocks private StubUtils stubUtils = new StubUtils();
+    @InjectMocks private ProxyUtils proxyUtils = new ProxyUtils();
     @Mock Handler logHandler;
     @Captor ArgumentCaptor<LogRecord> logCaptor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        Logger logger = Logger.getLogger(StubUtils.class.getName());
+        Logger logger = Logger.getLogger(ProxyUtils.class.getName());
         logger.addHandler(logHandler);
     }
 
     @Test
     public void testGetExactlyOneFactoryFromClasspath_Both() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(true);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(true);
         
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+        ProxyFactory result = proxyUtils.getExactlyOneFactoryFromClasspath();
         
-        assertTrue(result instanceof CglibStubFactory);
+        assertTrue(result instanceof CglibProxyFactory);
         verify(logHandler).publish(logCaptor.capture());
         assertTrue(logCaptor.getValue().getMessage().contains("Found both CgLib and Javassist"));
     }
 
     @Test
     public void testGetExactlyOneFactoryFromClasspath_Cglib() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(true);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(false);
         
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+        ProxyFactory result = proxyUtils.getExactlyOneFactoryFromClasspath();
         
-        assertTrue(result instanceof CglibStubFactory);
+        assertTrue(result instanceof CglibProxyFactory);
     }
 
     @Test
     public void testGetExactlyOneFactoryFromClasspath_Javassist() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(false);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(true);
         
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+        ProxyFactory result = proxyUtils.getExactlyOneFactoryFromClasspath();
         
-        assertTrue(result instanceof JavassistStubFactory);
+        assertTrue(result instanceof JavassistProxyFactory);
     }
 
     @Test
     public void testGetExactlyOneFactoryFromClasspath_Neither() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(false);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(false);
 
         // test
-        StubFactory result = stubUtils.getExactlyOneFactoryFromClasspath();
+        ProxyFactory result = proxyUtils.getExactlyOneFactoryFromClasspath();
 
-        assertTrue(result instanceof JavaProxyStubFactory);
+        assertTrue(result instanceof JavaProxyProxyFactory);
         verify(logHandler).publish(logCaptor.capture());
         assertTrue(logCaptor.getValue().getMessage().contains("Found neither CgLib nor Javassist"));
     }
 
     @Test
     public void testGetOverrideBySystemProperty_None() {
-        System.clearProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP);
+        System.clearProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP);
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
         
         assertNull(result);
     }
     
     @Test
     public void testGetOverrideBySystemProperty_Cglib() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(true);
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.CGLIB);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(true);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.CGLIB);
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
         
-        assertTrue(result instanceof CglibStubFactory);
+        assertTrue(result instanceof CglibProxyFactory);
     }
 
     @Test
     public void testGetOverrideBySystemProperty_CglibSpecifiedButNotPresent() {
-        when(classFinder.findOnClasspath(StubUtils.CGLIB_CLASS)).thenReturn(false);
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.CGLIB);
+        when(classFinder.findOnClasspath(ProxyUtils.CGLIB_CLASS)).thenReturn(false);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.CGLIB);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("matching library is not found on the classpath");
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
     }
 
     @Test
     public void testGetOverrideBySystemProperty_Javassist() {
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(true);
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVASSIST);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(true);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.JAVASSIST);
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
         
-        assertTrue(result instanceof JavassistStubFactory);
+        assertTrue(result instanceof JavassistProxyFactory);
     }
 
     @Test
     public void testGetOverrideBySystemProperty_JavassistSpecifiedButNotPresent() {
-        when(classFinder.findOnClasspath(StubUtils.JAVASSIST_CLASS)).thenReturn(false);
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVASSIST);
+        when(classFinder.findOnClasspath(ProxyUtils.JAVASSIST_CLASS)).thenReturn(false);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.JAVASSIST);
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("matching library is not found on the classpath");
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
     }
 
     @Test
     public void testGetOverrideBySystemProperty_JavaProxy() {
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVAPROXY);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.JAVAPROXY);
 
         // test
-        StubFactory result = stubUtils.getOverrideBySystemProperty();
+        ProxyFactory result = proxyUtils.getOverrideBySystemProperty();
 
-        assertTrue(result instanceof JavaProxyStubFactory);
+        assertTrue(result instanceof JavaProxyProxyFactory);
     }
 
     @Test
     public void testGetOverrideBySystemProperty_IllegalValue() {
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, "bogus");
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, "bogus");
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage(StubUtils.OVERRIDE_EXCEPTION);
+        thrown.expectMessage(ProxyUtils.OVERRIDE_EXCEPTION);
         
         // test
-        stubUtils.getOverrideBySystemProperty();
+        proxyUtils.getOverrideBySystemProperty();
     }
     
 }

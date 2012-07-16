@@ -16,22 +16,22 @@
 
 package org.funcito.internal.stub;
 
-import org.funcito.internal.stub.utils.StubUtils;
+import org.funcito.internal.stub.utils.ProxyUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class StubFactory {
-    private static StubFactory instance = null;
-    private static StubUtils stubUtils = new StubUtils();
-    private Map<Class, Object> stubsCache = new HashMap<Class, Object>();
+public abstract class ProxyFactory {
+    private static ProxyFactory instance = null;
+    private static ProxyUtils proxyUtils = new ProxyUtils();
+    private Map<Class, Object> proxyCache = new HashMap<Class, Object>();
 
-    public static StubFactory instance() {
+    public static ProxyFactory instance() {
         if (instance == null) {
-            instance = stubUtils.getOverrideBySystemProperty();
+            instance = proxyUtils.getOverrideBySystemProperty();
             if (instance == null) {
-                instance = stubUtils.getExactlyOneFactoryFromClasspath();
+                instance = proxyUtils.getExactlyOneFactoryFromClasspath();
             }
         }
         return instance;
@@ -44,16 +44,16 @@ public abstract class StubFactory {
         instance = null;
     }
 
-    public <T> T stub(Class<T> clazz, Class<?>... additionalInterfaces) {
-        T stub = clazz.cast(stubsCache.get(clazz));
-        if (stub == null || (additionalInterfaces!=null && additionalInterfaces.length>0)) {
-            stub = stubImpl(clazz, additionalInterfaces);
-            stubsCache.put(clazz, stub);
+    public <T> T proxy(Class<T> clazz, Class<?>... additionalInterfaces) {
+        T proxy = clazz.cast(proxyCache.get(clazz));
+        if (proxy == null || (additionalInterfaces!=null && additionalInterfaces.length>0)) {
+            proxy = proxyImpl(clazz, additionalInterfaces);
+            proxyCache.put(clazz, proxy);
         }
-        return stub;
+        return proxy;
     }
 
-    protected abstract <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces);
+    protected abstract <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces);
 
     public boolean canImposterise(Class<?> type) {
         return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();

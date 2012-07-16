@@ -16,14 +16,27 @@
 package org.funcito.internal;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.StubFactory;
+import org.funcito.internal.stub.ProxyFactory;
 
 public class FuncitoDelegate {
 
     private static final ThreadLocal<InvocationManager> invocationManager = new ThreadLocal<InvocationManager>();
     
+    /**
+     * Generates a proxy object for use with other Funcito function-object generating static calls.  This proxy should not
+     * be used for any other purposes.  An example of proper usage (using Google Guava) is as follows:
+     * <p>
+     * <code>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
+     *     Function<MyClass,RetType> func = functionFor( callsTo.noArgMethodWithRetType() );
+     * </code>
+     * <p>
+     * In the above example, the limitation is that MyClass has to be proxyable by the current Proxy provider
+     * (see {@link org.funcito.Funcito#FUNCITO_PROXY_PROVIDER_PROP}).  Generally this means interfaces, or non-private non-static
+     * non-final classes.
+     */
     public <T> T callsTo(Class<T> clazz) {
-        return StubFactory.instance().stub(clazz);
+        return ProxyFactory.instance().proxy(clazz);
     }
 
     private InvocationManager getManager() {
@@ -44,7 +57,7 @@ public class FuncitoDelegate {
     public InvokableState extractInvokableState(WrapperType wrapperType) {
         InvokableState state = getManager().extractState();
         if (state.isEmpty()) {
-            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito stub object was registered.");
+            throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito proxy object was registered.");
         }
         return state;
     }

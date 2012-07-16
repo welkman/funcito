@@ -12,18 +12,18 @@ public class Funcito_UT {
 
     @Test
     public void testCallsTo_cachesStubs() {
-        Object stub1 = callsTo(Object.class);
-        Object stub2 = callsTo(Object.class);
-        assertSame(stub1, stub2);
+        Object proxy1 = callsTo(Object.class);
+        Object proxy2 = callsTo(Object.class);
+        assertSame(proxy1, proxy2);
 
         Object guavaStub = guava().callsTo(Object.class);
-        assertSame(stub1, guavaStub);
+        assertSame(proxy1, guavaStub);
 
         Object jediStub = jedi().callsTo(Object.class);
-        assertSame(stub1, jediStub);
+        assertSame(proxy1, jediStub);
 
         Object fjStub = fj().callsTo(Object.class);
-        assertSame(stub1, fjStub);
+        assertSame(proxy1, fjStub);
     }
 
     @Test

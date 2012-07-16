@@ -33,24 +33,24 @@ public class JavassistStubFactory_UT {
     @Rule
     public ExpectedException thrown= ExpectedException.none();
 
-    private JavassistStubFactory factory = new JavassistStubFactory();
+    private JavassistProxyFactory factory = new JavassistProxyFactory();
 
     @Test
     public void testStub_CachesInstancesOfSameClass() {
         class MyClass {
         }
-        MyClass inst1 = factory.stub(MyClass.class);
-        MyClass inst2 = factory.stub(MyClass.class);
+        MyClass inst1 = factory.proxy(MyClass.class);
+        MyClass inst2 = factory.proxy(MyClass.class);
 
         assertSame(inst1, inst2);
     }
 
     @Test
-    public void testStub_UnstubbableClassesThrowFuncitoException() {
+    public void testStub_NonProxyableClassesThrowFuncitoException() {
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Cannot proxy");
 
-        factory.stub(String.class); // String is final, should not be stubbable
+        factory.proxy(String.class); // String is final, should not be stubbable
     }
 
     @Test
@@ -61,7 +61,7 @@ public class JavassistStubFactory_UT {
         Method bridgeMethod = C.class.getMethod("foo");
         assertTrue( bridgeMethod.isBridge());
 
-        factory.stub(C.class).foo();
+        factory.proxy(C.class).foo();
         // The main assert is just that we get past the above line without a Exception from Javassist or Funcito
 
         Invokable<C,String> bridgeInvokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
@@ -71,7 +71,7 @@ public class JavassistStubFactory_UT {
         Method nonBridgeMethod = D.class.getMethod("foo");
         assertFalse(nonBridgeMethod.isBridge());
 
-        factory.stub(D.class).foo();
+        factory.proxy(D.class).foo();
 
         Invokable<D,String> nonBridgeInvokable = delegate.extractInvokableState(WrapperType.GUAVA_FUNCTION).iterator().next();
         assertEquals("D", nonBridgeInvokable.invoke(new D()));
@@ -85,7 +85,7 @@ public class JavassistStubFactory_UT {
     public void testInvoke_noExceptionForPrimitiveNumberRetTypes() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
-            Number numberStub = factory.stub(Number.class);
+            Number numberStub = factory.proxy(Number.class);
 
             // no NPEs means success
             numberStub.intValue();
@@ -112,7 +112,7 @@ public class JavassistStubFactory_UT {
     public void testInvoke_noExceptionForPrimitiveBooleanRetType() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
-            Iterator iterStub = factory.stub(Iterator.class);
+            Iterator iterStub = factory.proxy(Iterator.class);
 
             // no NPEs means success
             iterStub.hasNext();

@@ -30,9 +30,9 @@ public class ProxyMethodHandler {
         Object retVal = Defaults.defaultValue(returnType);
         // if not primitive see if return type is candidate for proxying, to support chaining
         if (retVal == null && !returnTypeIsGenericTypeVariable(method)) {
-            StubFactory factory = StubFactory.instance();
+            ProxyFactory factory = ProxyFactory.instance();
             if (factory.canImposterise(returnType)) {
-                retVal = factory.stub(returnType);
+                retVal = factory.proxy(returnType);
             }
         }
         Invokable<?,?> invokable = new Invokable<Object,Object>(method, proxyTarget, retVal, bindArgs);

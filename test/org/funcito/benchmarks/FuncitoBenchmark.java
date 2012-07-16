@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.funcito.internal.stub.StubFactory;
-import org.funcito.internal.stub.utils.StubUtils;
+import org.funcito.Funcito;
+import org.funcito.internal.stub.ProxyFactory;
 
 import static org.funcito.Funcito.callsTo;
 import static org.funcito.FuncitoGuava.functionFor;
@@ -42,7 +42,7 @@ public class FuncitoBenchmark extends SimpleBenchmark {
 
     @Override
     protected void setUp() throws Exception {
-        StubFactory.reset();
+        ProxyFactory.reset();
         sizeFuncitoFunction = null;
         Random rng = new Random();
         ImmutableList.Builder<List<Object>> builder = ImmutableList.builder();
@@ -72,7 +72,7 @@ public class FuncitoBenchmark extends SimpleBenchmark {
     }
 
     public int timeFuncitoCGlib(int reps) {
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.CGLIB);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.CGLIB);
         int tmp = 0;
         if (sizeFuncitoFunction==null) {
             sizeFuncitoFunction = functionFor(callsTo(List.class).size());
@@ -85,7 +85,7 @@ public class FuncitoBenchmark extends SimpleBenchmark {
     }
 
     public int timeFuncitoJavassist(int reps) {
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVASSIST);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.JAVASSIST);
         int tmp = 0;
         if (sizeFuncitoFunction==null) {
             sizeFuncitoFunction = functionFor(callsTo(List.class).size());
@@ -98,7 +98,7 @@ public class FuncitoBenchmark extends SimpleBenchmark {
     }
 
     public int timeFuncitoJavaProxy(int reps) {
-        System.setProperty(StubUtils.FUNCITO_PROXY_PROVIDER_PROP, StubUtils.JAVAPROXY);
+        System.setProperty(Funcito.FUNCITO_PROXY_PROVIDER_PROP, Funcito.JAVAPROXY);
         int tmp = 0;
         if (sizeFuncitoFunction==null) {
             sizeFuncitoFunction = functionFor(callsTo(List.class).size());

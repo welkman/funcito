@@ -32,7 +32,7 @@ public class JavaProxyStubFactory_UT {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private JavaProxyStubFactory factory = new JavaProxyStubFactory();
+    private JavaProxyProxyFactory factory = new JavaProxyProxyFactory();
 
     interface NumberInterface {
         public int intValue();
@@ -45,8 +45,8 @@ public class JavaProxyStubFactory_UT {
 
     @Test
     public void testStub_CachesInstancesOfSameClass() {
-        NumberInterface inst1 = factory.stub(NumberInterface.class);
-        NumberInterface inst2 = factory.stub(NumberInterface.class);
+        NumberInterface inst1 = factory.proxy(NumberInterface.class);
+        NumberInterface inst2 = factory.proxy(NumberInterface.class);
 
         assertSame(inst1, inst2);
     }
@@ -58,18 +58,18 @@ public class JavaProxyStubFactory_UT {
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Cannot proxy");
 
-        factory.stub(MyClass.class); // MyClass is not interface, should not be stubbable by Java Proxy
+        factory.proxy(MyClass.class); // MyClass is not interface, should not be proxyable by Java Proxy
     }
 
     /**
      * This is maybe an integration test, because it depends on what the return values are for the
-     * JavaProxyMethodHandler used internally to the JavaProxyStubFactory
+     * JavaProxyMethodHandler used internally to the JavaProxyProxyFactory
      */
     @Test
     public void testInvoke_noExceptionForPrimitiveNumbers() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
-            NumberInterface numberStub = factory.stub(NumberInterface.class);
+            NumberInterface numberStub = factory.proxy(NumberInterface.class);
 
             // no NPEs means success
             numberStub.intValue();
@@ -96,7 +96,7 @@ public class JavaProxyStubFactory_UT {
     public void testInvoke_noExceptionForPrimitiveBoolean() {
         FuncitoDelegate delegate = new FuncitoDelegate();  //context needed for cleanup of InvocationManager
         try {
-            Iterator iterStub = factory.stub(Iterator.class);
+            Iterator iterStub = factory.proxy(Iterator.class);
 
             // no NPEs means success
             iterStub.hasNext();

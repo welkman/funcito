@@ -30,61 +30,102 @@ public class FuncitoGuava {
     private FuncitoGuava() {}
 
     /**
-     * Generates a stub object for use with other <code>FuncitoGuava</code> static calls.  This stub should not
-     * be used for any other purposes.  An example of proper usage is as follows:
+     * Generates a proxy object for use with other <code>FuncitoGuava</code> static methods.  This proxy should not
+     * be used for any other purposes.  It is a convenience pass-thru to
+     * {@link org.funcito.internal.FuncitoDelegate#callsTo(Class)}.  Example usages are:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br>
-     *     Function<MyClass,RetType> func = functionFor( callsTo.noArgMethodWithRetType() );
+     *     // inlined: <br>
+     *     Function&lt;MyClass,RetType1&gt; func = functionFor( callsTo(MyClass.class).methodWithRetType1() );<br>
+     *     <br>
+     *     // or extracted for repeat usage<br>
+     *     final MyClass CALLS_TO = callsTo(MyClass.class);<br>
+     *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( CALLS_TO.method1WithRetType1() );<br>
+     *     Function&lt;MyClass,RetType2&gt; func3 = functionFor( CALLS_TO.method2WithRetType2() );<br>
      * </code>
      * <p>
-     * Stubs are cached, so this method can be called multiple times for the same class without penalty.  But a single stub
+     * Stubs are cached, so this method can be called multiple times for the same class without penalty.  But a single proxy
      * can also be reused for creating multiple Guava <code>Function</code> or <code>Predicate</code> objects.
-     * @param clazz is the class to be stubbed
-     * @return a stub which can be used by other <code>FuncitoGuava</code> static calls
+     * @param clazz is the class to be proxied
+     * @return a proxy which can be used by other <code>FuncitoGuava</code> static methods
      */
     public static <T> T callsTo(Class<T> clazz) {
         return guavaDelegate.callsTo(clazz);
     }
 
     /**
-     * Generates a Guava <code>Function</code> object that wraps a method call.  Resulting <code>Function</code> is as thread-safe as the method itself.
-     * @param stubbedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> stub object
-     * @return a Guava <code>Function</code> object that wraps the method call.
+     * Generates a Guava <code>Function</code> object that wraps a method call or method chain.  Resulting
+     * <code>Function</code> is as thread-safe as the method itself.  Example usage is:
+     * <p>
+     * <code>
+     *     Function&lt;MyClass,RetType1&gt; func = functionFor( callsTo(MyClass.class).methodWithRetType1() );
+     * </code>
+     * <p>
+     * You can wrap methods with parameters, so long as you statically provide values for each
+     * parameter.  Provided parameter values are statically bound to the Function and may not be changed:
+     * <p>
+     * <code>
+     *     Function&lt;MyClass,RetType1&gt; func = functionFor( callsTo(MyClass.class).methodWithArgs("abc", 123L) );<br>
+     *     // all invocations of func will use "abc" and 123L as the arguments to methodWithArgs
+     * </code>
+     * <p>
+     * It is also possible to wrap method call chains, with some restrictions:
+     * <p>
+     * <code>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
+     *     Function&lt;MyClass,RetType2&gt; func = functionFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     * </code>
+     * <p>
+     * Restrictions for chaining are that intermediate return types (all except for the final return type in the
+     * chain) must be proxyable by the current Proxy provider, just like the initial target type.  In the above
+     * example this means MyClass and RetType1 must be proxyable, but RetType2 need not be proxyable.
+     * Intermediate return types also cannot be a Java Generic type because of type erasure.
+     * <p>
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @return a Guava <code>Function</code> object that wraps the method call or chain.
      */
-    public static <T,V>Function<T,V> functionFor(V stubbedMethodCall) {
-        return guavaDelegate.functionFor(stubbedMethodCall);
+    public static <T,V>Function<T,V> functionFor(V proxiedMethodCall) {
+        return guavaDelegate.functionFor(proxiedMethodCall);
     }
 
     /**
-     * Generates a Guava <code>Predicate</code> object that wraps a <code>Boolean</code>- or boolean-return method call.
-     * Resulting <code>Predicate</code> is as thread-safe as the method itself.
-     * Auto-boxing means you may always safely wrap a method that has a primitive boolean return type.
+     * Generates a Guava <code>Predicate</code> object that wraps a <code>Boolean</code>- or <code>boolean</code>-return method call
+     * or method chain.  Resulting <code>Predicate</code> is as thread-safe as the method itself.
+     * Auto-boxing means you may always safely wrap a method that has a primitive boolean return type. Example usage
+     * is:
      * <p>
-     * Users of this <code>Predicate</code> should be aware of the inherent risk with Guava Predicates (not specific to Funcito) if the
-     * return type of the method being wrapped is a Boolean wrapper.  Such calls are allowed, but there is no
-     * inherent null-pointer safety because Guava <code>Predicate.apply(T)</code> returns a boolean primitive.  But see overloaded form
-     * of this method below for a mitigation of this risk.
-     * @param stubbedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> stub object
-     * @return a Guava  <code>Predicate</code> object that wraps the method call.
+     * <code>
+     *     Predicate&lt;MyClass&gt; pred = predicateFor( callsTo(MyClass.class).methodWithBoolRetType() );
+     * </code>
+     * <p>
+     * Users of this <code>Predicate</code> should be aware of a risk with Guava Predicates (not specific to Funcito) if the
+     * return type of the method being wrapped is a Boolean wrapper rather than a primitive boolean.  Such calls are allowed,
+     * but there is an inherent null-pointer risk because Guava <code>Predicate.apply(T)</code> returns a boolean primitive.
+     * See overloaded form of this method {@link #predicateFor(Boolean, boolean)} for a mitigation of this risk.
+     * <p>
+     * This method also supports wrapping methods with arguments, and method chaining, as documented in {@link #functionFor(Object)}.
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @return a Guava  <code>Predicate</code> object that wraps the method call or method chain.
      * @see #predicateFor(Boolean, boolean)
      */
-    public static <T>Predicate<T> predicateFor(Boolean stubbedMethodCall) {
-        return guavaDelegate.predicateFor(stubbedMethodCall);
+    public static <T>Predicate<T> predicateFor(Boolean proxiedMethodCall) {
+        return guavaDelegate.predicateFor(proxiedMethodCall);
     }
 
     /**
-     * Generates a Guava <code>Predicate</code> object that wraps a <code>Boolean</code>- or boolean-return method call.  Resulting <code>Predicate</code>
-     * is as thread-safe as the method itself.
+     * Generates a Guava <code>Predicate</code> object that wraps a <code>Boolean</code>- or boolean-return
+     * method call or method chain.  Resulting <code>Predicate</code> is as thread-safe as the method itself.
      * This form of the method is only required when there is a risk of the wrapped method returning a null-value, in which you case
      * you provide the default value to substitute for null return values from the wrapped method.
-     * @param stubbedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> callsTo object
+     * <p>
+     * This method also supports wrapping methods with arguments, and method chaining, as documented in {@link #functionFor(Object)}.
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> callsTo object
      * @param defaultForNull is the default value that <code>Predicate</code> will return if the wrapped method returns a null-value.
-     * @return a Guava  <code>Predicate</code> object that wraps the method call.
+     * @return a Guava  <code>Predicate</code> object that wraps the method call or method chain.
      * @see #predicateFor(Boolean)
      */
-    public static <T>Predicate<T> predicateFor(Boolean stubbedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(stubbedMethodCall, defaultForNull);
+    public static <T>Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, defaultForNull);
     }
 
     static GuavaDelegate delegate() {

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.funcito.internal.stub.cglib;
+package org.funcito.internal.stub.javassist;
 
 import org.funcito.FuncitoException;
-import org.funcito.internal.stub.StubFactory;
+import org.funcito.internal.stub.ProxyFactory;
 
-public class CglibStubFactory extends StubFactory {
+public class JavassistProxyFactory extends ProxyFactory {
 
-    private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
+    private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
-    protected <T> T stubImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
-        CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
+    protected <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
+        JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {
-            throw new FuncitoException("Cannot proxy this class [" + clazz.getName() +"].  Typical causes: final class, anonymous class, or primitive class.");
+            throw new FuncitoException("Cannot proxy this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return imposterizer.imposterise(interceptor, clazz, additionalInterfaces);
+        return imposterizer.imposterise(handler, clazz, additionalInterfaces);
     }
 
 }
