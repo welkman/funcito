@@ -34,9 +34,9 @@ import org.funcito.jedi.JediDelegate;
  *     import jedi.functional.Functor;
  *     import fj.F;
  *
- *     Function<MyClass,RetType> function = guava().functionFor( callsTo(MyClass.class).someMethod());
- *     Functor<MyClass,RetType>  functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());
- *     F<MyClass,RetType>        f        = fj().fFor( callsTo(MyClass.class).someMethod());
+ *     Function&lt;MyClass,RetType&gt; function = guava().functionFor( callsTo(MyClass.class).someMethod());
+ *     Functor&lt;MyClass,RetType&gt;  functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());
+ *     F&lt;MyClass,RetType&gt;        f        = fj().fFor( callsTo(MyClass.class).someMethod());
  * </code>
  * </pre>
  * @see FuncitoGuava
