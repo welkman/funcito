@@ -13,20 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.example;
+package org.funcito.example.guava;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MySubClass extends MyClass {
 
+    public MySubClass(String myString, Integer other) {
+        super(myString, other);
+    }
+
     @Override
     public String getMyString() {
-        return super.getMyString() + " plus something extra";
+        return super.getMyString() + "++";
+    }
+
+    @Override
+    public Integer getOther() {
+        return super.getOther() + 1000;
     }
 
     public static void main(String[] args) {
-        MySubClass me = new MySubClass();
-        me.setMyString("This is my value");
-        me.setOther(456);
+        MyClass m1 = new MySubClass("A", 1);
+        MyClass m2 = new MySubClass("B", 2);
+        MyClass m3 = new MySubClass("C", 3);
 
-        printValues(me);
+        List<MyClass> list = Arrays.asList(m1,m2,m3);
+        demoListTransforms(list);
+        demoListFilters(list);
     }
 }

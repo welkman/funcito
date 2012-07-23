@@ -2,7 +2,7 @@ Funcito
 
 Version History:
 
-1.1    ??-Jul-2012  Support for chained method calls
+1.1    23-Jul-2012  Support for chained method calls
                     Permit wrapping of methods with parameters (static binding of param values)
                     Warning messages now get logged with JUL rather than going to System.err
                     Vastly Improved diagnostic messages in runtime Exceptions
@@ -11,6 +11,7 @@ Version History:
                     JAR file no longer has empty Objenesis dir (workaround for JarJar bug)
                     Introduced development microbenchmarks, to improve performance while adding features
                     Increased unit test coverage
+                    More complete example code across all current APIs (in funcito-src.jar)
 
 1.0.2  02-Apr-2012  No API changes.
                     Removed runtime dependency on Google Guava for non-Guava users
