@@ -66,7 +66,7 @@ println "***** Funcito v ${version}"
 
 vars.srcJarFilename = "${project.name}-${version}-sources.jar"
 vars.docJarFilename = "${project.name}-${version}-javadoc.jar"
-vars.binaryJarFilename = "/${project.name}-${version}.jar"
+vars.jarFilename = "/${project.name}-${version}.jar"
 
 vars.isJenkins = vars.envMap.keySet().contains(BUILD_NUMBER)
  
@@ -76,7 +76,7 @@ if (vars.isJenkins) {
     def buildNumber = vars.envMap.get(BUILD_NUMBER)
     vars.srcJarFilename = "${project.name}-${version}-sources-SNAPSHOT-${buildNumber}_${now}.jar"
     vars.docJarFilename = "${project.name}-${version}-javadoc-SNAPSHOT-${buildNumber}_${now}.jar"
-    vars.binaryJarFilename = "/${project.name}-${version}-SNAPSHOT-${buildNumber}_${now}.jar"
+    vars.jarFilename = "/${project.name}-${version}-SNAPSHOT-${buildNumber}_${now}.jar"
 }
 
 ///////////////////////////
@@ -134,9 +134,9 @@ task javadocJar(type: Jar, dependsOn: [buildInfo,test,javadoc]) {
     }
 }
 
-task binaryJar(type: Jar, dependsOn: test) {
+jar {
     def targetDir = "build/libs"
-    def targetJar = targetDir + vars.binaryJarFilename
+    def targetJar = targetDir + vars.jarFilename
     def classesDir = "build/classes/main"
     
     doLast {
@@ -200,8 +200,8 @@ task runBenchmark(type: JavaExec, dependsOn: test) {
     def benchMarksDir = "${project.buildDir}/benchmarks"
     ant.mkdir(dir: benchMarksDir)
     // having problems with next 2 lines with a clean ??
-    def outStream = new FileOutputStream("${benchMarksDir}/${fnameBase}-out.txt")
-    standardOutput = outStream
+//    def outStream = new FileOutputStream("${benchMarksDir}/${fnameBase}-out.txt")
+//    standardOutput = outStream
     main = 'org.funcito.benchmarks.FuncitoBenchmark'
     classpath = sourceSets.test.runtimeClasspath
     args = ['--saveResults', "${benchMarksDir}/${fnameBase}.json", '-Jmode=-server,-client']
@@ -266,13 +266,13 @@ test.doLast {
 }
 
 signing {
-    sign binaryJar
+    sign jar
     sign sourcesJar
     sign javadocJar
 }
 
 // sign all jars
-task signAll(overwrite: true, dependsOn: [jarAll,signBinaryJar,signJavadocJar,signSourcesJar] ) << {
+task signAll(overwrite: true, dependsOn: [jarAll,signJar,signJavadocJar,signSourcesJar] ) << {
     // no-op
 }
 
