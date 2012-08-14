@@ -1,8 +1,19 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'idea'
 
 group = 'com.googlecode.funcito'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.1'
+}
+
+idea.project.ipr {
+    withXml { provider ->
+        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -102,7 +113,7 @@ task buildInfo() {
 
 javadoc {
     options.use = true
-    options.links = links = [
+    options.links = [
         'http://docs.oracle.com/javase/1.5.0/docs/api/',
         'http://docs.guava-libraries.googlecode.com/git-history/v11.0.1/javadoc/',
         'http://functionaljava.googlecode.com/svn/artifacts/3.0/javadoc/',
@@ -189,7 +200,7 @@ artifacts {
 }
 
 // build all jars
-allJars  = tasks.withType( Jar )
+def allJars = tasks.withType( Jar )
 task jarAll(overwrite: true, dependsOn: allJars )
 
 task runBenchmark(type: JavaExec, dependsOn: test) {
