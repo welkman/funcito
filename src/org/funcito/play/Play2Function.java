@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2012 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal;
+package org.funcito.play;
 
-public enum WrapperType {
-    GUAVA_FUNCTION("Guava Function"), 
-    GUAVA_PREDICATE("Guava Predicate"), 
-    FJ_F("Functional Java F (function)"),
-    JEDI_FUNCTOR("Jedi Functor"),
-    JEDI_FILTER("Jedi Filter"),
-    PLAY2_FUNCTION("Play! Framework 2 Function");
+import org.funcito.FunctionalBase;
+import org.funcito.internal.InvokableState;
+import play.libs.F.Function;
 
-    private final String name;
-    
-    private WrapperType(String name) {
-        this.name = name;
+public class Play2Function<T, V> implements Function<T,V> {
+
+    private FunctionalBase<T,V> functionalBase;
+
+    public Play2Function(InvokableState state) {
+        functionalBase = new FunctionalBase<T, V>(state);
     }
-    
-    public String toString() {
-        return name;
+
+    @Override
+    public V apply(T from) {
+        return functionalBase.applyImpl(from);
     }
 }

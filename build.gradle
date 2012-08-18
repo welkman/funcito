@@ -18,6 +18,9 @@ idea.project.ipr {
 repositories {
     mavenCentral()
 //    mavenRepo urls: "https://oss.sonatype.org/content/groups/public/"
+    maven {
+            url 'http://repo.typesafe.com/typesafe/repo'
+    }
 }
 
 configurations {
@@ -27,8 +30,9 @@ configurations {
 dependencies {
     // functional APIs
     compile group: 'com.google.guava', name: 'guava', version: 'r08'
-    compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0'
-    compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5'
+    compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0', transitive: false
+    compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5', transitive: false
+    compile group: 'play', name: 'play_2.9.1', version: '2.0', transitive: false
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
