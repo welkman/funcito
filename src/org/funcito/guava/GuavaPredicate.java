@@ -43,6 +43,7 @@ public class GuavaPredicate<T> implements Predicate<T> {
         functionalBase = new NullValidatingFunctionalBase<T, Boolean>(state);
     }
 
+    @Override
     public boolean apply(T from) {
         return functionalBase.applyImpl(from);
     }

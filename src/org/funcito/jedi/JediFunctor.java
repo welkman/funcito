@@ -27,6 +27,7 @@ public class JediFunctor<T, V> implements Functor<T,V> {
         functionalBase = new FunctionalBase<T, V>(state);
     }
 
+    @Override
     public V execute(T from) {
         return functionalBase.applyImpl(from);
     }

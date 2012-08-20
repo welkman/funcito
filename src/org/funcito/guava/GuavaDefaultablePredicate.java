@@ -29,6 +29,7 @@ public class GuavaDefaultablePredicate<T> implements Predicate<T> {
         this.defaultForNull = defaultForNull;
     }
 
+    @Override
     public boolean apply(T from) {
         Boolean retVal = functionalBase.applyImpl(from);
         return (retVal==null) ? defaultForNull : retVal;

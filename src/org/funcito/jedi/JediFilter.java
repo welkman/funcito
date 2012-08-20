@@ -27,6 +27,7 @@ public class JediFilter<T> implements Filter<T> {
         functionalBase = new FunctionalBase<T, Boolean>(state);
     }
 
+    @Override
     public Boolean execute(T from) {
         return functionalBase.applyImpl(from);
     }

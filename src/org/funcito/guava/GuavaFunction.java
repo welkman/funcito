@@ -28,6 +28,7 @@ public class GuavaFunction<T, V> implements Function<T,V> {
         functionalBase = new FunctionalBase<T, V>(state);
     }
 
+    @Override
     public V apply(T from) {
         return functionalBase.applyImpl(from);
     }

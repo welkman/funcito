@@ -33,6 +33,8 @@ dependencies {
     compile group: 'org.functionaljava', name: 'functionaljava', version: '3.0', transitive: false
     compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5', transitive: false
     compile group: 'play', name: 'play_2.9.1', version: '2.0', transitive: false
+    compile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M7', transitive: false
+    compile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.2', transitive: false
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
