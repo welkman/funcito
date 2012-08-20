@@ -19,6 +19,7 @@ import org.funcito.functionaljava.FJDelegate;
 import org.funcito.guava.GuavaDelegate;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.jedi.JediDelegate;
+import org.funcito.play.Play2Delegate;
 
 /**
  * This class is a public entry point into Funcito for the supported functional framework APIs.  Most users will probably
@@ -92,4 +93,11 @@ public class Funcito {
      * @see FuncitoJedi
      */
     public static JediDelegate jedi() { return FuncitoJedi.delegate(); }
+
+    /**
+     * Delegate method used to help differentiate Play! Framework 2 from other Funcito supported functional frameworks
+     * @return a delegate with all of the same methods as the static versions in {@link FuncitoPlay2}.
+     * @see FuncitoPlay2
+     */
+    public static Play2Delegate play2() { return FuncitoPlay2.delegate(); }
 }

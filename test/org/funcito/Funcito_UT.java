@@ -24,24 +24,30 @@ public class Funcito_UT {
 
         Object fjStub = fj().callsTo(Object.class);
         assertSame(proxy1, fjStub);
+
+        Object play2Stub = play2().callsTo(Object.class);
+        assertSame(proxy1, play2Stub);
     }
 
     @Test
-    public void testCallsTo_usableByMultipleDelegates() {
+    public void testCallsTo_usableByMultipleDelegates() throws Throwable {
         class MyClass {
             String method1() { return "method1"; }
             String method2() { return "method2"; }
             String method3() { return "method3"; }
+            String method4() { return "method4"; }
         }
 
         MyClass callsTo = callsTo(MyClass.class);
         Function<MyClass,String> function = guava().functionFor(callsTo.method1());
         Functor<MyClass,String> functor = jedi().functorFor(callsTo.method2());
         F<MyClass,String> f = fj().fFor(callsTo.method3());
+        play.libs.F.Function<MyClass,String> p2function = play2().functionFor(callsTo.method4());
 
         assertEquals("method1", function.apply(new MyClass()));
         assertEquals("method2", functor.execute(new MyClass()));
         assertEquals("method3", f.f(new MyClass()));
+        assertEquals("method4", p2function.apply(new MyClass()));
     }
 
 }
