@@ -59,6 +59,41 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.easytesting/fest-assert-core/2.0M7/jar/91a3f0fdb4d49ec96d6122876bbf0b67daf28e6f/fest-assert-core-2.0M7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.easytesting/fest-assert-core/2.0M7/source/cf445e8b9a78a3e34edc719c25b3b9333117cbc5/fest-assert-core-2.0M7-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.hamcrest/hamcrest-core/1.2/jar/44d12ff84e43c7d0539131f75c92f2f88dba6549/hamcrest-core-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.hamcrest/hamcrest-core/1.2/source/e9be1c6a53b4d4e7564756e924a9fa8b1661ec6a/hamcrest-core-1.2-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/jar/12dddecd8e8c24f5c9453a6d3ecb13b38e59db52/collections-generic-4.01.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/collections-generic-4.01/src/java" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/collections-generic-4.01/src/test" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
           <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/cglib/cglib-nodep/2.2/jar/59afed7ab65e7ec6585d5bc60556c3cbd203532b/cglib-nodep-2.2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -141,17 +176,6 @@
         <JAVADOC />
         <SOURCES>
           <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/com.google.guava/guava/11.0.1/source/6101fb9881e05d563c8c971757edb19bfced011/guava-11.0.1-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.hamcrest/hamcrest-core/1.1/jar/860340562250678d1a344907ac75754e259cdb14/hamcrest-core-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.hamcrest/hamcrest-core/1.1/source/2ccf1154d1a8936042a8a742dc3e611d02ac7213/hamcrest-core-1.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

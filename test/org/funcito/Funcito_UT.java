@@ -3,6 +3,7 @@ package org.funcito;
 import com.google.common.base.Function;
 import fj.F;
 import jedi.functional.Functor;
+import org.apache.commons.collections15.Transformer;
 import org.junit.Test;
 
 import static org.funcito.Funcito.*;
@@ -36,6 +37,7 @@ public class Funcito_UT {
             String method2() { return "method2"; }
             String method3() { return "method3"; }
             String method4() { return "method4"; }
+            String method5() { return "method5"; }
         }
 
         MyClass callsTo = callsTo(MyClass.class);
@@ -43,11 +45,13 @@ public class Funcito_UT {
         Functor<MyClass,String> functor = jedi().functorFor(callsTo.method2());
         F<MyClass,String> f = fj().fFor(callsTo.method3());
         play.libs.F.Function<MyClass,String> p2function = play2().functionFor(callsTo.method4());
+        Transformer<MyClass,String> xform = collectGen().transformerFor(callsTo.method5());
 
         assertEquals("method1", function.apply(new MyClass()));
         assertEquals("method2", functor.execute(new MyClass()));
         assertEquals("method3", f.f(new MyClass()));
         assertEquals("method4", p2function.apply(new MyClass()));
+        assertEquals("method5", xform.transform(new MyClass()));
     }
 
 }

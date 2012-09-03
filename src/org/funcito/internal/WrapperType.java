@@ -17,11 +17,18 @@ package org.funcito.internal;
 
 public enum WrapperType {
     GUAVA_FUNCTION("Guava Function"), 
-    GUAVA_PREDICATE("Guava Predicate"), 
+    GUAVA_PREDICATE("Guava Predicate"),
+
     FJ_F("Functional Java F (function)"),
+
     JEDI_FUNCTOR("Jedi Functor"),
     JEDI_FILTER("Jedi Filter"),
-    PLAY2_FUNCTION("Play! Framework 2 Function");
+
+    PLAY2_FUNCTION("Play! Framework 2 Function"),
+
+    COLLECTGEN_TRANSFORMER("Collections-Generic Transformer"),
+    COLLECTGEN_PREDICATE("Collections-Generic Predicate")
+    ;
 
     private final String name;
     

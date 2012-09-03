@@ -2,6 +2,12 @@ Funcito
 
 Version History:
 
+1.2    03-Sep-2012  Support for Play! Framework 2 F.Function
+                    Support for collections-generic (generified fork of Jakarta commons-collections) Transformer and Predicate
+                    Upgraded to Gradle version 1.1
+                    Added Gradle Wrapper scripts (can use "gradlew" instead of "gradle" for build commands)
+                    Added support for IntelliJ project import
+
 1.1    23-Jul-2012  Support for chained method calls
                     Permit wrapping of methods with parameters (static binding of param values)
                     Warning messages now get logged with JUL rather than going to System.err

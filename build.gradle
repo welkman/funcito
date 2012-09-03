@@ -35,6 +35,7 @@ dependencies {
     compile group: 'play', name: 'play_2.9.1', version: '2.0', transitive: false
     compile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M7', transitive: false
     compile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.2', transitive: false
+    compile group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01', transitive: false
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
@@ -123,7 +124,9 @@ javadoc {
         'http://docs.oracle.com/javase/1.5.0/docs/api/',
         'http://docs.guava-libraries.googlecode.com/git-history/v11.0.1/javadoc/',
         'http://functionaljava.googlecode.com/svn/artifacts/3.0/javadoc/',
-        'http://jedi.codehaus.org/javadoc/'
+        'http://jedi.codehaus.org/javadoc/',
+        'http://www.jarvana.com/jarvana/view/net/sourceforge/collections/collections-generic/4.01/collections-generic-4.01-javadoc.jar!/',
+        'http://www.playframework.org/documentation/api/2.0/java/',
     ]
 }
 

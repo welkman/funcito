@@ -1,7 +1,13 @@
 
 Prerequisites:
 
-gradle 1.0-milestone-8
+- Java 1.5 or higher and set JAVA_HOME
+- Gradle 1.1
+- Technically even Gradle is not needed if you use the gradlew script (gradlew.bat for Windows) which will
+retrieve and use the appropriate version of Gradle.
+
+If you choose not to use the included gradlew script, you need to download and install Gradle 1.1 and do the following
+
 available here: http://www.gradle.org/
 
 - set GRADLE_HOME
@@ -9,7 +15,10 @@ available here: http://www.gradle.org/
 - set perms on GRADLE_HOME/bin/*
 - add GRADLE_HOME/lib to CLASSPATH
 
+
+
 Commands:
+(NOTE: anywhere that it says "gradle" below, you can substitute "gradlew" to use the Gradle Wrapper script instead)
 
 gradle tasks
     - task similar to Ant target

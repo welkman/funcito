@@ -15,6 +15,7 @@
  */
 package org.funcito;
 
+import org.funcito.collectionsgeneric.CollectGenDelegate;
 import org.funcito.functionaljava.FJDelegate;
 import org.funcito.guava.GuavaDelegate;
 import org.funcito.internal.FuncitoDelegate;
@@ -34,15 +35,21 @@ import org.funcito.play.Play2Delegate;
  *     import com.google.common.base.Function;
  *     import jedi.functional.Functor;
  *     import fj.F;
+ *     import play.libs.F.Function;
+ *     import org.apache.commons.collections15.Transformer;
  *
- *     Function&lt;MyClass,RetType&gt; function = guava().functionFor( callsTo(MyClass.class).someMethod());
- *     Functor&lt;MyClass,RetType&gt;  functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());
- *     F&lt;MyClass,RetType&gt;        f        = fj().fFor( callsTo(MyClass.class).someMethod());
+ *     Function&lt;MyClass,RetType&gt;    function = guava().functionFor( callsTo(MyClass.class).someMethod());
+ *     Functor&lt;MyClass,RetType&gt;     functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());
+ *     F&lt;MyClass,RetType&gt;           f        = fj().fFor( callsTo(MyClass.class).someMethod());
+ *     F.Function&lt;MyClass,RetType&gt;  function = play2().functionFor( callsTo(MyClass.class).someMethod());
+ *     Transformer&lt;MyClass,RetType&gt; xform    = collectGen().transformerFor( callsTo(MyClass.class).someMethod());
  * </code>
  * </pre>
  * @see FuncitoGuava
  * @see FuncitoFJ
  * @see FuncitoJedi
+ * @see FuncitoPlay2
+ * @see FuncitoCollectGen
  */
 public class Funcito {
 
@@ -100,4 +107,11 @@ public class Funcito {
      * @see FuncitoPlay2
      */
     public static Play2Delegate play2() { return FuncitoPlay2.delegate(); }
+
+    /**
+     * Delegate method used to help differentiate Collections-Generic from other Funcito supported functional frameworks
+     * @return a delegate with all of the same methods as the static versions in {@link FuncitoCollectGen}.
+     * @see FuncitoCollectGen
+     */
+    public static CollectGenDelegate collectGen() { return FuncitoCollectGen.delegate(); }
 }
