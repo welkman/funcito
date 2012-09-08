@@ -7,6 +7,7 @@ Version History:
                     Upgraded to Gradle version 1.1
                     Added Gradle Wrapper scripts (can use "gradlew" instead of "gradle" for build commands)
                     Added support for IntelliJ project import
+                    Removed org.funcito.examples from javadoc
 
 1.1    23-Jul-2012  Support for chained method calls
                     Permit wrapping of methods with parameters (static binding of param values)
