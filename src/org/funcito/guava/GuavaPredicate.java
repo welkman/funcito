@@ -17,30 +17,19 @@ package org.funcito.guava;
 
 import com.google.common.base.Predicate;
 
-import org.funcito.FuncitoException;
-import org.funcito.FunctionalBase;
+import org.funcito.*;
 import org.funcito.internal.InvokableState;
 
 public class GuavaPredicate<T> implements Predicate<T> {
 
-    private NullValidatingFunctionalBase<T,Boolean> functionalBase;
-
-    class NullValidatingFunctionalBase<T,V> extends FunctionalBase<T,V> {
-        NullValidatingFunctionalBase(InvokableState state) {
-            super(state);
-        }
-        @Override
-        protected void validateReturnValue(Object retVal) {
-            if (retVal==null) {
-                throw new FuncitoException("Predicate had a null Boolean return value.\n " +
-                    "Guava Predicate expects a non-null Boolean so that it can be autoboxed to a primitive boolean.\n " +
-                    "You might consider the alternate method: predicateFor(Boolean proxiedMethodCall, boolean defaultForNull)");
-            }
-        }
-    }
+    private NullValidatingPredicateBase<T> functionalBase;
 
     public GuavaPredicate(InvokableState state) {
-        functionalBase = new NullValidatingFunctionalBase<T, Boolean>(state);
+        try {
+            functionalBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
+                    FuncitoGuava.class.getMethod("predicateFor", Boolean.class, boolean.class));
+        } catch (NoSuchMethodException e) { // ignored
+        }
     }
 
     @Override

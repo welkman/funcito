@@ -16,30 +16,19 @@
 package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Predicate;
-import org.funcito.FuncitoException;
-import org.funcito.FunctionalBase;
+import org.funcito.*;
 import org.funcito.internal.InvokableState;
 
 public class CollectGenPredicate<T> implements Predicate<T> {
 
-    private NullValidatingFunctionalBase<T,Boolean> functionalBase;
-
-    class NullValidatingFunctionalBase<T,V> extends FunctionalBase<T,V> {
-        NullValidatingFunctionalBase(InvokableState state) {
-            super(state);
-        }
-        @Override
-        protected void validateReturnValue(Object retVal) {
-            if (retVal==null) {
-                throw new FuncitoException("Predicate had a null Boolean return value.\n " +
-                    "Collections-Generic Predicate expects a non-null Boolean so that it can be autoboxed to a primitive boolean.\n " +
-                    "You might consider the alternate method: predicateFor(Boolean proxiedMethodCall, boolean defaultForNull)");
-            }
-        }
-    }
+    private NullValidatingPredicateBase<T> functionalBase;
 
     public CollectGenPredicate(InvokableState state) {
-        functionalBase = new NullValidatingFunctionalBase<T, Boolean>(state);
+        try {
+            functionalBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
+                    FuncitoCollectGen.class.getMethod("predicateFor", Boolean.class, boolean.class));
+        } catch (NoSuchMethodException e) { // ignored
+        }
     }
 
     @Override
