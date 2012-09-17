@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2012 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.example.FJ;
+package org.funcito.example.collectionsgeneric;
 
-import fj.F;
-import fj.data.List;
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.Transformer;
 
-import static org.funcito.FuncitoFJ.fFor;
-import static org.funcito.FuncitoFJ.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static org.funcito.FuncitoCollectGen.*;
 
 public class MyClass {
 
@@ -28,15 +33,15 @@ public class MyClass {
 
     public static final MyClass stubbedCallsTo = callsTo(MyClass.class);
 
-    public static final F<MyClass, String> getMyString = fFor(stubbedCallsTo.getMyString());
-    public static final F<MyClass, Integer> getOther = fFor(stubbedCallsTo.getOther());
+    public static final Transformer<MyClass, String> getMyString = transformerFor(stubbedCallsTo.getMyString());
+    public static final Transformer<MyClass, Integer> getOther = transformerFor(stubbedCallsTo.getOther());
 
     // alternative single line syntax
-    public static final F<MyClass, String> getMyStringF2 = fFor(callsTo(MyClass.class).getMyString());
+    public static final Transformer<MyClass, String> getMyStringF2 = transformerFor(callsTo(MyClass.class).getMyString());
 
     // These demonstrate not only predicates, but also method argument binding
-    public static final F<MyClass,Boolean> isLengthGT1 = fFor(stubbedCallsTo.isLengthGreaterThan(1));
-    public static final F<MyClass,Boolean> isLengthGT3 = fFor(stubbedCallsTo.isLengthGreaterThan(3));
+    public static final Predicate<MyClass> isLengthGT1 = predicateFor(stubbedCallsTo.isLengthGreaterThan(1));
+    public static final Predicate<MyClass> isLengthGT3 = predicateFor(stubbedCallsTo.isLengthGreaterThan(3));
 
     public MyClass(String myString, Integer other) {
         this.myString = myString;
@@ -73,7 +78,7 @@ public class MyClass {
         MyClass m2 = new MyClass("B", 2);
         MyClass m3 = new MyClass("C", 3);
 
-        List<MyClass> list = List.list(m1, m2, m3);
+        List<MyClass> list = Arrays.asList(m1,m2,m3);
         demoListTransforms(list);
         demoListFilters(list);
 
@@ -84,24 +89,24 @@ public class MyClass {
     }
 
     protected static void demoListTransforms(List<MyClass> list) {
-        List<String> strList1 = list.map(getMyString);
-        List<String> strList2 = list.map(getMyStringF2);
-        List<Integer> intList = list.map(getOther);
+        Collection<String> strList1 = CollectionUtils.collect(list, getMyString);
+        Collection<String> strList2 = CollectionUtils.collect(list, getMyStringF2);
+        Collection<Integer> intList = CollectionUtils.collect(list, getOther);
 
-        printValues("func1", strList1);
-        printValues("func2", strList2);
-        printValues("otherFunc", intList);
+        printValues("xform1", strList1);
+        printValues("xform2", strList2);
+        printValues("otherXform", intList);
     }
 
     protected static void demoListFilters(List<MyClass> list) {
-        List<MyClass> filtered1 = list.filter(isLengthGT1);
-        List<MyClass> filtered2 = list.filter(isLengthGT3);
+        Collection<MyClass> filtered1 = CollectionUtils.select(list, isLengthGT1);
+        Collection<MyClass> filtered2 = CollectionUtils.select(list, isLengthGT3);
 
-        printValues("filter length > 1", filtered1);
-        printValues("filter length > 3", filtered2);
+        printValues("select length > 1", filtered1);
+        printValues("select length > 3", filtered2);
     }
 
-    protected static void printValues(String desc, List<?> list) {
-        System.out.println(desc + ": " + list.toCollection());
+    protected static void printValues(String desc, Collection<?> list) {
+        System.out.println(desc + ": " + list);
     }
 }
