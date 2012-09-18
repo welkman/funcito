@@ -1,0 +1,27 @@
+ 0% Scenario{vm=java, trial=0, benchmark=Manual, mode=-server} 27.02 ns; ?=0.32 ns @ 10 trials
+10% Scenario{vm=java, trial=0, benchmark=Function, mode=-server} 28.26 ns; ?=0.69 ns @ 10 trials
+20% Scenario{vm=java, trial=0, benchmark=FuncitoCGlib, mode=-server} 38.61 ns; ?=1.92 ns @ 10 trials
+30% Scenario{vm=java, trial=0, benchmark=FuncitoJavassist, mode=-server} 38.39 ns; ?=0.58 ns @ 10 trials
+40% Scenario{vm=java, trial=0, benchmark=FuncitoJavaProxy, mode=-server} 38.79 ns; ?=3.20 ns @ 10 trials
+50% Scenario{vm=java, trial=0, benchmark=Manual, mode=-client} 44.39 ns; ?=0.40 ns @ 3 trials
+60% Scenario{vm=java, trial=0, benchmark=Function, mode=-client} 56.38 ns; ?=0.09 ns @ 3 trials
+70% Scenario{vm=java, trial=0, benchmark=FuncitoCGlib, mode=-client} 151.87 ns; ?=2.21 ns @ 10 trials
+80% Scenario{vm=java, trial=0, benchmark=FuncitoJavassist, mode=-client} 153.59 ns; ?=2.26 ns @ 10 trials
+90% Scenario{vm=java, trial=0, benchmark=FuncitoJavaProxy, mode=-client} 147.97 ns; ?=0.26 ns @ 3 trials
+
+   mode        benchmark    ns linear runtime
+-server           Manual  27.0 =====
+-server         Function  28.3 =====
+-server     FuncitoCGlib  38.6 =======
+-server FuncitoJavassist  38.4 =======
+-server FuncitoJavaProxy  38.8 =======
+-client           Manual  44.4 ========
+-client         Function  56.4 ===========
+-client     FuncitoCGlib 151.9 =============================
+-client FuncitoJavassist 153.6 ==============================
+-client FuncitoJavaProxy 148.0 ============================
+
+vm: java
+trial: 0
+
+Writing results to C:\Documents and Settings\Owner\IdeaProjects\Funcito\build\benchmarks\f1.2.0_WindowsXP-x86_jvm1.6.0_13.json

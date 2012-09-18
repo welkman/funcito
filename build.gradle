@@ -221,8 +221,8 @@ task runBenchmark(type: JavaExec, dependsOn: test) {
     def benchMarksDir = "${project.buildDir}/benchmarks"
     ant.mkdir(dir: benchMarksDir)
     // having problems with next 2 lines with a clean ??
-//    def outStream = new FileOutputStream("${benchMarksDir}/${fnameBase}-out.txt")
-//    standardOutput = outStream
+    def outStream = new FileOutputStream("${benchMarksDir}/${fnameBase}-out.txt")
+    standardOutput = outStream
     main = 'org.funcito.benchmarks.FuncitoBenchmark'
     classpath = sourceSets.test.runtimeClasspath
     args = ['--saveResults', "${benchMarksDir}/${fnameBase}.json", '-Jmode=-server,-client']
