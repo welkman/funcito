@@ -18,7 +18,6 @@ package org.funcito.example.FJ;
 import fj.F;
 import fj.data.List;
 
-import static org.funcito.FuncitoFJ.fFor;
 import static org.funcito.FuncitoFJ.*;
 
 public class MyClass {

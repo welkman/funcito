@@ -243,6 +243,11 @@ def origClassesDir = "${project.buildDir}/classes-orig/main"
 def coverageDir = "${project.buildDir}/reports/coverage"
 def serFile = "cobertura.ser"
 
+test {
+    // -XX:-UseSplitVerifier is for a Java 7 bug
+    jvmArgs '-XX:-UseSplitVerifier'
+}
+
 test.doFirst { task ->
     ant.delete(file: serFile)
     ant.delete(dir: coverageDir)
