@@ -19,11 +19,11 @@ import org.apache.commons.collections15.Transformer;
 import org.funcito.FunctionalBase;
 import org.funcito.internal.InvokableState;
 
-public class CollectGenTranformer<T, V> implements Transformer<T,V> {
+public class CollectGenTransformer<T, V> implements Transformer<T,V> {
 
     private FunctionalBase<T,V> functionalBase;
 
-    public CollectGenTranformer(InvokableState state) {
+    public CollectGenTransformer(InvokableState state) {
         functionalBase = new FunctionalBase<T, V>(state);
     }
 
