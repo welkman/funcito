@@ -25,7 +25,7 @@ import static org.funcito.internal.WrapperType.*;
 public class CollectGenDelegate extends FuncitoDelegate {
     public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
-        return new CollectGenTranformer<T, V>(state);
+        return new CollectGenTransformer<T, V>(state);
     }
 
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
