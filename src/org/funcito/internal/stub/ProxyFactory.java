@@ -56,6 +56,6 @@ public abstract class ProxyFactory {
     protected abstract <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces);
 
     public boolean canImposterise(Class<?> type) {
-        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
+        return !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
     }
 }
