@@ -20,6 +20,8 @@ public enum WrapperType {
     GUAVA_PREDICATE("Guava Predicate"),
 
     FJ_F("Functional Java F (function)"),
+    FJ_EFFECT("Functional Java Effect"),
+    FJ_VOID_EFFECT("Functional Java Effect (returning void)"),
 
     JEDI_FUNCTOR("Jedi Functor"),
     JEDI_FILTER("Jedi Filter"),

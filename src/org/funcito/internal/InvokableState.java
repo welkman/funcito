@@ -42,7 +42,7 @@ public class InvokableState {
             if (tail!=invokable.getTarget()) {
                 throw new FuncitoException("Registered a proxy method call that was not chained to the result " +
                         "of previous proxy method call.\n  This was likely due to one or more accidental calls to a Funcito proxy" +
-                        " outside of one of the \"functionFor()\"-like methods");
+                        " outside of one of the \"functionFor()\"-like methods, or back-to-back \"prepareVoid()\" calls");
             }
         }
     }

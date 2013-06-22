@@ -1,5 +1,6 @@
 package org.funcito;
 
+import fj.Effect;
 import fj.F;
 import org.funcito.functionaljava.FJDelegate;
 
@@ -84,6 +85,19 @@ public class FuncitoFJ {
      */
     public static <T,V> F<T,V> fFor(V proxiedMethodCall) {
         return fjDelegate.fFor(proxiedMethodCall);
+    }
+
+    // TODO: document this thoroughly
+    public static <T,V> Effect<T> effectFor(V proxiedMethodCall) {
+        return fjDelegate.effectFor(proxiedMethodCall);
+    }
+
+    public static <T> T prepareVoid(T t) {
+        return fjDelegate.prepareVoid(t);
+    }
+
+    public static <T> Effect<T> voidEffect() {
+        return fjDelegate.voidEffect();
     }
 
     static FJDelegate delegate() {
