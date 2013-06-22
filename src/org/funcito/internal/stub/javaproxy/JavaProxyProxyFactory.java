@@ -10,7 +10,7 @@ public class JavaProxyProxyFactory extends ProxyFactory {
     private JavaProxyInvocationHandler handler = new JavaProxyInvocationHandler();
 
     @Override
-    public <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
+    public <T> T proxyImpl(Class<T> clazz) {
         if (!canImposterise(clazz)) {
             throw new FuncitoException("Cannot proxy this class using the JavaProxyProxyFactory because it is not an interface.  If no interface is available for the class, then you will need to include a code-generation library (CGLib or Javassist) in order to be able to proxy this non-interface class.");
         }

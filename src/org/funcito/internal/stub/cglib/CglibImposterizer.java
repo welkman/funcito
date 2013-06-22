@@ -50,17 +50,17 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         }
     };
 
-    public <T> T imposterise(final MethodInterceptor interceptor, Class<T> mockedType, Class<?>... additionalInterfaces) {
+    public <T> T imposterise(final MethodInterceptor interceptor, Class<T> mockedType) {
         try {
             setConstructorsAccessible(mockedType, true);
-            Class<?> proxyClass = createProxyClass(mockedType, additionalInterfaces);
+            Class<?> proxyClass = createProxyClass(mockedType);
             return mockedType.cast(createProxy(proxyClass, interceptor));
         } finally {
             setConstructorsAccessible(mockedType, false);
         }
     }
 
-    private <T> Class<?> createProxyClass(Class<?> mockedType, Class<?>... additionalInterfaces) {
+    private <T> Class<?> createProxyClass(Class<?> mockedType) {
         // NOTE: this was part of the original ClassImposterizer, but it doesn't seem to be needed
 //        if (mockedType == Object.class) {
 //            mockedType = ClassWithSuperclassToWorkAroundCglibBug.class;
@@ -77,10 +77,8 @@ public class CglibImposterizer extends AbstractClassImposterizer {
         enhancer.setUseFactory(true);
         if (mockedType.isInterface()) {
             enhancer.setSuperclass(Object.class);
-            enhancer.setInterfaces(prepend(mockedType, additionalInterfaces));
+            enhancer.setInterfaces(prepend(mockedType));
         } else {
-            Class<?>[] addInterfaces = additionalInterfaces.length==0 ? null : additionalInterfaces;
-            enhancer.setInterfaces(addInterfaces);
             enhancer.setSuperclass(mockedType);
         }
 //        enhancer.setCallbackTypes(new Class[]{MethodInterceptor.class, NoOp.class});

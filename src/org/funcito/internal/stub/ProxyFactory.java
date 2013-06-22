@@ -44,16 +44,16 @@ public abstract class ProxyFactory {
         instance = null;
     }
 
-    public <T> T proxy(Class<T> clazz, Class<?>... additionalInterfaces) {
+    public <T> T proxy(Class<T> clazz) {
         T proxy = clazz.cast(proxyCache.get(clazz));
-        if (proxy == null || (additionalInterfaces!=null && additionalInterfaces.length>0)) {
-            proxy = proxyImpl(clazz, additionalInterfaces);
+        if (proxy == null) {
+            proxy = proxyImpl(clazz);
             proxyCache.put(clazz, proxy);
         }
         return proxy;
     }
 
-    protected abstract <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces);
+    protected abstract <T> T proxyImpl(Class<T> clazz);
 
     public boolean canImposterise(Class<?> type) {
         return !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();

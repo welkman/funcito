@@ -48,21 +48,21 @@ public class JavassistImposterizer extends AbstractClassImposterizer {
 //        }
 //    };
 
-    public <T> T imposterise(final MethodHandler handler, Class<T> mockedType, Class<?>... additionalInterfaces) {
+    public <T> T imposterise(final MethodHandler handler, Class<T> mockedType) {
         try {
             setConstructorsAccessible(mockedType, true);
-            Class<?> proxyClass = createProxyClass(mockedType, additionalInterfaces);
+            Class<?> proxyClass = createProxyClass(mockedType);
             return mockedType.cast(createProxy(proxyClass, handler));
         } finally {
             setConstructorsAccessible(mockedType, false);
         }
     }
 
-    private <T> Class<?> createProxyClass(Class<?> mockedType, Class<?>... additionalInterfaces) {
+    private <T> Class<?> createProxyClass(Class<?> mockedType) {
         ProxyFactory factory = new ProxyFactory();
         if (mockedType.isInterface()) {
             factory.setSuperclass(Object.class);
-            factory.setInterfaces(prepend(mockedType, additionalInterfaces));
+            factory.setInterfaces(prepend(mockedType));
         } else {
             factory.setSuperclass(mockedType);
         }

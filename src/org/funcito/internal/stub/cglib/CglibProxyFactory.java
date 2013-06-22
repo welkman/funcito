@@ -23,12 +23,12 @@ public class CglibProxyFactory extends ProxyFactory {
 
     private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
 
-    protected <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
+    protected <T> T proxyImpl(Class<T> clazz) {
         CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {
             throw new FuncitoException("Cannot proxy this class [" + clazz.getName() +"].  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return imposterizer.imposterise(interceptor, clazz, additionalInterfaces);
+        return imposterizer.imposterise(interceptor, clazz);
     }
 
 }

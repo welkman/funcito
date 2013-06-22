@@ -23,12 +23,12 @@ public class JavassistProxyFactory extends ProxyFactory {
 
     private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
-    protected <T> T proxyImpl(Class<T> clazz, Class<?>... additionalInterfaces) {
+    protected <T> T proxyImpl(Class<T> clazz) {
         JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {
             throw new FuncitoException("Cannot proxy this class.  Typical causes: final class, anonymous class, or primitive class.");
         }
-        return imposterizer.imposterise(handler, clazz, additionalInterfaces);
+        return imposterizer.imposterise(handler, clazz);
     }
 
 }
