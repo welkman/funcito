@@ -23,6 +23,14 @@ class InvocationManager {
         state.put(invokable);
     }
 
+    /**
+     * Non-destructive peek at head Invokable
+     * @return Invokable that is at the head of the InvokableState
+     */
+    protected Invokable peekInvokable() {
+        return state.peek();
+    }
+
     public InvokableState extractState() {
         InvokableState oldState = this.state;
         state = new InvokableState();

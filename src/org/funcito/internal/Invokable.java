@@ -20,6 +20,11 @@ import org.funcito.FuncitoException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Note this class is immutable
+ * @param <T>
+ * @param <V>
+ */
 public class Invokable<T,V> {
 
     private Method method;
@@ -67,7 +72,10 @@ public class Invokable<T,V> {
         try {
             m = invokedTarget.getClass().getMethod(method.getName());
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new FuncitoException("Method " + method.getName() + "() does not exist in invoked target class " + invokedTarget.getClass().getName() +
+                    " \n" +
+                    "Probable cause: wrapping void methods with voidXXXX() generator methods calls, can result in unsafe assignments.  To guarantee safe assignment," +
+                    "see the type-safe assignment overloaded form: voidXXXX(Class target");
         }
         return m.toGenericString();
     }

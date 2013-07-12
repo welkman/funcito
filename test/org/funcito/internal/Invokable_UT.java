@@ -93,6 +93,17 @@ public class Invokable_UT {
         invokable.invoke(new ThrowsCastException());
     }
 
+    @Test
+    public void testInvoke_NoSuchMethod() throws NoSuchMethodException {
+        Method m = Integer.class.getMethod("doubleValue");
+        // Sometimes we use non-safe assignments (because of chaining)
+        Invokable invokable = new Invokable<Integer, Double>(m, new Integer(1), new Double(1.0));
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Method doubleValue() does not exist");
+        invokable.invoke("A String instead of an Integer");
+    }
+
     class Handler<T> implements MethodHandler {
         T retVal;
         public Handler(T retVal) {

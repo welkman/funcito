@@ -48,6 +48,16 @@ public class FuncitoDelegate {
         return manager;
     }
 
+    protected <T> void validatePreparedVoidCall(Class<T> validationTargetClass, WrapperType genType) {
+        Invokable head = getManager().peekInvokable();
+        Class invokableTargetClass = head.getTarget().getClass();
+        if (!validationTargetClass.isAssignableFrom(invokableTargetClass)) {
+            throw new FuncitoException("Failed to create " + genType + " with validating void generator, because " +
+                    "validationTargetClass " + validationTargetClass.getName() + " is not assignable from the head " +
+                    "of the prepared invokable state.");
+        }
+    }
+
     //-------------------- Funcito Core -------------------------
 
     public void putInvokable(Invokable invokable) {

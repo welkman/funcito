@@ -13,9 +13,25 @@ import java.util.ArrayList;
 import static org.funcito.FuncitoFJ.*;
 import static org.junit.Assert.*;
 
+/**
+ * Copyright 2013 Project Funcito Contributors
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 public class FuncitoFjEffect_UT {
 
-    public @Rule ExpectedException expected = ExpectedException.none();
+    public @Rule ExpectedException thrown = ExpectedException.none();
     private Grows CALLS_TO_GROWS = callsTo(Grows.class);
 
     @After
@@ -40,7 +56,7 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testNonVoidEffectFor_AssignToEffectWithSourceSuperType() {
+    public void testEffectFor_AssignToEffectWithSourceSuperType() {
         Grows grows = new Grows();
 
         Effect<Object> superTypeRet = effectFor(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
@@ -55,11 +71,15 @@ public class FuncitoFjEffect_UT {
         public Generic(N n) { number = n.doubleValue(); }
         public Double incAndGet() {
             number = number.doubleValue() + 1;
-            return number; }
+            return number;
+        }
+        public void voidInc() {
+            number = number.doubleValue() + 1;
+        }
     }
 
     @Test
-    public void testNonVoidEffectFor_ValidateDetectsMismatchedGenericTypes() {
+    public void testEffectFor_ValidateDetectsMismatchedGenericTypes() {
         Effect<Generic<Float>> floatGenericEffect = effectFor(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
 
@@ -68,7 +88,7 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testNonVoidEffectFor_AllowUpcastToExtensionGenericType() {
+    public void testEffectFor_AllowUpcastToExtensionGenericType() {
         Effect<Generic<? extends Object>> incEffect = effectFor(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
         assertEquals(0, integerGeneric.number, 0.01);
@@ -79,7 +99,7 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testNonVoidEffectFor_SingleArgBinding() {
+    public void testEffectFor_SingleArgBinding() {
         class IncList extends ArrayList<Integer> {
             public int incIndex(int i) {
                 int oldVal = this.get(i).intValue();
@@ -128,7 +148,18 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testVoidEffect_AssignToEffectWithSourceSuperType() {
+    public void testVoidEffect_prepareWithNoMethodCall() {
+        Grows grows = new Grows();
+
+        prepareVoid(CALLS_TO_GROWS); // did not append any ".methodCall()" after close parenthesis
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("No call to a");
+        Effect<Grows> badCall = voidEffect();
+    }
+
+    @Test
+    public void testVoidEffect_AssignToEffectWithSourceSuperTypeOk() {
         Grows grows = new Grows();
 
         prepareVoid(CALLS_TO_GROWS).inc();
@@ -140,15 +171,84 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
+    public void testVoidEffect_unsafeAssignment() {
+        prepareVoid(CALLS_TO_GROWS).inc();
+        Effect<Integer> unsafe = voidEffect();  // unsafe assignment compiles
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Method inc() does not exist");
+        unsafe.e(new Integer(3)); // invocation target type does not match prepared target type
+    }
+
+    @Test
+    public void testVoidEffect_typeValidationSucceeds() {
+        prepareVoid(CALLS_TO_GROWS).inc();
+
+        Effect<Grows> grows = voidEffect(Grows.class);
+    }
+
+    @Test
+    public void testVoidEffect_typeValidationSucceedsWithSuperClass() {
+        class Grows2 extends Grows{}
+        prepareVoid(callsTo(Grows2.class)).inc();
+
+        Effect<Grows> grows = voidEffect(Grows.class);
+    }
+
+    @Test
+    public void testVoidEffect_typeValidationFails() {
+        prepareVoid(CALLS_TO_GROWS).inc();
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("Failed to create Functional Java Effect");
+        Effect<?> e = voidEffect(Number.class);  // type validation
+    }
+
+
+    @Test
+    public void testVoidEffect_typeValidationFailsButLeavesInvokableStateUnchanged() {
+        prepareVoid(CALLS_TO_GROWS).inc();
+
+        try {
+            Effect<?> e = voidEffect(Number.class);  // type validation should fail
+            fail("should have failed");
+        } catch (FuncitoException e) {
+            Effect<Grows> g = voidEffect(Grows.class);  // type validation
+        }
+    }
+
+    @Test
     public void testVoidEffect_badOrderOfPrepares() {
         // First call below requires a subsequent call to voidEffect() before another prepareVoid()
         prepareVoid(CALLS_TO_GROWS).inc();
 
-        expected.expect(FuncitoException.class);
-        expected.expectMessage("or back-to-back \"prepareVoid()\" calls");
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("or back-to-back \"prepareVoid()\" calls");
         // bad to call prepareVoid() twice without intermediate voidEffect()
         prepareVoid(CALLS_TO_GROWS).dec();
         // see clean-up in method tearDown()
+    }
+
+    @Test
+    public void testVoidEffect_interleavedPreparesDifferentSourcesAlsoNotOk() {
+        prepareVoid(CALLS_TO_GROWS).inc();
+
+        thrown.expect(FuncitoException.class);
+        thrown.expectMessage("or back-to-back \"prepareVoid()\" calls");
+        prepareVoid(callsTo(Generic.class)).voidInc();
+    }
+
+    @Test
+    public void testVoidEffect_preparedForNonVoidMethod() {
+        Grows grows = new Grows();
+        assertEquals(0, grows.i);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Effect<Grows> e = voidEffect();
+
+        e.e(grows);
+
+        assertEquals(1, grows.i);
     }
 }
 

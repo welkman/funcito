@@ -30,6 +30,10 @@ public class InvokableState {
         invokablesList.add(invokable);
     }
 
+    Invokable peek() {
+        return invokablesList.get(0);
+    }
+
     private void validate(Invokable invokable) {
         if (invokable == null) {
             throw new FuncitoException("Internal error: attempt to 'put' null invokable");

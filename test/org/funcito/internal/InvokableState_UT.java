@@ -44,6 +44,14 @@ public class InvokableState_UT {
     }
 
     @Test
+    public void testPeek() {
+        // test
+        state.put(invokable);
+        assertSame(invokable, state.peek());
+        assertSame(invokable, state.peek()); // can be repeated
+    }
+
+    @Test
     public void testIterator_empty() {
         Iterator<Invokable> iter = state.iterator();
         

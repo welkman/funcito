@@ -110,6 +110,18 @@ public class InvocationManager_UT {
     }
 
     @Test
+    public void testPeekInvokable() throws NoSuchMethodException {
+        Method method = List.class.getMethod("size");
+        assertEquals(0, method.getParameterTypes().length);
+        Invokable<List, Integer> invokable = new Invokable<List, Integer>(method, new ArrayList(), 1);
+
+        mgr.pushInvokable(invokable);
+
+        assertSame(invokable,mgr.peekInvokable());
+        assertSame(invokable,mgr.peekInvokable()); //can repeat
+    }
+
+    @Test
     public void testExtractInvokable_canCallWhenEmpty() {
         InvokableState state = mgr.extractState();
         assertTrue(state.isEmpty());

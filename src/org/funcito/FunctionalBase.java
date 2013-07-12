@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,6 @@ public class FunctionalBase<T, V> {
         return (V)retVal;
     }
 
-    protected void validateReturnValue(Object retVal) {}; //default action is nothing
+    protected void validateReturnValue(Object retVal) {} //default action is nothing
 
 }
