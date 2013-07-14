@@ -1,5 +1,6 @@
 package org.funcito.collectionsgeneric;
 
+import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.Predicate;
 import org.funcito.internal.FuncitoDelegate;
@@ -8,7 +9,7 @@ import org.funcito.internal.InvokableState;
 import static org.funcito.internal.WrapperType.*;
 
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,4 +38,22 @@ public class CollectGenDelegate extends FuncitoDelegate {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenDefaultablePredicate<T>(state, defaultForNull);
     }
+
+    public <T> Closure<T> closureFor(Object proxiedMethodCall) {
+        InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
+        return new CollectGenClosure<T>(state);
+    }
+
+    public <T> T prepareVoid(T t) { return t; }
+
+    public <T> Closure<T> voidClosure() {
+        InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
+        return new CollectGenClosure<T>(state);
+    }
+
+    public <T> Closure<T> voidClosure(Class<T> validationTargetClass) {
+        validatePreparedVoidCall(validationTargetClass, COLLECTGEN_VOID_CLOSURE);
+        return voidClosure();
+    }
+
 }

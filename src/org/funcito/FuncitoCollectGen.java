@@ -1,7 +1,7 @@
 package org.funcito;
 
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package org.funcito;
  * limitations under the License.
  */
 
+import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.collectionsgeneric.CollectGenDelegate;
@@ -126,6 +127,128 @@ public class FuncitoCollectGen {
      */
     public static <T>Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
         return collectGenDelegate.predicateFor(proxiedMethodCall, defaultForNull);
+    }
+
+    /**
+     * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
+     * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator can only be used for
+     * method calls/chains with a non-void return type, even though the return type is ignored.  For a Closure
+     * generator that works with void returning methods/chains, see {@link #voidClosure()}.  Example usage is:
+     * <p>
+     * <code>
+     *     Closure&lt;MyClass&gt; cmd = closureFor( callsTo(MyClass.class).methodWithNonVoidReturnType() );
+     * </code>
+     * <p>
+     * You can wrap methods with parameters, so long as you statically provide values for each
+     * parameter.  Provided parameter values are statically bound to the <code>Closure</code> and may not be changed:
+     * <p>
+     * <code>
+     *     Closure&lt;MyClass&gt; cmd = closureFor( callsTo(MyClass.class).methodWithArgs("abc", 123L) );<br/>
+     *     // all invocations of closure will use "abc" and 123L as the arguments to methodWithArgs
+     * </code>
+     * <p>
+     * It is also possible to wrap method call chains, with some restrictions:
+     * <p>
+     * <code>
+     *     MyClass callMyClass = callsTo(MyClass.class);<br/>
+     *     Closure&lt;MyClass&gt; cmd = closureFor( callsMyClass.methodWithRetType1().methodWithRetType2() );
+     * </code>
+     * <p>
+     * Restrictions for chaining are that intermediate return types (all except for the final return type in the
+     * chain) must be proxyable by the current Proxy provider, just like the initial target type.  In the above
+     * example this means MyClass and RetType1 must be proxyable, but RetType2 need not be proxyable.
+     * Intermediate return types also cannot be a Java Generic type because of type erasure.
+     * <p>
+     * @param proxiedMethodCall is the return value from an inlined method call to a <code>FuncitoFJ</code> proxy object
+     * @param <T> is the input type of the Closure
+     * @return a Collections-Generic <code>Closure</code> object that wraps a method call or chain.
+     * @see #voidClosure()
+     */
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall) {
+        return     collectGenDelegate.closureFor(proxiedMethodCall);
+    }
+
+    /**
+     * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
+     * <strong>Collections-Generic</strong> <code>Closure</code> object.  Use of this method is paired with a following
+     * execution of one of the void-generating methods ({@link #voidClosure()} or {@link #voidClosure(Class)}). Resulting
+     * <code>Closure</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
+     * </code>
+     * <p>
+     * You can wrap methods with parameters, so long as you statically provide values for each
+     * parameter.  Provided parameter values are statically bound to the <code>Closure</code> and may not be changed:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).voidMethodWithArgs("abc", 123L);<br/>
+     *     // all invocations of closure will use "abc" and 123L as the arguments to voidMethodWithArgs
+     * </code>
+     * <p>
+     * It is also possible to wrap method call chains, with some restrictions:
+     * <p>
+     * <code>
+     *     MyClass callMyClass = callsTo(MyClass.class);<br>
+     *     prepareVoid(callsMyClass).methodWithRetType1().voidMethod();<br/>
+     * </code>
+     * <p>
+     * Restrictions for chaining are that intermediate return types (final return type does not matter because it is
+     * void) must be proxyable by the current Proxy provider, just like the initial target type.  In the above
+     * example this means MyClass and RetType1 must be proxyable.  Intermediate return types also cannot be a Java
+     * Generic type because of type erasure.
+     * <p>
+     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
+     * call may be directly appended.
+     * @param <T> is the input type of the Closure being prepared
+     * @see #voidClosure(Class)
+     * @see #voidClosure()
+     */
+    public static <T> T prepareVoid(T t) {
+        return     collectGenDelegate.prepareVoid(t);
+    }
+
+    /**
+     * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
+     * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator is only  appropriate for
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
+     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
+     * Closure is assigned to an appropriately type-constrained Closure.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
+     *     Closure&lt;MyClass&gt; cmd = voidClosure();
+     * </code>
+     * <p>
+     * @return a Collections-Generic <code>Closure</code> object that wraps a previously prepared method call or chain.
+     * @param <T> is the input type of the Closure
+     * @see #voidClosure(Class)
+     * @see #prepareVoid(Object)
+     */
+    public static <T> Closure<T> voidClosure() {
+        return     collectGenDelegate.voidClosure();
+    }
+
+    /**
+     * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
+     * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator is only appropriate
+     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
+     * This is the overloaded and safer form of {@link #voidClosure()}, which uses a target Class type to validate that
+     * the generated Closure is assigned to an appropriately type-constrained Closure.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
+     *     Closure&lt;MyClass&gt; cmd = voidClosure(MyClass.class); // added safety in assignment
+     * </code>
+     * <p>
+     * @return a Collections-Generic <code>Closure</code> object that wraps a previously prepared method call or chain.
+     * @param c the input target Class for validation of the assigned constraint-type of the Closure.
+     * @param <T> is the input type of the Closure
+     * @see #voidClosure()
+     * @see #prepareVoid(Object)
+     */
+    public static <T> Closure<T> voidClosure(Class<T> c) {
+        return     collectGenDelegate.voidClosure(c);
     }
 
     static CollectGenDelegate delegate() {

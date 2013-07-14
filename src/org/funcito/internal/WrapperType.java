@@ -31,7 +31,9 @@ public enum WrapperType {
     PLAY2_FUNCTION("Play! Framework 2 Function"),
 
     COLLECTGEN_TRANSFORMER("Collections-Generic Transformer"),
-    COLLECTGEN_PREDICATE("Collections-Generic Predicate")
+    COLLECTGEN_PREDICATE("Collections-Generic Predicate"),
+    COLLECTGEN_CLOSURE("Collections-Generic Closure"),
+    COLLECTGEN_VOID_CLOSURE("Collections-Generic Closure (returning void)")
     ;
 
     private final String name;

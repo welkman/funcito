@@ -230,6 +230,7 @@ public class FuncitoJedi {
     public static <T> Command<T> voidCommand(Class<T> c) {
         return jediDelegate.voidCommand(c);
     }
+
     public static JediDelegate delegate() {
         return jediDelegate;
     }
