@@ -2,11 +2,8 @@ package org.funcito.functionaljava;
 
 import fj.Effect;
 import fj.F;
-import org.funcito.FuncitoException;
 import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
-import org.funcito.internal.WrapperType;
 
 import static org.funcito.internal.WrapperType.FJ_EFFECT;
 import static org.funcito.internal.WrapperType.FJ_F;
@@ -47,7 +44,7 @@ public class FJDelegate extends FuncitoDelegate {
     }
 
     public <T> Effect<T> voidEffect(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, WrapperType.FJ_VOID_EFFECT);
+        validatePreparedVoidCall(validationTargetClass, FJ_VOID_EFFECT);
         return voidEffect();
     }
 }

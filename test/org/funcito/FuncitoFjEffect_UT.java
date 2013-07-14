@@ -70,11 +70,10 @@ public class FuncitoFjEffect_UT {
         Double number;
         public Generic(N n) { number = n.doubleValue(); }
         public Double incAndGet() {
-            number = number.doubleValue() + 1;
-            return number;
+            return ++number;
         }
         public void voidInc() {
-            number = number.doubleValue() + 1;
+            ++number;
         }
     }
 
@@ -102,7 +101,7 @@ public class FuncitoFjEffect_UT {
     public void testEffectFor_SingleArgBinding() {
         class IncList extends ArrayList<Integer> {
             public int incIndex(int i) {
-                int oldVal = this.get(i).intValue();
+                int oldVal = this.get(i);
                 int newVal = oldVal + 1;
                 this.set(i, newVal);
                 return newVal;
@@ -149,8 +148,6 @@ public class FuncitoFjEffect_UT {
 
     @Test
     public void testVoidEffect_prepareWithNoMethodCall() {
-        Grows grows = new Grows();
-
         prepareVoid(CALLS_TO_GROWS); // did not append any ".methodCall()" after close parenthesis
 
         thrown.expect(FuncitoException.class);
@@ -177,7 +174,7 @@ public class FuncitoFjEffect_UT {
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Method inc() does not exist");
-        unsafe.e(new Integer(3)); // invocation target type does not match prepared target type
+        unsafe.e(3); // invocation target type does not match prepared target type
     }
 
     @Test
@@ -211,7 +208,7 @@ public class FuncitoFjEffect_UT {
 
         try {
             Effect<?> e = voidEffect(Number.class);  // type validation should fail
-            fail("should have failed");
+            fail("should have thrown exception");
         } catch (FuncitoException e) {
             Effect<Grows> g = voidEffect(Grows.class);  // type validation
         }

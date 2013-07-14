@@ -6,7 +6,7 @@ import org.funcito.FunctionalBase;
 import org.funcito.internal.InvokableState;
 
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2013 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
