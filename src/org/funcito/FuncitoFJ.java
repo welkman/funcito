@@ -72,8 +72,8 @@ public class FuncitoFJ {
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br/>
-     *     F&lt;MyClass,RetType2&gt; func = fFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     *     MyClass callMyClass = callsTo(MyClass.class);<br/>
+     *     F&lt;MyClass,RetType2&gt; func = fFor( callMyClass.methodWithRetType1().methodWithRetType2() );
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (all except for the final return type in the
@@ -111,8 +111,8 @@ public class FuncitoFJ {
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br/>
-     *     Effect&lt;MyClass&gt; func = effectFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     *     MyClass callMyClass = callsTo(MyClass.class);<br/>
+     *     Effect&lt;MyClass&gt; func = effectFor( callMyClass.methodWithRetType1().methodWithRetType2() );
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (all except for the final return type in the
@@ -150,8 +150,8 @@ public class FuncitoFJ {
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br>
-     *     prepareVoid(callsTo..methodWithRetType1().voidMethod();<br/>
+     *     MyClass callMyClass = callsTo(MyClass.class);<br>
+     *     prepareVoid(callsMyClass).methodWithRetType1().voidMethod();<br/>
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (final return type does not matter because it is
@@ -159,7 +159,7 @@ public class FuncitoFJ {
      * example this means MyClass and RetType1 must be proxyable.  Intermediate return types also cannot be a Java
      * Generic type because of type erasure.
      * <p>
-     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired methor chain
+     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Effect being prepared
      * @see #voidEffect(Class)

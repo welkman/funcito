@@ -55,7 +55,7 @@ public class FuncitoJedi {
     }
 
     /**
-     * Generates a Jedi <code>Functor</code> object that wraps a method call or method chain.  Resulting
+     * Generates a <strong>Jedi</strong> <code>Functor</code> object that wraps a method call or method chain.  Resulting
      * <code>Functor</code> is as thread-safe as the method itself.  Example usage is:
      * <p>
      * <code>
@@ -73,8 +73,8 @@ public class FuncitoJedi {
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br>
-     *     Functor&lt;MyClass,RetType2&gt; func = functorFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     *     MyClass callMyClass = callsTo(MyClass.class);<br>
+     *     Functor&lt;MyClass,RetType2&gt; func = functorFor( callMyClass.methodWithRetType1().methodWithRetType2() );
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (all except for the final return type in the
@@ -90,7 +90,7 @@ public class FuncitoJedi {
     }
 
     /**
-     * Generates a Jedi <code>Filter</code> object that wraps a <code>Boolean</code>- or <code>boolean</code>-return method call
+     * Generates a <strong>Jedi</strong> <code>Filter</code> object that wraps a <code>Boolean</code>- or <code>boolean</code>-return method call
      * or method chain.  Resulting <code>Filter</code> is as thread-safe as the method itself.
      * Auto-boxing means you may always safely wrap a method that has a primitive boolean return type. Example usage
      * is:
@@ -116,22 +116,22 @@ public class FuncitoJedi {
      * generator that works with void returning methods/chains, see {@link #voidCommand()}.  Example usage is:
      * <p>
      * <code>
-     *     Command&lt;MyClass&gt; command = commandFor( callsTo(MyClass.class).methodWithNonVoidReturnType() );
+     *     Command&lt;MyClass&gt; cmd = commandFor( callsTo(MyClass.class).methodWithNonVoidReturnType() );
      * </code>
      * <p>
      * You can wrap methods with parameters, so long as you statically provide values for each
      * parameter.  Provided parameter values are statically bound to the <code>Command</code> and may not be changed:
      * <p>
      * <code>
-     *     Command&lt;MyClass&gt; command = commandFor( callsTo(MyClass.class).methodWithArgs("abc", 123L) );<br/>
+     *     Command&lt;MyClass&gt; cmd = commandFor( callsTo(MyClass.class).methodWithArgs("abc", 123L) );<br/>
      *     // all invocations of command will use "abc" and 123L as the arguments to methodWithArgs
      * </code>
      * <p>
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br/>
-     *     Command&lt;MyClass&gt; func = commandFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     *     MyClass callMyClass = callsTo(MyClass.class);<br/>
+     *     Command&lt;MyClass&gt; cmd = commandFor( callsMyClass.methodWithRetType1().methodWithRetType2() );
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (all except for the final return type in the
@@ -169,8 +169,8 @@ public class FuncitoJedi {
      * It is also possible to wrap method call chains, with some restrictions:
      * <p>
      * <code>
-     *     MyClass callsTo = callsTo(MyClass.class);<br>
-     *     prepareVoid(callsTo..methodWithRetType1().voidMethod();<br/>
+     *     MyClass callMyClass = callsTo(MyClass.class);<br>
+     *     prepareVoid(callsMyClass).methodWithRetType1().voidMethod();<br/>
      * </code>
      * <p>
      * Restrictions for chaining are that intermediate return types (final return type does not matter because it is
@@ -178,7 +178,7 @@ public class FuncitoJedi {
      * example this means MyClass and RetType1 must be proxyable.  Intermediate return types also cannot be a Java
      * Generic type because of type erasure.
      * <p>
-     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired methor chain
+     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Command being prepared
      * @see #voidCommand(Class)
@@ -197,10 +197,10 @@ public class FuncitoJedi {
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Command&lt;MyClass&gt; command = voidCommand();
+     *     Command&lt;MyClass&gt; cmd = voidCommand();
      * </code>
      * <p>
-     * @return a Functional Java <code>Command</code> object that wraps a previously prepared method call or chain.
+     * @return a Jedi <code>Command</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Command
      * @see #voidCommand(Class)
      * @see #prepareVoid(Object)
@@ -218,10 +218,10 @@ public class FuncitoJedi {
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Command&lt;MyClass&gt; command = voidCommand(MyClass.class); // added safety in assignment
+     *     Command&lt;MyClass&gt; cmd = voidCommand(MyClass.class); // added safety in assignment
      * </code>
      * <p>
-     * @return a Functional Java <code>Command</code> object that wraps a previously prepared method call or chain.
+     * @return a Jedi <code>Command</code> object that wraps a previously prepared method call or chain.
      * @param c the input target Class for validation of the assigned constraint-type of the Command.
      * @param <T> is the input type of the Command
      * @see #voidCommand()
