@@ -1,5 +1,6 @@
 package org.funcito;
 
+import jedi.functional.Command;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 import org.funcito.jedi.JediDelegate;
@@ -108,6 +109,127 @@ public class FuncitoJedi {
         return jediDelegate.filterFor(proxiedMethodCall);
     }
 
+    /**
+     * Generates a <strong>Jedi</strong> <code>Command</code> object that wraps a method call or method chain.  Resulting
+     * <code>Command</code> is as thread-safe as the method/chain itself.  This Command generator can only be used for
+     * method calls/chains with a non-void return type, even though the return type is ignored.  For a Command
+     * generator that works with void returning methods/chains, see {@link #voidCommand()}.  Example usage is:
+     * <p>
+     * <code>
+     *     Command&lt;MyClass&gt; command = commandFor( callsTo(MyClass.class).methodWithNonVoidReturnType() );
+     * </code>
+     * <p>
+     * You can wrap methods with parameters, so long as you statically provide values for each
+     * parameter.  Provided parameter values are statically bound to the <code>Command</code> and may not be changed:
+     * <p>
+     * <code>
+     *     Command&lt;MyClass&gt; command = commandFor( callsTo(MyClass.class).methodWithArgs("abc", 123L) );<br/>
+     *     // all invocations of command will use "abc" and 123L as the arguments to methodWithArgs
+     * </code>
+     * <p>
+     * It is also possible to wrap method call chains, with some restrictions:
+     * <p>
+     * <code>
+     *     MyClass callsTo = callsTo(MyClass.class);<br/>
+     *     Command&lt;MyClass&gt; func = commandFor( callsTo.methodWithRetType1().methodWithRetType2() );
+     * </code>
+     * <p>
+     * Restrictions for chaining are that intermediate return types (all except for the final return type in the
+     * chain) must be proxyable by the current Proxy provider, just like the initial target type.  In the above
+     * example this means MyClass and RetType1 must be proxyable, but RetType2 need not be proxyable.
+     * Intermediate return types also cannot be a Java Generic type because of type erasure.
+     * <p>
+     * @param proxiedMethodCall is the return value from an inlined method call to a <code>FuncitoFJ</code> proxy object
+     * @param <T> is the input type of the Command
+     * @return a Jedi <code>Command</code> object that wraps a method call or chain.
+     * @see #voidCommand()
+     */
+    public static <T> Command<T> commandFor(Object proxiedMethodCall) {
+        return jediDelegate.commandFor(proxiedMethodCall);
+    }
+
+    /**
+     * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
+     * <strong>Jedi</strong> <code>Command</code> object.  Use of this method is paired with a following
+     * execution of one of the void-generating methods ({@link #voidCommand()} or {@link #voidCommand(Class)}). Resulting
+     * <code>Command</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
+     * </code>
+     * <p>
+     * You can wrap methods with parameters, so long as you statically provide values for each
+     * parameter.  Provided parameter values are statically bound to the <code>Command</code> and may not be changed:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).voidMethodWithArgs("abc", 123L);<br/>
+     *     // all invocations of command will use "abc" and 123L as the arguments to voidMethodWithArgs
+     * </code>
+     * <p>
+     * It is also possible to wrap method call chains, with some restrictions:
+     * <p>
+     * <code>
+     *     MyClass callsTo = callsTo(MyClass.class);<br>
+     *     prepareVoid(callsTo..methodWithRetType1().voidMethod();<br/>
+     * </code>
+     * <p>
+     * Restrictions for chaining are that intermediate return types (final return type does not matter because it is
+     * void) must be proxyable by the current Proxy provider, just like the initial target type.  In the above
+     * example this means MyClass and RetType1 must be proxyable.  Intermediate return types also cannot be a Java
+     * Generic type because of type erasure.
+     * <p>
+     * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired methor chain
+     * call may be directly appended.
+     * @param <T> is the input type of the Command being prepared
+     * @see #voidCommand(Class)
+     * @see #voidCommand()
+     */
+    public static <T> T prepareVoid(T t) {
+        return jediDelegate.prepareVoid(t);
+    }
+
+    /**
+     * Generates a <strong>Jedi</strong> <code>Command</code> object that wraps a method call or method chain.  Resulting
+     * <code>Command</code> is as thread-safe as the method/chain itself.  This Command generator is only  appropriate for
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
+     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
+     * Command is assigned to an appropriately type-constrained Command.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
+     *     Command&lt;MyClass&gt; command = voidCommand();
+     * </code>
+     * <p>
+     * @return a Functional Java <code>Command</code> object that wraps a previously prepared method call or chain.
+     * @param <T> is the input type of the Command
+     * @see #voidCommand(Class)
+     * @see #prepareVoid(Object)
+     */
+    public static <T> Command<T> voidCommand() {
+        return jediDelegate.voidCommand();
+    }
+
+    /**
+     * Generates a <strong>Jedi</strong> <code>Command</code> object that wraps a method call or method chain.  Resulting
+     * <code>Command</code> is as thread-safe as the method/chain itself.  This Command generator is only appropriate
+     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
+     * This is the overloaded and safer form of {@link #voidCommand()}, which uses a target Class type to validate that
+     * the generated Command is assigned to an appropriately type-constrained Command.  Example usage is:
+     * <p>
+     * <code>
+     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
+     *     Command&lt;MyClass&gt; command = voidCommand(MyClass.class); // added safety in assignment
+     * </code>
+     * <p>
+     * @return a Functional Java <code>Command</code> object that wraps a previously prepared method call or chain.
+     * @param c the input target Class for validation of the assigned constraint-type of the Command.
+     * @param <T> is the input type of the Command
+     * @see #voidCommand()
+     * @see #prepareVoid(Object)
+     */
+    public static <T> Command<T> voidCommand(Class<T> c) {
+        return jediDelegate.voidCommand(c);
+    }
     public static JediDelegate delegate() {
         return jediDelegate;
     }

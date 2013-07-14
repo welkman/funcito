@@ -25,6 +25,8 @@ public enum WrapperType {
 
     JEDI_FUNCTOR("Jedi Functor"),
     JEDI_FILTER("Jedi Filter"),
+    JEDI_COMMAND("Jedi Command"),
+    JEDI_VOID_COMMAND("Jedi Command (returning void)"),
 
     PLAY2_FUNCTION("Play! Framework 2 Function"),
 

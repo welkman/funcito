@@ -1,14 +1,18 @@
 package org.funcito.jedi;
 
+import jedi.functional.Command;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
 
-import static org.funcito.internal.WrapperType.*;
+import static org.funcito.internal.WrapperType.JEDI_FUNCTOR;
+import static org.funcito.internal.WrapperType.JEDI_FILTER;
+import static org.funcito.internal.WrapperType.JEDI_COMMAND;
+import static org.funcito.internal.WrapperType.JEDI_VOID_COMMAND;
 
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-13 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,5 +35,22 @@ public class JediDelegate extends FuncitoDelegate {
     public <T> Filter<T> filterFor(Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(JEDI_FILTER);
         return new JediFilter<T>(state);
+    }
+
+    public <T> Command<T> commandFor(Object proxiedMethodCall) {
+        InvokableState state = extractInvokableState(JEDI_COMMAND);
+        return new JediCommand<T>(state);
+    }
+
+    public <T> T prepareVoid(T t) { return t; }
+
+    public <T> Command<T> voidCommand() {
+        InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
+        return new JediCommand<T>(state);
+    }
+
+    public <T> Command<T> voidCommand(Class<T> validationTargetClass) {
+        validatePreparedVoidCall(validationTargetClass, JEDI_VOID_COMMAND);
+        return voidCommand();
     }
 }
