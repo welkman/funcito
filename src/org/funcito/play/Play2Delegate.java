@@ -2,12 +2,15 @@ package org.funcito.play;
 
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
+import play.libs.F.Callback;
 import play.libs.F.Function;
 
 import static org.funcito.internal.WrapperType.PLAY2_FUNCTION;
+import static org.funcito.internal.WrapperType.PLAY2_CALLBACK;
+import static org.funcito.internal.WrapperType.PLAY2_VOID_CALLBACK;
 
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,4 +29,22 @@ public class Play2Delegate extends FuncitoDelegate {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
         return new Play2Function<T, V>(state);
     }
+
+    public <T> Callback<T> callbackFor(Object proxiedMethodCall) {
+        InvokableState state = extractInvokableState(PLAY2_CALLBACK);
+        return new Play2Callback<T>(state);
+    }
+
+    public <T> T prepareVoid(T t) { return t; }
+
+    public <T> Callback<T> voidCallback() {
+        InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
+        return new Play2Callback<T>(state);
+    }
+
+    public <T> Callback<T> voidCallback(Class<T> validationTargetClass) {
+        validatePreparedVoidCall(validationTargetClass, PLAY2_VOID_CALLBACK);
+        return voidCallback();
+    }
+
 }

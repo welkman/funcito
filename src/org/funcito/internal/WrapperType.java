@@ -29,6 +29,8 @@ public enum WrapperType {
     JEDI_VOID_COMMAND("Jedi Command (returning void)"),
 
     PLAY2_FUNCTION("Play! Framework 2 Function"),
+    PLAY2_CALLBACK("Play! Framework 2 Callback"),
+    PLAY2_VOID_CALLBACK("Play! Framework 2 Callback"),
 
     COLLECTGEN_TRANSFORMER("Collections-Generic Transformer"),
     COLLECTGEN_PREDICATE("Collections-Generic Predicate"),

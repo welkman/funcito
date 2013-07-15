@@ -44,8 +44,7 @@ public class FuncitoFjEffect_UT {
     public class Grows {
         int i = 0;
         public String incAndReturn() {
-            i++;
-            return Integer.toString(i);
+            return Integer.toString(++i);
         }
         public void inc() {
             i++;

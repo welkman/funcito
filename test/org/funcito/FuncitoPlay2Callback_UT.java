@@ -1,16 +1,16 @@
 package org.funcito;
 
-import jedi.functional.Command;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import play.libs.F.Callback;
 
 import java.util.ArrayList;
 
-import static org.funcito.FuncitoJedi.*;
+import static org.funcito.FuncitoPlay2.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -30,7 +30,7 @@ import static org.junit.Assert.fail;
  * limitations under the License.
  */
 
-public class FuncitoJediCommand_UT {
+public class FuncitoPlay2Callback_UT {
 
     public @Rule ExpectedException thrown = ExpectedException.none();
     private Grows CALLS_TO_GROWS = callsTo(Grows.class);
@@ -56,13 +56,13 @@ public class FuncitoJediCommand_UT {
     }
 
     @Test
-    public void testCommandFor_AssignToCommandWithSourceSuperType() {
+    public void testCallbackFor_AssignToCallbackWithSourceSuperType() throws Throwable {
         Grows grows = new Grows();
 
-        Command<Object> superTypeRet = commandFor(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
+        Callback<Object> superTypeRet = callbackFor(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
         assertEquals(0, grows.i);
 
-        superTypeRet.execute(grows);
+        superTypeRet.invoke(grows);
         assertEquals(1, grows.i);
     }
 
@@ -78,27 +78,27 @@ public class FuncitoJediCommand_UT {
     }
 
     @Test
-    public void testCommandFor_ValidateDetectsMismatchedGenericTypes() {
-        Command<Generic<Float>> floatGenericCommand = commandFor(callsTo(Generic.class).incAndGet());
+    public void testCallbackFor_ValidateDetectsMismatchedGenericTypes() {
+        Callback<Generic<Float>> floatGenericCallback = callbackFor(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
 
 //        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericCommand.f(integerGeneric);
+//        floatGenericCallback.f(integerGeneric);
     }
 
     @Test
-    public void testCommandFor_AllowUpcastToExtensionGenericType() {
-        Command<Generic<? extends Object>> incCommand = commandFor(callsTo(Generic.class).incAndGet());
+    public void testCallbackFor_AllowUpcastToExtensionGenericType() throws Throwable {
+        Callback<Generic<? extends Object>> incCallback = callbackFor(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
         assertEquals(0, integerGeneric.number, 0.01);
 
-        incCommand.execute(integerGeneric);
+        incCallback.invoke(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
     }
 
     @Test
-    public void testCommandFor_SingleArgBinding() {
+    public void testCallbackFor_SingleArgBinding() throws Throwable {
         class IncList extends ArrayList<Integer> {
             public int incIndex(int i) {
                 int oldVal = this.get(i);
@@ -108,13 +108,13 @@ public class FuncitoJediCommand_UT {
             }
         }
         IncList callsToIncList = callsTo(IncList.class);
-        Command<IncList> incElem0Func = commandFor(callsToIncList.incIndex(0));
-        Command<IncList> incElem2Func = commandFor(callsToIncList.incIndex(2));
+        Callback<IncList> incElem0Func = callbackFor(callsToIncList.incIndex(0));
+        Callback<IncList> incElem2Func = callbackFor(callsToIncList.incIndex(2));
         IncList list = new IncList();
         list.add(0); list.add(100); list.add(1000);
 
-        incElem0Func.execute(list);
-        incElem2Func.execute(list);
+        incElem0Func.invoke(list);
+        incElem2Func.invoke(list);
 
         assertEquals(1, list.get(0).intValue());
         assertEquals(100, list.get(1).intValue()); // unchanged
@@ -122,112 +122,112 @@ public class FuncitoJediCommand_UT {
     }
 
     @Test
-    public void testVoidCommand_withPrepare() {
+    public void testVoidCallback_withPrepare() throws Throwable {
         Grows grows = new Grows();
 
         prepareVoid(CALLS_TO_GROWS).inc();
-        Command<Grows> normalCall = voidCommand();
+        Callback<Grows> normalCall = voidCallback();
 
         assertEquals(0, grows.i);
-        normalCall.execute(grows);
+        normalCall.invoke(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidCommand_withoutPrepare() {
+    public void testVoidCallback_withoutPrepare() throws Throwable {
         Grows grows = new Grows();
 
         // non-preferred.  Better to use prepare() to help explain
         CALLS_TO_GROWS.inc();
-        Command<Grows> normalCall = voidCommand();
+        Callback<Grows> normalCall = voidCallback();
 
         assertEquals(0, grows.i);
-        normalCall.execute(grows);
+        normalCall.invoke(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidCommand_prepareWithNoMethodCall() {
+    public void testVoidCallback_prepareWithNoMethodCall() {
         prepareVoid(CALLS_TO_GROWS); // did not append any ".methodCall()" after close parenthesis
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("No call to a");
-        Command<Grows> badCall = voidCommand();
+        Callback<Grows> badCall = voidCallback();
     }
 
     @Test
-    public void testVoidCommand_AssignToCommandWithSourceSuperTypeOk() {
+    public void testVoidCallback_AssignToCallbackWithSourceSuperTypeOk() throws Throwable {
         Grows grows = new Grows();
 
         prepareVoid(CALLS_TO_GROWS).inc();
-        Command<Object> superTypeRet = voidCommand(); // Generic type is Object instead of Grows
+        Callback<Object> superTypeRet = voidCallback(); // Generic type is Object instead of Grows
         assertEquals(0, grows.i);
 
-        superTypeRet.execute(grows);
+        superTypeRet.invoke(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidCommand_unsafeAssignment() {
+    public void testVoidCallback_unsafeAssignment() throws Throwable {
         prepareVoid(CALLS_TO_GROWS).inc();
-        Command<Integer> unsafe = voidCommand();  // unsafe assignment compiles
+        Callback<Integer> unsafe = voidCallback();  // unsafe assignment compiles
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Method inc() does not exist");
-        unsafe.execute(3); // invocation target type does not match prepared target type
+        unsafe.invoke(3); // invocation target type does not match prepared target type
     }
 
     @Test
-    public void testVoidCommand_typeValidationSucceeds() {
+    public void testVoidCallback_typeValidationSucceeds() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
-        Command<Grows> grows = voidCommand(Grows.class);
+        Callback<Grows> grows = voidCallback(Grows.class);
     }
 
     @Test
-    public void testVoidCommand_typeValidationSucceedsWithSuperClass() {
+    public void testVoidCallback_typeValidationSucceedsWithSuperClass() {
         class Grows2 extends Grows{}
         prepareVoid(callsTo(Grows2.class)).inc();
 
-        Command<Grows> grows = voidCommand(Grows.class);
+        Callback<Grows> grows = voidCallback(Grows.class);
     }
 
     @Test
-    public void testVoidCommand_typeValidationFails() {
+    public void testVoidCallback_typeValidationFails() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create Jedi Command");
-        Command<?> e = voidCommand(Number.class);  // type validation
+        thrown.expectMessage("Failed to create Play! Framework 2 Callback");
+        Callback<?> e = voidCallback(Number.class);  // type validation
     }
 
 
     @Test
-    public void testVoidCommand_typeValidationFailsButLeavesInvokableStateUnchanged() {
+    public void testVoidCallback_typeValidationFailsButLeavesInvokableStateUnchanged() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         try {
-            Command<?> e = voidCommand(Number.class);  // type validation should fail
+            Callback<?> e = voidCallback(Number.class);  // type validation should fail
             fail("should have thrown exception");
         } catch (FuncitoException fe) {
-            Command<Grows> g = voidCommand(Grows.class);  // type validation ok
+            Callback<Grows> g = voidCallback(Grows.class);  // type validation ok
         }
     }
 
     @Test
-    public void testVoidCommand_badOrderOfPrepares() {
-        // First call below requires a subsequent call to voidCommand() before another prepareVoid()
+    public void testVoidCallback_badOrderOfPrepares() {
+        // First call below requires a subsequent call to voidCallback() before another prepareVoid()
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("or back-to-back \"prepareVoid()\" calls");
-        // bad to call prepareVoid() twice without intermediate voidCommand()
+        // bad to call prepareVoid() twice without intermediate voidCallback()
         prepareVoid(CALLS_TO_GROWS).dec();
         // see clean-up in method tearDown()
     }
 
     @Test
-    public void testVoidCommand_interleavedPreparesDifferentSourcesAlsoNotOk() {
+    public void testVoidCallback_interleavedPreparesDifferentSourcesAlsoNotOk() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
@@ -236,14 +236,14 @@ public class FuncitoJediCommand_UT {
     }
 
     @Test
-    public void testVoidCommand_preparedForNonVoidMethod() {
+    public void testVoidCallback_preparedForNonVoidMethod() throws Throwable {
         Grows grows = new Grows();
         assertEquals(0, grows.i);
 
         prepareVoid(CALLS_TO_GROWS).incAndReturn();
-        Command<Grows> e = voidCommand();
+        Callback<Grows> e = voidCallback();
 
-        e.execute(grows);
+        e.invoke(grows);
 
         assertEquals(1, grows.i);
     }
