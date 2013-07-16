@@ -86,8 +86,6 @@
         <JAVADOC />
         <SOURCES>
           <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/collections-generic-4.01/src/java" />
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar!/collections-generic-4.01/src/test" />
         </SOURCES>
       </library>
     </orderEntry>
