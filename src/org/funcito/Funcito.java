@@ -21,6 +21,7 @@ import org.funcito.guava.GuavaDelegate;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.jedi.JediDelegate;
 import org.funcito.play.Play2Delegate;
+import org.funcito.rxjava.RxJavaDelegate;
 
 /**
  * This class is a public entry point into Funcito for the supported functional framework APIs.  Most users will probably
@@ -114,4 +115,11 @@ public class Funcito {
      * @see FuncitoCollectGen
      */
     public static CollectGenDelegate collectGen() { return FuncitoCollectGen.delegate(); }
+
+    /**
+     * Delegate method used to help differentiate RxJava from other Funcito supported functional frameworks
+     * @return a delegate with all of the same methods as the static versions in {@link FuncitoRxJava}.
+     * @see FuncitoCollectGen
+     */
+    public static RxJavaDelegate rxJava() { return FuncitoRxJava.delegate(); }
 }

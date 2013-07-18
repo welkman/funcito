@@ -1,6 +1,5 @@
 package org.funcito;
 
-
 /**
  * Copyright 2013 Project Funcito Contributors
  * <p/>
@@ -17,20 +16,20 @@ package org.funcito;
  * limitations under the License.
  */
 
-import fj.Effect;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import rx.util.functions.Action1;
 
 import java.util.ArrayList;
 
-import static org.funcito.FuncitoFJ.*;
+import static org.funcito.FuncitoRxJava.*;
 import static org.junit.Assert.*;
 
-public class FuncitoFjEffect_UT {
+public class FuncitoRxJavaAction1_UT {
 
     public @Rule ExpectedException thrown = ExpectedException.none();
     private Grows CALLS_TO_GROWS = callsTo(Grows.class);
@@ -38,7 +37,7 @@ public class FuncitoFjEffect_UT {
     @After
     public void tearDown() {
         try {
-            new FuncitoDelegate().extractInvokableState(WrapperType.FJ_VOID_EFFECT);
+            new FuncitoDelegate().extractInvokableState(WrapperType.RXJAVA_VOID_ACTION1);
         } catch (Throwable t) {}
     }
 
@@ -56,13 +55,13 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testEffectFor_AssignToEffectWithSourceSuperType() {
+    public void testAction1For_AssignToAction1WithSourceSuperType() {
         Grows grows = new Grows();
 
-        Effect<Object> superTypeRet = effectFor(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
+        Action1<Object> superTypeRet = action1For(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
         assertEquals(0, grows.i);
 
-        superTypeRet.e(grows);
+        superTypeRet.call(grows);
         assertEquals(1, grows.i);
     }
 
@@ -78,27 +77,27 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testEffectFor_ValidateDetectsMismatchedGenericTypes() {
-        Effect<Generic<Float>> floatGenericEffect = effectFor(callsTo(Generic.class).incAndGet());
+    public void testAction1For_ValidateDetectsMismatchedGenericTypes() {
+        Action1<Generic<Float>> floatGenericAction1 = action1For(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
 
 //        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericEffect.f(integerGeneric);
+//        floatGenericAction1.call(integerGeneric);
     }
 
     @Test
-    public void testEffectFor_AllowUpcastToExtensionGenericType() {
-        Effect<Generic<? extends Object>> incEffect = effectFor(callsTo(Generic.class).incAndGet());
+    public void testAction1For_AllowUpcastToExtensionGenericType() {
+        Action1<Generic<? extends Object>> incAction1 = action1For(callsTo(Generic.class).incAndGet());
         Generic<Integer> integerGeneric = new Generic<Integer>(0);
         assertEquals(0, integerGeneric.number, 0.01);
 
-        incEffect.e(integerGeneric);
+        incAction1.call(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
     }
 
     @Test
-    public void testEffectFor_SingleArgBinding() {
+    public void testAction1For_SingleArgBinding() {
         class IncList extends ArrayList<Integer> {
             public int incIndex(int i) {
                 int oldVal = this.get(i);
@@ -108,13 +107,13 @@ public class FuncitoFjEffect_UT {
             }
         }
         IncList callsToIncList = callsTo(IncList.class);
-        Effect<IncList> incElem0Func = effectFor(callsToIncList.incIndex(0));
-        Effect<IncList> incElem2Func = effectFor(callsToIncList.incIndex(2));
+        Action1<IncList> incElem0Action = action1For(callsToIncList.incIndex(0));
+        Action1<IncList> incElem2Action = action1For(callsToIncList.incIndex(2));
         IncList list = new IncList();
         list.add(0); list.add(100); list.add(1000);
 
-        incElem0Func.e(list);
-        incElem2Func.e(list);
+        incElem0Action.call(list);
+        incElem2Action.call(list);
 
         assertEquals(1, list.get(0).intValue());
         assertEquals(100, list.get(1).intValue()); // unchanged
@@ -122,112 +121,112 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testVoidEffect_withPrepare() {
+    public void testVoidAction1_withPrepare() {
         Grows grows = new Grows();
 
         prepareVoid(CALLS_TO_GROWS).inc();
-        Effect<Grows> normalCall = voidEffect();
+        Action1<Grows> normalAction = voidAction1();
 
         assertEquals(0, grows.i);
-        normalCall.e(grows);
+        normalAction.call(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidEffect_withoutPrepare() {
+    public void testVoidAction1_withoutPrepare() {
         Grows grows = new Grows();
 
         // non-preferred.  Better to use prepare() to help explain
         CALLS_TO_GROWS.inc();
-        Effect<Grows> normalCall = voidEffect();
+        Action1<Grows> normalAction = voidAction1();
 
         assertEquals(0, grows.i);
-        normalCall.e(grows);
+        normalAction.call(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidEffect_prepareWithNoMethodCall() {
+    public void testVoidAction1_prepareWithNoMethodCall() {
         prepareVoid(CALLS_TO_GROWS); // did not append any ".methodCall()" after close parenthesis
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("No call to a");
-        Effect<Grows> badCall = voidEffect();
+        Action1<Grows> badCall = voidAction1();
     }
 
     @Test
-    public void testVoidEffect_AssignToEffectWithSourceSuperTypeOk() {
+    public void testVoidAction1_AssignToAction1WithSourceSuperTypeOk() {
         Grows grows = new Grows();
 
         prepareVoid(CALLS_TO_GROWS).inc();
-        Effect<Object> superTypeRet = voidEffect(); // Generic type is Object instead of Grows
+        Action1<Object> superTypeRet = voidAction1(); // Generic type is Object instead of Grows
         assertEquals(0, grows.i);
 
-        superTypeRet.e(grows);
+        superTypeRet.call(grows);
         assertEquals(1, grows.i);
     }
 
     @Test
-    public void testVoidEffect_unsafeAssignment() {
+    public void testVoidAction1_unsafeAssignment() {
         prepareVoid(CALLS_TO_GROWS).inc();
-        Effect<Integer> unsafe = voidEffect();  // unsafe assignment compiles
+        Action1<Integer> unsafe = voidAction1();  // unsafe assignment compiles
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Method inc() does not exist");
-        unsafe.e(3); // invocation target type does not match prepared target type
+        unsafe.call(3); // invocation target type does not match prepared target type
     }
 
     @Test
-    public void testVoidEffect_typeValidationSucceeds() {
+    public void testVoidAction1_typeValidationSucceeds() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
-        Effect<Grows> grows = voidEffect(Grows.class);
+        Action1<Grows> grows = voidAction1(Grows.class);
     }
 
     @Test
-    public void testVoidEffect_typeValidationSucceedsWithSuperClass() {
+    public void testVoidAction1_typeValidationSucceedsWithSuperClass() {
         class Grows2 extends Grows{}
         prepareVoid(callsTo(Grows2.class)).inc();
 
-        Effect<Grows> grows = voidEffect(Grows.class);
+        Action1<Grows> grows = voidAction1(Grows.class);
     }
 
     @Test
-    public void testVoidEffect_typeValidationFails() {
+    public void testVoidAction1_typeValidationFails() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create Functional Java Effect");
-        Effect<?> e = voidEffect(Number.class);  // type validation
+        thrown.expectMessage("Failed to create RxJava Action1");
+        Action1<?> e = voidAction1(Number.class);  // type validation
     }
 
 
     @Test
-    public void testVoidEffect_typeValidationFailsButLeavesInvokableStateUnchanged() {
+    public void testVoidAction1_typeValidationFailsButLeavesInvokableStateUnchanged() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         try {
-            Effect<?> e = voidEffect(Number.class);  // type validation should fail
+            Action1<?> e = voidAction1(Number.class);  // type validation should fail
             fail("should have thrown exception");
         } catch (FuncitoException e) {
-            Effect<Grows> g = voidEffect(Grows.class);  // type validation
+            Action1<Grows> g = voidAction1(Grows.class);  // type validation
         }
     }
 
     @Test
-    public void testVoidEffect_badOrderOfPrepares() {
-        // First call below requires a subsequent call to voidEffect() before another prepareVoid()
+    public void testVoidAction1_badOrderOfPrepares() {
+        // First call below requires a subsequent call to voidAction1() before another prepareVoid()
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("or back-to-back \"prepareVoid()\" calls");
-        // bad to call prepareVoid() twice without intermediate voidEffect()
+        // bad to call prepareVoid() twice without intermediate voidAction1()
         prepareVoid(CALLS_TO_GROWS).dec();
         // see clean-up in method tearDown()
     }
 
     @Test
-    public void testVoidEffect_interleavedPreparesDifferentSourcesAlsoNotOk() {
+    public void testVoidAction1_interleavedPreparesDifferentSourcesAlsoNotOk() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
@@ -236,14 +235,14 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testVoidEffect_preparedForNonVoidMethod() {
+    public void testVoidAction1_preparedForNonVoidMethod() {
         Grows grows = new Grows();
         assertEquals(0, grows.i);
 
         prepareVoid(CALLS_TO_GROWS).incAndReturn();
-        Effect<Grows> e = voidEffect();
+        Action1<Grows> action = voidAction1();
 
-        e.e(grows);
+        action.call(grows);
 
         assertEquals(1, grows.i);
     }

@@ -34,6 +34,7 @@ dependencies {
     compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5', transitive: false
     compile group: 'play', name: 'play_2.9.1', version: '2.0', transitive: false
     compile group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01', transitive: false
+    compile group: 'com.netflix.rxjava', name: 'rxjava-core', version: '0.9.1', transitive: false
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
@@ -126,6 +127,7 @@ javadoc {
         'http://jedi.codehaus.org/javadoc/',
         'http://www.jarvana.com/jarvana/view/net/sourceforge/collections/collections-generic/4.01/collections-generic-4.01-javadoc.jar!/',
         'http://www.playframework.org/documentation/api/2.0/java/',
+        'http://netflix.github.io/RxJava/javadoc/',
     ]
 }
 

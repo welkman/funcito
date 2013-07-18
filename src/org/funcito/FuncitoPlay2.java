@@ -54,7 +54,7 @@ public class FuncitoPlay2 {
     }
 
     /**
-     * Generates a Play! Framework <code>Function</code> object that wraps a method call or method chain.  Resulting
+     * Generates a <strong>Play! Framework</strong> <code>Function</code> object that wraps a method call or method chain.  Resulting
      * <code>Function</code> is as thread-safe as the method itself.  Example usage is:
      * <p>
      * <code>
@@ -82,7 +82,7 @@ public class FuncitoPlay2 {
      * Intermediate return types also cannot be a Java Generic type because of type erasure.
      * <p>
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
-     * @return a Guava <code>Function</code> object that wraps the method call or chain.
+     * @return a Play! 2 <code>Function</code> object that wraps the method call or chain.
      */
     public static <T,V>Function<T,V> functionFor(V proxiedMethodCall) {
         return play2Delegate.functionFor(proxiedMethodCall);

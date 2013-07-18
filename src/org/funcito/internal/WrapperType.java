@@ -30,12 +30,16 @@ public enum WrapperType {
 
     PLAY2_FUNCTION("Play! Framework 2 Function"),
     PLAY2_CALLBACK("Play! Framework 2 Callback"),
-    PLAY2_VOID_CALLBACK("Play! Framework 2 Callback"),
+    PLAY2_VOID_CALLBACK("Play! Framework 2 Callback (returning void)"),
 
     COLLECTGEN_TRANSFORMER("Collections-Generic Transformer"),
     COLLECTGEN_PREDICATE("Collections-Generic Predicate"),
     COLLECTGEN_CLOSURE("Collections-Generic Closure"),
-    COLLECTGEN_VOID_CLOSURE("Collections-Generic Closure (returning void)")
+    COLLECTGEN_VOID_CLOSURE("Collections-Generic Closure (returning void)"),
+
+    RXJAVA_FUNC1("RxJava Func1"),
+    RXJAVA_ACTION1("RxJava Action1"),
+    RXJAVA_VOID_ACTION1("RxJava Action1 (returning void)")
     ;
 
     private final String name;
