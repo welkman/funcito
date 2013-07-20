@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.funcito.example.FJ;
 
+import fj.Effect;
 import fj.F;
 import fj.data.List;
 
@@ -37,6 +38,23 @@ public class MyClass {
     public static final F<MyClass,Boolean> isLengthGT1 = fFor(stubbedCallsTo.isLengthGreaterThan(1));
     public static final F<MyClass,Boolean> isLengthGT3 = fFor(stubbedCallsTo.isLengthGreaterThan(3));
 
+    // demonstrating Effect creation around a method call that has a return value.
+    public static final Effect<MyClass> incAndReturn = effectFor(stubbedCallsTo.incAndReturn());
+
+    // demonstrating Effect creation around a void method call.
+
+    // Note that for void version, the wrapped method call must be "prepared" before the Effect is created.  Also,
+    // to be able to assign to a static field via an initializer, prepareVoid() requires a static block.  If assignment
+    // were to a non-static field, a non-static block would be sufficient.  If assignment to a Effect variable is not
+    // done in a field initializer (i.e., a local variable assignment or a field assignment in a method or execution
+    // block), then no-extra "blocking" is needed for the prepareVoid() call.
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final Effect<MyClass> inc = voidEffect();
+
+    // demonstrating Effect creation with extra type-safety
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final Effect<MyClass> inc2 = voidEffect(MyClass.class);
+
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -58,6 +76,15 @@ public class MyClass {
         this.other = other;
     }
 
+    public void inc() {
+        ++other;
+    }
+
+    public Integer incAndReturn() {
+        inc();
+        return other;
+    }
+
     public boolean isLengthGreaterThan(int lower) {
         return getMyString().length() > lower;
     }
@@ -75,11 +102,13 @@ public class MyClass {
         List<MyClass> list = List.list(m1, m2, m3);
         demoListTransforms(list);
         demoListFilters(list);
+        demoEffectsApplied(list);
 
         m1.setMyString("This is my new value");
         m1.setOther(777);
         demoListTransforms(list);
         demoListFilters(list);
+        demoEffectsApplied(list);
     }
 
     protected static void demoListTransforms(List<MyClass> list) {
@@ -98,6 +127,17 @@ public class MyClass {
 
         printValues("filter length > 1", filtered1);
         printValues("filter length > 3", filtered2);
+    }
+
+    protected static void demoEffectsApplied(List<MyClass> list) {
+        list.foreach(incAndReturn);
+        printValues("List has incremented each", list.map(getOther));
+
+        list.foreach(inc);
+        printValues("List has incremented each again", list.map(getOther));
+
+        list.foreach(inc2);
+        printValues("List has incremented each a 3rd time", list.map(getOther));
     }
 
     protected static void printValues(String desc, List<?> list) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package org.funcito.example.collectionsgeneric;
 
+import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.ListUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
@@ -43,6 +43,23 @@ public class MyClass {
     public static final Predicate<MyClass> isLengthGT1 = predicateFor(stubbedCallsTo.isLengthGreaterThan(1));
     public static final Predicate<MyClass> isLengthGT3 = predicateFor(stubbedCallsTo.isLengthGreaterThan(3));
 
+    // demonstrating Closure creation around a method call that has a return value.
+    public static final Closure<MyClass> incAndReturn = closureFor(stubbedCallsTo.incAndReturn());
+
+    // demonstrating Closure creation around a void method call.
+
+    // Note that for void version, the wrapped method call must be "prepared" before the Closure is created.  Also,
+    // to be able to assign to a static field via an initializer, prepareVoid() requires a static block.  If assignment
+    // were to a non-static field, a non-static block would be sufficient.  If assignment to a Closure variable is not
+    // done in a field initializer (i.e., a local variable assignment or a field assignment in a method or execution
+    // block), then no-extra "blocking" is needed for the prepareVoid() call.
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final Closure<MyClass> inc = voidClosure();
+
+    // demonstrating Closure creation with extra type-safety
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final Closure<MyClass> inc2 = voidClosure(MyClass.class);
+
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -64,6 +81,15 @@ public class MyClass {
         this.other = other;
     }
 
+    public void inc() {
+        ++other;
+    }
+
+    public Integer incAndReturn() {
+        inc();
+        return other;
+    }
+
     public boolean isLengthGreaterThan(int lower) {
         return getMyString().length() > lower;
     }
@@ -81,11 +107,13 @@ public class MyClass {
         List<MyClass> list = Arrays.asList(m1,m2,m3);
         demoListTransforms(list);
         demoListFilters(list);
+        demoClosures(list);
 
         m1.setMyString("This is my new value");
         m1.setOther(777);
         demoListTransforms(list);
         demoListFilters(list);
+        demoClosures(list);
     }
 
     protected static void demoListTransforms(List<MyClass> list) {
@@ -104,6 +132,17 @@ public class MyClass {
 
         printValues("select length > 1", filtered1);
         printValues("select length > 3", filtered2);
+    }
+
+    protected static void demoClosures(List<MyClass> list) {
+        CollectionUtils.forAllDo(list, incAndReturn);
+        printValues("List has incremented each", CollectionUtils.collect(list, getOther));
+
+        CollectionUtils.forAllDo(list, inc);
+        printValues("List has incremented each again", CollectionUtils.collect(list, getOther));
+
+        CollectionUtils.forAllDo(list, inc2);
+        printValues("List has incremented each a 3rd time", CollectionUtils.collect(list, getOther));
     }
 
     protected static void printValues(String desc, Collection<?> list) {
