@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import java.util.List;
 
 public class MySubClass extends MyClass {
 
-    public MySubClass(String myString) {
-        super(myString);
+    public MySubClass(String myString, Integer other) {
+        super(myString, other);
     }
 
     @Override
@@ -29,9 +29,14 @@ public class MySubClass extends MyClass {
         return super.getMyString() + "++";
     }
 
+    @Override
+    public Integer getOther() {
+        return super.getOther() + 1000;
+    }
+
     public static void main(String[] args) throws Throwable {
-        MyClass m1 = new MySubClass("A");
-        MyClass m2 = new MySubClass("B");
+        MyClass m1 = new MySubClass("A", 1);
+        MyClass m2 = new MySubClass("B", 2);
         MyClass m3 = null;
 
         List<MyClass> list = Arrays.asList(m1,m2,m3);

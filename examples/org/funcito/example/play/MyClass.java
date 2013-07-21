@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import static org.funcito.FuncitoPlay2.*;
 public class MyClass {
 
     private String myString;
+    private Integer other;
 
     public static final MyClass stubbedCallsTo = callsTo(MyClass.class);
 
@@ -34,8 +35,27 @@ public class MyClass {
     // alternative single line syntax
     public static final Function<MyClass, String> getMyStringF2 = functionFor(callsTo(MyClass.class).getMyString());
 
-    public MyClass(String myString) {
+    // demonstrating F.Callback creation around a method call that has a return value.
+    public static final F.Callback<MyClass> incAndReturn = callbackFor(stubbedCallsTo.incAndReturn());
+
+    // demonstrating F.Callback creation around a void method call.
+
+    // Note that for void version, the wrapped method call must be "prepared" before the F.Callback is created.  Also,
+    // to be able to assign to a static field via an initializer, prepareVoid() requires a static block.  If assignment
+    // were to a non-static field, a non-static block would be sufficient.  If assignment to a F.Callback variable is not
+    // done in a field initializer (i.e., a local variable assignment or a field assignment in a method or execution
+    // block), then no-extra "blocking" is needed for the prepareVoid() call.
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final F.Callback<MyClass> inc = voidCallback();
+
+    // demonstrating F.Callback creation with extra type-safety
+    static {prepareVoid(stubbedCallsTo).inc();}
+    public static final F.Callback<MyClass> inc2 = voidCallback(MyClass.class);
+
+
+    public MyClass(String myString, Integer other) {
         this.myString = myString;
+        this.other = other;
     }
 
     public String getMyString() {
@@ -46,14 +66,31 @@ public class MyClass {
         this.myString = value;
     }
 
+    public Integer getOther() {
+        return other;
+    }
+
+    public void setOther(Integer other) {
+        this.other = other;
+    }
+
+    public void inc() {
+        ++other;
+    }
+
+    public Integer incAndReturn() {
+        inc();
+        return other;
+    }
+
     @Override
     public String toString() {
         return getMyString();
     }
 
     public static void main(String[] args) throws Throwable {
-        MyClass m1 = new MyClass("A");
-        MyClass m2 = new MyClass("B");
+        MyClass m1 = new MyClass("A", 1);
+        MyClass m2 = new MyClass("B", 2);
         MyClass m3 = null;
 
         List<MyClass> list = Arrays.asList(m1,m2,m3);
@@ -62,6 +99,10 @@ public class MyClass {
         System.out.println("\nAfter Changing Value 1:");
         m1.setMyString("This is my new value");
         demoOptions(list);
+
+        // I did not include demonstration code for using the Callback, because to do so requires creating a Promise,
+        // which in the earliest version of Play! 2 requires the Scala system to be available at runtime.  So simply
+        // see above field declarations for example of how to create Callback objects
     }
 
     protected static void demoOptions(List<MyClass> list) throws Throwable {
@@ -79,6 +120,9 @@ public class MyClass {
         }
     }
 
+    /**
+     * Play! Framework is not really a functional API, so it does not already
+     */
     protected static List<F.Option<String>> transform(List<MyClass> list, Function<MyClass, String> func) throws Throwable {
         List<F.Option<String>> xformed = new ArrayList<F.Option<String>>();
         for (MyClass myClass: list) {
