@@ -35,7 +35,7 @@ public class MySubClass extends MyClass {
 
     @Override
     public void inc() {
-        setOther(getOther() + 2);
+        setOther(super.getOther() + 2);
     }
 
     public static void main(String[] args) {

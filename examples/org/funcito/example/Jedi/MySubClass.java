@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,11 @@ public class MySubClass extends MyClass {
         return super.getOther() + 1000;
     }
 
+    @Override
+    public void inc() {
+        setOther(super.getOther() + 2);
+    }
+
     public static void main(String[] args) {
         MyClass m1 = new MySubClass("A", 1);
         MyClass m2 = new MySubClass("B", 2);
@@ -42,5 +47,6 @@ public class MySubClass extends MyClass {
         List<MyClass> list = Arrays.asList(m1,m2,m3);
         demoListTransforms(list);
         demoListFilters(list);
+        demoCommands(list);
     }
 }
