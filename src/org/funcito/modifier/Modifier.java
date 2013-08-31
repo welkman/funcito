@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.rxjava;
+
+package org.funcito.modifier;
 
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
-import rx.util.functions.Func1;
 
-public class RxJavaFunc1<T, V> implements Func1<T,V> {
-
-    private FunctorBase<T,V> functorBase;
-
-    public RxJavaFunc1(InvokableState state) {
-        functorBase = new FunctorBase<T, V>(state);
-    }
-
-    @Override
-    public V call(T from) {
-        return functorBase.applyImpl(from);
-    }
+// TODO: Javadoc
+public interface Modifier<T,V> {
+    FunctorBase<T,V> makeBase(InvokableState invokableState);
 }

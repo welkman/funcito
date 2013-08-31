@@ -1,5 +1,3 @@
-package org.funcito.rxjava;
-
 /*
  * Copyright 2013 Project Funcito Contributors
  * <p/>
@@ -15,21 +13,22 @@ package org.funcito.rxjava;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.rxjava;
 
-import org.funcito.FunctionalBase;
+import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import rx.util.functions.Action1;
 
 public class RxJavaAction1<T> implements Action1<T> {
 
-    private FunctionalBase<T,Void> functionalBase;
+    private FunctorBase<T,Void> functorBase;
 
     public RxJavaAction1(InvokableState state) {
-        functionalBase = new FunctionalBase<T, Void>(state);
+        functorBase = new FunctorBase<T, Void>(state);
     }
 
     @Override
     public void call(T from) {
-        functionalBase.applyImpl(from);
+        functorBase.applyImpl(from);
     }
 }

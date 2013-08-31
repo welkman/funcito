@@ -1,9 +1,3 @@
-package org.funcito.collectionsgeneric;
-
-import org.apache.commons.collections15.Closure;
-import org.funcito.FunctionalBase;
-import org.funcito.internal.InvokableState;
-
 /*
  * Copyright 2013 Project Funcito Contributors
  * <p/>
@@ -19,16 +13,22 @@ import org.funcito.internal.InvokableState;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.collectionsgeneric;
+
+import org.apache.commons.collections15.Closure;
+import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.InvokableState;
+
 public class CollectGenClosure<T> implements Closure<T> {
 
-    private FunctionalBase<T,Void> functionalBase;
+    private FunctorBase<T,Void> functorBase;
 
     public CollectGenClosure(InvokableState state) {
-        functionalBase = new FunctionalBase<T, Void>(state);
+        functorBase = new FunctorBase<T, Void>(state);
     }
 
     @Override
     public void execute(T from) {
-        functionalBase.applyImpl(from);
+        functorBase.applyImpl(from);
     }
 }

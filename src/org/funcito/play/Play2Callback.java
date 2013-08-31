@@ -1,9 +1,3 @@
-package org.funcito.play;
-
-import org.funcito.FunctionalBase;
-import org.funcito.internal.InvokableState;
-import play.libs.F;
-
 /*
  * Copyright 2013 Project Funcito Contributors
  * <p/>
@@ -19,16 +13,22 @@ import play.libs.F;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.play;
+
+import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.InvokableState;
+import play.libs.F;
+
 public class Play2Callback<T> implements F.Callback<T> {
 
-    private FunctionalBase<T,Void> functionalBase;
+    private FunctorBase<T,Void> functorBase;
 
     public Play2Callback(InvokableState state) {
-        functionalBase = new FunctionalBase<T, Void>(state);
+        functorBase = new FunctorBase<T, Void>(state);
     }
 
     @Override
     public void invoke(T from) {
-        functionalBase.applyImpl(from);
+        functorBase.applyImpl(from);
     }
 }

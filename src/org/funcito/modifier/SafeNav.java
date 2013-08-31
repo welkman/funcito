@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.rxjava;
+package org.funcito.modifier;
 
 import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.functorbase.SafeNavFunctor;
 import org.funcito.internal.InvokableState;
-import rx.util.functions.Func1;
 
-public class RxJavaFunc1<T, V> implements Func1<T,V> {
+// TODO: Javadoc
+public class SafeNav<T,V> implements Modifier {
+    private V nullNavDefault;
 
-    private FunctorBase<T,V> functorBase;
-
-    public RxJavaFunc1(InvokableState state) {
-        functorBase = new FunctorBase<T, V>(state);
+    public SafeNav(V nullNavDefault) {
+        this.nullNavDefault = nullNavDefault;
     }
 
     @Override
-    public V call(T from) {
-        return functorBase.applyImpl(from);
+    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
+        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
     }
 }

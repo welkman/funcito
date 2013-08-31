@@ -1,11 +1,5 @@
-package org.funcito.collectionsgeneric;
-
-import org.apache.commons.collections15.Predicate;
-import org.funcito.FunctionalBase;
-import org.funcito.internal.InvokableState;
-
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,19 +13,27 @@ import org.funcito.internal.InvokableState;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.collectionsgeneric;
+
+import org.apache.commons.collections15.Predicate;
+import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.InvokableState;
+
+// TODO: consider refactor to make this & GuavaDefaultablePredicate to be a single PrimitivePredicateBase
+// TODO: And maybe have a corresponding Modifier (and then deprecate the special method)
 public class CollectGenDefaultablePredicate<T> implements Predicate<T> {
 
-    private FunctionalBase<T,Boolean> functionalBase;
+    private FunctorBase<T,Boolean> functorBase;
     private boolean defaultForNull;
 
     public CollectGenDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        functionalBase = new FunctionalBase<T, Boolean>(state);
+        functorBase = new FunctorBase<T, Boolean>(state);
         this.defaultForNull = defaultForNull;
     }
 
     @Override
     public boolean evaluate(T from) {
-        Boolean retVal = functionalBase.applyImpl(from);
+        Boolean retVal = functorBase.applyImpl(from);
         return (retVal==null) ? defaultForNull : retVal;
     }
 

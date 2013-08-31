@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,26 @@ package org.funcito.guava;
 
 import com.google.common.base.Function;
 
-import org.funcito.FunctionalBase;
+import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
 import org.funcito.internal.InvokableState;
+import org.funcito.modifier.UntypedModifier;
 
 public class GuavaFunction<T, V> implements Function<T,V> {
 
-    private FunctionalBase<T,V> functionalBase;
+    private FunctorBase<T,V> functorBase;
 
-    public GuavaFunction(InvokableState state) {
-        functionalBase = new FunctionalBase<T, V>(state);
+    public GuavaFunction(InvokableState state, Modifier<T,V> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public GuavaFunction(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override
     public V apply(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 }

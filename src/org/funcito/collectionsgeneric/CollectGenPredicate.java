@@ -16,8 +16,9 @@
 package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Predicate;
-import org.funcito.*;
+import org.funcito.FuncitoCollectGen;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.NullValidatingPredicateBase;
 
 public class CollectGenPredicate<T> implements Predicate<T> {
 

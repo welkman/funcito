@@ -15,20 +15,20 @@
  */
 package org.funcito.play;
 
-import org.funcito.FunctionalBase;
+import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import play.libs.F.Function;
 
 public class Play2Function<T, V> implements Function<T,V> {
 
-    private FunctionalBase<T,V> functionalBase;
+    private FunctorBase<T,V> functorBase;
 
     public Play2Function(InvokableState state) {
-        functionalBase = new FunctionalBase<T, V>(state);
+        functorBase = new FunctorBase<T, V>(state);
     }
 
     @Override
     public V apply(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 }

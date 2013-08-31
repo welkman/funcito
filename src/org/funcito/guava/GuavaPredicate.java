@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import com.google.common.base.Predicate;
 
 import org.funcito.*;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.NullValidatingPredicateBase;
 
 public class GuavaPredicate<T> implements Predicate<T> {
 

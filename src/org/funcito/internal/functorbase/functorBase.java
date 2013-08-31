@@ -13,25 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito;
+package org.funcito.internal.functorbase;
 
 import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-public class FunctionalBase<T, V> {
+public class FunctorBase<T, V> {
     final protected InvokableState state;
     final protected Invokable<T,?> firstInvokable;
     final protected boolean unchained;
 
-    public FunctionalBase(InvokableState state) {
+    @SuppressWarnings("unchecked")
+    public FunctorBase(InvokableState state) {
         this.state = state;
         Iterator<Invokable> iter = state.iterator();
-        this.firstInvokable = iter.next(); // for performance for unchained invocations, extract ahead of time
-        this.unchained = !iter.hasNext();
+        // for performance of unchained invocations, extract ahead of time
+        firstInvokable = iter.next();
+        unchained = !iter.hasNext();
     }
 
+    @SuppressWarnings("unchecked")
     public V applyImpl(T from) {
         // unroll the first loop, to provide performance for the "90%": unchained wrapped methods
         Object retVal = firstInvokable.invoke(from);

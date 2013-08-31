@@ -1,10 +1,3 @@
-package org.funcito.functionaljava;
-
-import fj.F;
-
-import org.funcito.FunctionalBase;
-import org.funcito.internal.InvokableState;
-
 /*
  * Copyright 2011 Project Funcito Contributors
  * <p/>
@@ -20,16 +13,23 @@ import org.funcito.internal.InvokableState;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.functionaljava;
+
+import fj.F;
+
+import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.internal.InvokableState;
+
 public class FjF<T,V> extends F<T,V> {
 
-    private FunctionalBase<T,V> functionalBase;
+    private FunctorBase<T,V> functorBase;
 
     public FjF(InvokableState state) {
-        functionalBase = new FunctionalBase<T, V>(state);
+        functorBase = new FunctorBase<T, V>(state);
     }
 
     @Override
     public V f(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 }

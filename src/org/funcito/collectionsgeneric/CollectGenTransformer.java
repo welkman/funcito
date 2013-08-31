@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Transformer;
-import org.funcito.FunctionalBase;
+import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 public class CollectGenTransformer<T, V> implements Transformer<T,V> {
 
-    private FunctionalBase<T,V> functionalBase;
+    private FunctorBase<T,V> functorBase;
 
     public CollectGenTransformer(InvokableState state) {
-        functionalBase = new FunctionalBase<T, V>(state);
+        functorBase = new FunctorBase<T, V>(state);
     }
 
     @Override
     public V transform(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 }
