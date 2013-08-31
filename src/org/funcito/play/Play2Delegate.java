@@ -1,14 +1,3 @@
-package org.funcito.play;
-
-import org.funcito.internal.FuncitoDelegate;
-import org.funcito.internal.InvokableState;
-import play.libs.F.Callback;
-import play.libs.F.Function;
-
-import static org.funcito.internal.WrapperType.PLAY2_FUNCTION;
-import static org.funcito.internal.WrapperType.PLAY2_CALLBACK;
-import static org.funcito.internal.WrapperType.PLAY2_VOID_CALLBACK;
-
 /*
  * Copyright 2012-2013 Project Funcito Contributors
  * <p/>
@@ -24,10 +13,47 @@ import static org.funcito.internal.WrapperType.PLAY2_VOID_CALLBACK;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.play;
+
+import org.funcito.internal.FuncitoDelegate;
+import org.funcito.internal.InvokableState;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.NoOp;
+import org.funcito.modifier.UntypedModifier;
+import play.libs.F.Callback;
+import play.libs.F.Function;
+
+import static org.funcito.internal.WrapperType.PLAY2_FUNCTION;
+import static org.funcito.internal.WrapperType.PLAY2_CALLBACK;
+import static org.funcito.internal.WrapperType.PLAY2_VOID_CALLBACK;
+
 public class Play2Delegate extends FuncitoDelegate {
-    public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
+
+    /**
+     * Delegated version of <code>FuncitoPlay2.functionFor(V,Modifier)</code>
+     * @see org.funcito.FuncitoPlay2#functionFor(Object)
+     */
+    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
-        return new Play2Function<T, V>(state);
+        return new Play2Function<T, V>(state, NoOp.NO_OP);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoPlay2.functionFor(V,Modifier)</code>
+     * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.modifier.Modifier)
+     */
+    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
+        final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
+        return new Play2Function<T, V>(state, mod);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoPlay2.functionFor(V,UntypedModifier)</code>
+     * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.modifier.UntypedModifier)
+     */
+    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
+        return new Play2Function<T, V>(state, mod);
     }
 
     public <T> Callback<T> callbackFor(Object proxiedMethodCall) {

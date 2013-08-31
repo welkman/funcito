@@ -4,6 +4,9 @@ import fj.Effect;
 import fj.F;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.NoOp;
+import org.funcito.modifier.UntypedModifier;
 
 import static org.funcito.internal.WrapperType.FJ_EFFECT;
 import static org.funcito.internal.WrapperType.FJ_F;
@@ -26,9 +29,31 @@ import static org.funcito.internal.WrapperType.FJ_VOID_EFFECT;
  */
 public class FJDelegate extends FuncitoDelegate {
 
-    public <T,V> F<T,V> fFor(V ignoredRetVal) {
+    /**
+     * Delegated version of <code>FuncitoFJ.fFor(V)</code>
+     * @see org.funcito.FuncitoFJ#fFor(Object)
+     */
+    public <T,V> FjF<T,V> fFor(V ignoredRetVal) {
         InvokableState state = extractInvokableState(FJ_F);
-        return new FjF<T, V>(state);
+        return new FjF<T, V>(state, NoOp.NO_OP);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoFJ.functionFor(V,Modifier)</code>
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.modifier.Modifier)
+     */
+    public <T,V> FjF<T,V> fFor(V ignoredRetVal, Modifier<T,V> mod) {
+        final InvokableState state = extractInvokableState(FJ_F);
+        return new FjF<T, V>(state, mod);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoFJ.fFor(V,UntypedModifier)</code>
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.modifier.UntypedModifier)
+     */
+    public <T,V> FjF<T,V> fFor(V ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(FJ_F);
+        return new FjF<T, V>(state, mod);
     }
 
     public <T> Effect<T> effectFor(Object proxiedMethodCall) {

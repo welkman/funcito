@@ -1,5 +1,3 @@
-package org.funcito;
-
 /*
  * Copyright 2013 Project Funcito Contributors
  *
@@ -15,10 +13,13 @@ package org.funcito;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito;
 
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 import org.funcito.rxjava.RxJavaDelegate;
+import org.funcito.rxjava.RxJavaFunc1;
 import rx.util.functions.Action1;
-import rx.util.functions.Func1;
 
 /**
  * This class is the static entry point of the Funcito API for the Netflix RxJava framework.
@@ -84,8 +85,19 @@ public class FuncitoRxJava {
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
      * @return a RxJava <code>Func1</code> object that wraps the method call or chain.
      */
-    public static <T,V>Func1<T,V> func1For(V proxiedMethodCall) {
+    public static <T,V>RxJavaFunc1<T,V> func1For(V proxiedMethodCall) {
         return rxJavaDelegate.func1For(proxiedMethodCall);
+    }
+
+    // TODO: javadoc
+    @SuppressWarnings("unchecked")
+    public static <T,V> RxJavaFunc1<T,V> func1For(V proxiedMethodCall, Modifier<?,V> mod) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, (Modifier<T, V>) mod);
+    }
+
+    // TODO: javadoc
+    public static <T,V> RxJavaFunc1<T,V> func1For(V proxiedMethodCall, UntypedModifier mod) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, mod);
     }
 
     /**

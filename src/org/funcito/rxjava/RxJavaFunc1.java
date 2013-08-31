@@ -17,14 +17,21 @@ package org.funcito.rxjava;
 
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 import rx.util.functions.Func1;
 
 public class RxJavaFunc1<T, V> implements Func1<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public RxJavaFunc1(InvokableState state) {
-        functorBase = new FunctorBase<T, V>(state);
+    public RxJavaFunc1(InvokableState state, Modifier<T,V> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public RxJavaFunc1(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override

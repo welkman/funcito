@@ -18,13 +18,20 @@ package org.funcito.collectionsgeneric;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 
 public class CollectGenTransformer<T, V> implements Transformer<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public CollectGenTransformer(InvokableState state) {
-        functorBase = new FunctorBase<T, V>(state);
+    public CollectGenTransformer(InvokableState state, Modifier<T,V> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public CollectGenTransformer(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override

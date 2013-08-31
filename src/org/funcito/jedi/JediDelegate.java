@@ -2,9 +2,11 @@ package org.funcito.jedi;
 
 import jedi.functional.Command;
 import jedi.functional.Filter;
-import jedi.functional.Functor;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.NoOp;
+import org.funcito.modifier.UntypedModifier;
 
 import static org.funcito.internal.WrapperType.JEDI_FUNCTOR;
 import static org.funcito.internal.WrapperType.JEDI_FILTER;
@@ -27,9 +29,32 @@ import static org.funcito.internal.WrapperType.JEDI_VOID_COMMAND;
  * limitations under the License.
  */
 public class JediDelegate extends FuncitoDelegate {
-    public <T,V> Functor<T,V> functorFor(V ignoredRetVal) {
+
+    /**
+     * Delegated version of <code>FuncitoJedi.functorFor(V)</code>
+     * @see org.funcito.FuncitoJedi#functorFor(Object)
+     */
+    public <T,V> JediFunctor<T,V> functorFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
-        return new JediFunctor<T, V>(state);
+        return new JediFunctor<T, V>(state, NoOp.NO_OP);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoJedi.functorFor(V,Modifier)</code>
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.modifier.Modifier)
+     */
+    public <T,V> JediFunctor<T,V> functorFor(V ignoredRetVal, Modifier<T,V> mod) {
+        final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
+        return new JediFunctor<T, V>(state, mod);
+    }
+
+    /**
+     * Delegated version of <code>FuncitoJedi.functorFor(V,UntypedModifier)</code>
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.modifier.UntypedModifier)
+     */
+    public <T,V> JediFunctor<T,V> functorFor(V ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
+        return new JediFunctor<T, V>(state, mod);
     }
 
     public <T> Filter<T> filterFor(Boolean ignoredRetVal) {

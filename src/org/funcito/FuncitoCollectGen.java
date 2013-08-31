@@ -1,5 +1,3 @@
-package org.funcito;
-
 /*
  * Copyright 2012-2013 Project Funcito Contributors
  *
@@ -15,11 +13,14 @@ package org.funcito;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.collectionsgeneric.CollectGenDelegate;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 
 /**
  * This class is the static entry point of the Funcito API for Collections-Generic.
@@ -87,6 +88,17 @@ public class FuncitoCollectGen {
      */
     public static <T,V>Transformer<T,V> transformerFor(V proxiedMethodCall) {
         return collectGenDelegate.transformerFor(proxiedMethodCall);
+    }
+
+    // TODO: javadoc
+    @SuppressWarnings("unchecked")
+    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, Modifier<?,V> mod) {
+        return collectGenDelegate.transformerFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    }
+
+    // TODO: javadoc
+    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, UntypedModifier mod) {
+        return collectGenDelegate.transformerFor(proxiedMethodCall, mod);
     }
 
     /**

@@ -19,13 +19,20 @@ import fj.F;
 
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 
 public class FjF<T,V> extends F<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public FjF(InvokableState state) {
-        functorBase = new FunctorBase<T, V>(state);
+    public FjF(InvokableState state, Modifier<T,V> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public FjF(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override

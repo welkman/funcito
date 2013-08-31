@@ -1,7 +1,5 @@
-package org.funcito;
-
 /*
- * Copyright 2012 Project Funcito Contributors
+ * Copyright 2012-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +13,13 @@ package org.funcito;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito;
 
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 import org.funcito.play.Play2Delegate;
+import org.funcito.play.Play2Function;
 import play.libs.F.Callback;
-import play.libs.F.Function;
 
 /**
  * This class is the static entry point of the Funcito API for the Play! Framework 2.
@@ -84,8 +85,19 @@ public class FuncitoPlay2 {
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
      * @return a Play! 2 <code>Function</code> object that wraps the method call or chain.
      */
-    public static <T,V>Function<T,V> functionFor(V proxiedMethodCall) {
+    public static <T,V>Play2Function<T,V> functionFor(V proxiedMethodCall) {
         return play2Delegate.functionFor(proxiedMethodCall);
+    }
+
+    // TODO: javadoc
+    @SuppressWarnings("unchecked")
+    public static <T,V> Play2Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
+        return play2Delegate.functionFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    }
+
+    // TODO: javadoc
+    public static <T,V> Play2Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
+        return play2Delegate.functionFor(proxiedMethodCall, mod);
     }
 
     /**
