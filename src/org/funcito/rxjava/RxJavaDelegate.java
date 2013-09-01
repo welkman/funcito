@@ -32,7 +32,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoRxJava.func1For(V,Modifier)</code>
      * @see org.funcito.FuncitoRxJava#func1For(Object)
      */
-    public <T,V> RxJavaFunc1<T,V> func1For(V ignoredRetVal) {
+    public <T,V> Func1<T,V> func1For(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
         return new RxJavaFunc1<T, V>(state, NoOp.NO_OP);
     }
@@ -41,7 +41,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoRxJava.func1For(V,Modifier)</code>
      * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> RxJavaFunc1<T,V> func1For(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Func1<T,V> func1For(V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
         return new RxJavaFunc1<T, V>(state, mod);
     }
@@ -50,7 +50,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoRxJava.func1For(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.modifier.UntypedModifier)
      */
-    public <T,V> RxJavaFunc1<T,V> func1For(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Func1<T,V> func1For(V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
         return new RxJavaFunc1<T, V>(state, mod);
     }

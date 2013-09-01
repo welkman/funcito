@@ -15,6 +15,7 @@
  */
 package org.funcito.guava;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.modifier.Modifier;
 import org.funcito.internal.FuncitoDelegate;
@@ -32,7 +33,7 @@ public class GuavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoGuava.functionFor(V)</code>
      * @see org.funcito.FuncitoGuava#functionFor(Object)
      */
-    public <T,V> GuavaFunction<T,V> functionFor(V ignoredRetVal) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
         return functionFor(ignoredRetVal, NoOp.NO_OP);
     }
 
@@ -40,7 +41,7 @@ public class GuavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoGuava.functionFor(V,Modifier)</code>
      * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> GuavaFunction<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
         return new GuavaFunction<T, V>(state, mod);
     }
@@ -49,7 +50,7 @@ public class GuavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoGuava.functionFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoGuava#functionFor(Object,UntypedModifier)
      */
-    public <T,V> GuavaFunction<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
         return new GuavaFunction<T, V>(state, mod);
     }

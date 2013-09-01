@@ -15,9 +15,9 @@
  */
 package org.funcito;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.guava.GuavaDelegate;
-import org.funcito.guava.GuavaFunction;
 import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 
@@ -85,18 +85,18 @@ public class FuncitoGuava {
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
      * @return a Guava <code>Function</code> object that wraps the method call or chain.
      */
-    public static <T,V> GuavaFunction<T,V> functionFor(V proxiedMethodCall) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall) {
         return guavaDelegate.functionFor(proxiedMethodCall);
     }
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> GuavaFunction<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
         return guavaDelegate.functionFor(proxiedMethodCall, (Modifier<T, V>) mod);
     }
 
     // TODO: javadoc
-    public static <T,V> GuavaFunction<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
         return guavaDelegate.functionFor(proxiedMethodCall, mod);
     }
 

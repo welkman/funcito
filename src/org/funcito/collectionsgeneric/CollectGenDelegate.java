@@ -17,6 +17,7 @@ package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.Transformer;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
 import org.funcito.modifier.Modifier;
@@ -31,7 +32,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object)
      */
-    public <T,V> CollectGenTransformer<T,V> transformerFor(V ignoredRetVal) {
+    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, NoOp.NO_OP);
     }
@@ -40,7 +41,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,Modifier)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> CollectGenTransformer<T,V> transformerFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mod);
     }
@@ -49,7 +50,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.UntypedModifier)
      */
-    public <T,V> CollectGenTransformer<T,V> transformerFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mod);
     }

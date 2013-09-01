@@ -18,7 +18,7 @@ package org.funcito;
 import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 import org.funcito.play.Play2Delegate;
-import org.funcito.play.Play2Function;
+import play.libs.F.Function;
 import play.libs.F.Callback;
 
 /**
@@ -85,18 +85,18 @@ public class FuncitoPlay2 {
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
      * @return a Play! 2 <code>Function</code> object that wraps the method call or chain.
      */
-    public static <T,V>Play2Function<T,V> functionFor(V proxiedMethodCall) {
+    public static <T,V>Function<T,V> functionFor(V proxiedMethodCall) {
         return play2Delegate.functionFor(proxiedMethodCall);
     }
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Play2Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
         return play2Delegate.functionFor(proxiedMethodCall, (Modifier<T, V>) mod);
     }
 
     // TODO: javadoc
-    public static <T,V> Play2Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
         return play2Delegate.functionFor(proxiedMethodCall, mod);
     }
 

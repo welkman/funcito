@@ -3,9 +3,7 @@ package org.funcito;
 import jedi.functional.Command;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import org.funcito.guava.GuavaFunction;
 import org.funcito.jedi.JediDelegate;
-import org.funcito.jedi.JediFunctor;
 import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 
@@ -89,18 +87,18 @@ public class FuncitoJedi {
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
      * @return a Jedi <code>Functor</code> object that wraps the method call or chain.
      */
-    public static <T,V> JediFunctor<T, V> functorFor(V proxiedMethodCall) {
+    public static <T,V> Functor<T, V> functorFor(V proxiedMethodCall) {
         return jediDelegate.functorFor(proxiedMethodCall);
     }
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> JediFunctor<T,V> functorFor(V proxiedMethodCall, Modifier<?,V> mod) {
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Modifier<?,V> mod) {
         return jediDelegate.functorFor(proxiedMethodCall, (Modifier<T, V>) mod);
     }
 
     // TODO: javadoc
-    public static <T,V> JediFunctor<T,V> functorFor(V proxiedMethodCall, UntypedModifier mod) {
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, UntypedModifier mod) {
         return jediDelegate.functorFor(proxiedMethodCall, mod);
     }
 

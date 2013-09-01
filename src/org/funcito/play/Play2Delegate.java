@@ -33,7 +33,7 @@ public class Play2Delegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoPlay2.functionFor(V,Modifier)</code>
      * @see org.funcito.FuncitoPlay2#functionFor(Object)
      */
-    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
         return new Play2Function<T, V>(state, NoOp.NO_OP);
     }
@@ -42,7 +42,7 @@ public class Play2Delegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoPlay2.functionFor(V,Modifier)</code>
      * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
         return new Play2Function<T, V>(state, mod);
     }
@@ -51,7 +51,7 @@ public class Play2Delegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoPlay2.functionFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.modifier.UntypedModifier)
      */
-    public <T,V> Play2Function<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
         return new Play2Function<T, V>(state, mod);
     }

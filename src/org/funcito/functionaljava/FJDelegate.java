@@ -33,7 +33,7 @@ public class FJDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoFJ.fFor(V)</code>
      * @see org.funcito.FuncitoFJ#fFor(Object)
      */
-    public <T,V> FjF<T,V> fFor(V ignoredRetVal) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal) {
         InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, NoOp.NO_OP);
     }
@@ -42,7 +42,7 @@ public class FJDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoFJ.functionFor(V,Modifier)</code>
      * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> FjF<T,V> fFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, mod);
     }
@@ -51,7 +51,7 @@ public class FJDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoFJ.fFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.modifier.UntypedModifier)
      */
-    public <T,V> FjF<T,V> fFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, mod);
     }

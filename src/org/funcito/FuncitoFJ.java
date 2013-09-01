@@ -3,8 +3,6 @@ package org.funcito;
 import fj.Effect;
 import fj.F;
 import org.funcito.functionaljava.FJDelegate;
-import org.funcito.functionaljava.FjF;
-import org.funcito.guava.GuavaFunction;
 import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 
@@ -90,18 +88,18 @@ public class FuncitoFJ {
      * @param <V> is the end return type
      * @return a Functional Java <code>F</code> object that wraps the method call or chain.
      */
-    public static <T,V> FjF<T,V> fFor(V proxiedMethodCall) {
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall) {
         return fjDelegate.fFor(proxiedMethodCall);
     }
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> FjF<T,V> fFor(V proxiedMethodCall, Modifier<?,V> mod) {
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall, Modifier<?,V> mod) {
         return fjDelegate.fFor(proxiedMethodCall, (Modifier<T, V>) mod);
     }
 
     // TODO: javadoc
-    public static <T,V> FjF<T,V> fFor(V proxiedMethodCall, UntypedModifier mod) {
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall, UntypedModifier mod) {
         return fjDelegate.fFor(proxiedMethodCall, mod);
     }
 
