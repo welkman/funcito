@@ -1,4 +1,4 @@
-package org.funcito.google.guava.common.base;
+package org.funcito.internal.stub.utils;
 /*
  * Copyright (C) 2007 The Guava Authors
  *
@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * This class provides default values for all Java types, as defined by the JLS.
+ * Originally from Google Guava-libraries com.google.guava.common.base.Defaults
  *
  * @author Ben Yu
  */

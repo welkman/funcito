@@ -15,7 +15,7 @@
  */
 package org.funcito.internal.stub;
 
-import org.funcito.google.guava.common.base.Defaults;
+import org.funcito.internal.stub.utils.Defaults;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.Invokable;
 
