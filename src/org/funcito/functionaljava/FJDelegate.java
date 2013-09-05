@@ -58,18 +58,33 @@ public class FJDelegate extends FuncitoDelegate {
 
     public <T> Effect<T> effectFor(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(FJ_EFFECT);
-        return new FjEffect<T>(state);
+        return new FjEffect<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Effect<T> effectFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(FJ_EFFECT);
+        return new FjEffect<T>(state, mod);
+    }
+
+    public <T> Effect<T> effectFor(Object proxiedMethodCall, UntypedModifier mod) {
+        InvokableState state = extractInvokableState(FJ_EFFECT);
+        return new FjEffect<T>(state, mod);
     }
 
     public <T> T prepareVoid(T t) { return t; }
 
     public <T> Effect<T> voidEffect() {
         InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
-        return new FjEffect<T>(state);
+        return new FjEffect<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Effect<T> voidEffect(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, FJ_VOID_EFFECT);
-        return voidEffect();
+    public <T> Effect<T> voidEffect(Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
+        return new FjEffect<T>(state, mod);
+    }
+
+    public <T> Effect<T> voidEffect(UntypedModifier mod) {
+        InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
+        return new FjEffect<T>(state, mod);
     }
 }

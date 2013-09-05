@@ -178,43 +178,6 @@ public class FuncitoFjEffect_UT {
     }
 
     @Test
-    public void testVoidEffect_typeValidationSucceeds() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        Effect<Grows> grows = voidEffect(Grows.class);
-    }
-
-    @Test
-    public void testVoidEffect_typeValidationSucceedsWithSuperClass() {
-        class Grows2 extends Grows{}
-        prepareVoid(callsTo(Grows2.class)).inc();
-
-        Effect<Grows> grows = voidEffect(Grows.class);
-    }
-
-    @Test
-    public void testVoidEffect_typeValidationFails() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create Functional Java Effect");
-        Effect<?> e = voidEffect(Number.class);  // type validation
-    }
-
-
-    @Test
-    public void testVoidEffect_typeValidationFailsButLeavesInvokableStateUnchanged() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        try {
-            Effect<?> e = voidEffect(Number.class);  // type validation should fail
-            fail("should have thrown exception");
-        } catch (FuncitoException e) {
-            Effect<Grows> g = voidEffect(Grows.class);  // type validation
-        }
-    }
-
-    @Test
     public void testVoidEffect_badOrderOfPrepares() {
         // First call below requires a subsequent call to voidEffect() before another prepareVoid()
         prepareVoid(CALLS_TO_GROWS).inc();

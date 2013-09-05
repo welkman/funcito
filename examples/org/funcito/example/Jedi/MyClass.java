@@ -57,10 +57,6 @@ public class MyClass {
     static {prepareVoid(stubbedCallsTo).inc();}
     public static final Command<MyClass> inc = voidCommand();
 
-    // demonstrating Command creation with extra type-safety
-    static {prepareVoid(stubbedCallsTo).inc();}
-    public static final Command<MyClass> inc2 = voidCommand(MyClass.class);
-
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -141,9 +137,6 @@ public class MyClass {
 
         forEach(list, inc);
         printValues("List has incremented each again", collect(list, getOther));
-
-        forEach(list, inc2);
-        printValues("List has incremented each a 3rd time", collect(list, getOther));
     }
 
     protected static void printValues(String desc, List<?> list) {

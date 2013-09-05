@@ -18,13 +18,20 @@ package org.funcito.functionaljava;
 import fj.Effect;
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 
 public class FjEffect<T> extends Effect<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public FjEffect(InvokableState state) {
-        functorBase = new FunctorBase<T, Void>(state);
+    public FjEffect(InvokableState state, Modifier<T,Void> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public FjEffect(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override

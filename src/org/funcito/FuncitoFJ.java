@@ -142,11 +142,19 @@ public class FuncitoFJ {
         return fjDelegate.effectFor(proxiedMethodCall);
     }
 
+    public static <T> Effect<T> effectFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        return fjDelegate.effectFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Effect<T> effectFor(Object proxiedMethodCall, UntypedModifier mod) {
+        return fjDelegate.effectFor(proxiedMethodCall, mod);
+    }
+
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
      * <strong>Functional Java</strong> <code>Effect</code> object.  Use of this method is paired with a following
-     * execution of one of the void-generating methods ({@link #voidEffect()} or {@link #voidEffect(Class)}). Resulting
-     * <code>Effect</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * execution of the void-generating method ({@link #voidEffect()}. Resulting <code>Effect</code> is as thread-safe
+     * as the method/chain itself.  Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -175,7 +183,6 @@ public class FuncitoFJ {
      * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Effect being prepared
-     * @see #voidEffect(Class)
      * @see #voidEffect()
      */
     public static <T> T prepareVoid(T t) {
@@ -196,33 +203,18 @@ public class FuncitoFJ {
      * <p>
      * @return a Functional Java <code>Effect</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Effect
-     * @see #voidEffect(Class)
      * @see #prepareVoid(Object)
      */
     public static <T> Effect<T> voidEffect() {
         return fjDelegate.voidEffect();
     }
 
-    /**
-     * Generates a <strong>Functional Java</strong> <code>Effect</code> object that wraps a method call or method chain.  Resulting
-     * <code>Effect</code> is as thread-safe as the method/chain itself.  This Effect generator is only appropriate
-     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * This is the overloaded and safer form of {@link #voidEffect()}, which uses a target Class type to validate that
-     * the generated Effect is assigned to an appropriately type-constrained Effect.  Example usage is:
-     * <p>
-     * <code>
-     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Effect&lt;MyClass&gt; effect = voidEffect(MyClass.class); // added safety in assignment
-     * </code>
-     * <p>
-     * @return a Functional Java <code>Effect</code> object that wraps a previously prepared method call or chain.
-     * @param c the input target Class for validation of the assigned constraint-type of the Effect.
-     * @param <T> is the input type of the Effect
-     * @see #voidEffect()
-     * @see #prepareVoid(Object)
-     */
-    public static <T> Effect<T> voidEffect(Class<T> c) {
-        return fjDelegate.voidEffect(c);
+    public static <T> Effect<T> voidEffect(Modifier<T,Void> mod) {
+        return fjDelegate.voidEffect(mod);
+    }
+
+    public static <T> Effect<T> voidEffect(UntypedModifier mod) {
+        return fjDelegate.voidEffect(mod);
     }
 
     static FJDelegate delegate() {

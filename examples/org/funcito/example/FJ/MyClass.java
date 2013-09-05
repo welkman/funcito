@@ -51,10 +51,6 @@ public class MyClass {
     static {prepareVoid(stubbedCallsTo).inc();}
     public static final Effect<MyClass> inc = voidEffect();
 
-    // demonstrating Effect creation with extra type-safety
-    static {prepareVoid(stubbedCallsTo).inc();}
-    public static final Effect<MyClass> inc2 = voidEffect(MyClass.class);
-
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -135,9 +131,6 @@ public class MyClass {
 
         list.foreach(inc);
         printValues("List has incremented each again", list.map(getOther));
-
-        list.foreach(inc2);
-        printValues("List has incremented each a 3rd time", list.map(getOther));
     }
 
     protected static void printValues(String desc, List<?> list) {

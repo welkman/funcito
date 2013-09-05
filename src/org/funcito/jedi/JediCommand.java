@@ -18,13 +18,20 @@ package org.funcito.jedi;
 import jedi.functional.Command;
 import org.funcito.internal.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.modifier.Modifier;
+import org.funcito.modifier.UntypedModifier;
 
 public class JediCommand<T> implements Command<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public JediCommand(InvokableState state) {
-        functorBase = new FunctorBase<T, Void>(state);
+    public JediCommand(InvokableState state, Modifier<T,Void> mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    }
+
+    public JediCommand(InvokableState state, UntypedModifier mod) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
     }
 
     @Override

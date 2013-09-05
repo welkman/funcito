@@ -11,8 +11,7 @@ import org.junit.rules.ExpectedException;
 import java.util.ArrayList;
 
 import static org.funcito.FuncitoCollectGen.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Copyright 2013 Project Funcito Contributors
@@ -175,43 +174,6 @@ public class FuncitoCollectGenClosure_UT {
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Method inc() does not exist");
         unsafe.execute(3); // invocation target type does not match prepared target type
-    }
-
-    @Test
-    public void testVoidClosure_typeValidationSucceeds() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        Closure<Grows> grows = voidClosure(Grows.class);
-    }
-
-    @Test
-    public void testVoidClosure_typeValidationSucceedsWithSuperClass() {
-        class Grows2 extends Grows{}
-        prepareVoid(callsTo(Grows2.class)).inc();
-
-        Closure<Grows> grows = voidClosure(Grows.class);
-    }
-
-    @Test
-    public void testVoidClosure_typeValidationFails() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create Collections-Generic Closure");
-        Closure<?> e = voidClosure(Number.class);  // type validation
-    }
-
-
-    @Test
-    public void testVoidClosure_typeValidationFailsButLeavesInvokableStateUnchanged() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        try {
-            Closure<?> e = voidClosure(Number.class);  // type validation should fail
-            fail("should have thrown exception");
-        } catch (FuncitoException fe) {
-            Closure<Grows> g = voidClosure(Grows.class);  // type validation ok
-        }
     }
 
     @Test

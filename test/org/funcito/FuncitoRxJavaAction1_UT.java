@@ -1,5 +1,3 @@
-package org.funcito;
-
 /**
  * Copyright 2013 Project Funcito Contributors
  * <p/>
@@ -15,6 +13,7 @@ package org.funcito;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito;
 
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.WrapperType;
@@ -174,43 +173,6 @@ public class FuncitoRxJavaAction1_UT {
         thrown.expect(FuncitoException.class);
         thrown.expectMessage("Method inc() does not exist");
         unsafe.call(3); // invocation target type does not match prepared target type
-    }
-
-    @Test
-    public void testVoidAction1_typeValidationSucceeds() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        Action1<Grows> grows = voidAction1(Grows.class);
-    }
-
-    @Test
-    public void testVoidAction1_typeValidationSucceedsWithSuperClass() {
-        class Grows2 extends Grows{}
-        prepareVoid(callsTo(Grows2.class)).inc();
-
-        Action1<Grows> grows = voidAction1(Grows.class);
-    }
-
-    @Test
-    public void testVoidAction1_typeValidationFails() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create RxJava Action1");
-        Action1<?> e = voidAction1(Number.class);  // type validation
-    }
-
-
-    @Test
-    public void testVoidAction1_typeValidationFailsButLeavesInvokableStateUnchanged() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        try {
-            Action1<?> e = voidAction1(Number.class);  // type validation should fail
-            fail("should have thrown exception");
-        } catch (FuncitoException e) {
-            Action1<Grows> g = voidAction1(Grows.class);  // type validation
-        }
     }
 
     @Test

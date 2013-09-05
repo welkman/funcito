@@ -139,11 +139,19 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.action1For(proxiedMethodCall);
     }
 
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        return     rxJavaDelegate.action1For(proxiedMethodCall, mod);
+    }
+
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, UntypedModifier mod) {
+        return     rxJavaDelegate.action1For(proxiedMethodCall, mod);
+    }
+
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of an
      * <strong>RxJava</strong> <code>Action1</code> object.  Use of this method is paired with a following
-     * execution of one of the void-generating methods ({@link #voidAction1()} or {@link #voidAction1(Class)}). Resulting
-     * <code>Action1</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * execution of the void-generating method ({@link #voidAction1()}. Resulting <code>Action1</code> is as
+     * thread-safe as the method/chain itself.  Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -172,7 +180,6 @@ public class FuncitoRxJava {
      * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Action1 being prepared
-     * @see #voidAction1(Class)
      * @see #voidAction1()
      */
     public static <T> T prepareVoid(T t) {
@@ -193,35 +200,19 @@ public class FuncitoRxJava {
      * <p>
      * @return an RxJava <code>Action1</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Action1
-     * @see #voidAction1(Class)
      * @see #prepareVoid(Object)
      */
     public static <T> Action1<T> voidAction1() {
         return     rxJavaDelegate.voidAction1();
     }
 
-    /**
-     * Generates a <strong>RxJava</strong> <code>Action1</code> object that wraps a method call or method chain.  Resulting
-     * <code>Action1</code> is as thread-safe as the method/chain itself.  This Action1 generator is only appropriate
-     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * This is the overloaded and safer form of {@link #voidAction1()}, which uses a target Class type to validate that
-     * the generated Action1 is assigned to an appropriately type-constrained Action1.  Example usage is:
-     * <p>
-     * <code>
-     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Action1&lt;MyClass&gt; action = voidAction1(MyClass.class); // added safety in assignment
-     * </code>
-     * <p>
-     * @return an RxJava <code>Action1</code> object that wraps a previously prepared method call or chain.
-     * @param c the input target Class for validation of the assigned constraint-type of the Action1.
-     * @param <T> is the input type of the Action1
-     * @see #voidAction1()
-     * @see #prepareVoid(Object)
-     */
-    public static <T> Action1<T> voidAction1(Class<T> c) {
-        return     rxJavaDelegate.voidAction1(c);
+    public static <T> Action1<T> voidAction1(Modifier<T,Void> mod) {
+        return     rxJavaDelegate.voidAction1(mod);
     }
 
+    public static <T> Action1<T> voidAction1(UntypedModifier mod) {
+        return     rxJavaDelegate.voidAction1(mod);
+    }
 
     static RxJavaDelegate delegate() {
         return rxJavaDelegate;

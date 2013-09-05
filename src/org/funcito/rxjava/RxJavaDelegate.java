@@ -1,5 +1,3 @@
-package org.funcito.rxjava;
-
 /*
  * Copyright 2012-2013 Project Funcito Contributors
  * <p/>
@@ -15,6 +13,7 @@ package org.funcito.rxjava;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.rxjava;
 
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
@@ -57,14 +56,34 @@ public class RxJavaDelegate extends FuncitoDelegate {
 
     public <T> Action1<T> action1For(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
-        return new RxJavaAction1<T>(state);
+        return new RxJavaAction1<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Action1<T> action1For(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(RXJAVA_ACTION1);
+        return new RxJavaAction1<T>(state, mod);
+    }
+
+    public <T> Action1<T> action1For(Object proxiedMethodCall, UntypedModifier mod) {
+        InvokableState state = extractInvokableState(RXJAVA_ACTION1);
+        return new RxJavaAction1<T>(state, mod);
     }
 
     public <T> T prepareVoid(T t) { return t; }
 
     public <T> Action1<T> voidAction1() {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
-        return new RxJavaAction1<T>(state);
+        return new RxJavaAction1<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Action1<T> voidAction1(Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
+        return new RxJavaAction1<T>(state, mod);
+    }
+
+    public <T> Action1<T> voidAction1(UntypedModifier mod) {
+        InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
+        return new RxJavaAction1<T>(state, mod);
     }
 
     public <T> Action1<T> voidAction1(Class<T> validationTargetClass) {

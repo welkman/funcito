@@ -8,7 +8,7 @@ import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 
 /*
- * Copyright 2011 Project Funcito Contributors
+ * Copyright 2011-2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -161,11 +161,19 @@ public class FuncitoJedi {
         return jediDelegate.commandFor(proxiedMethodCall);
     }
 
+    public static <T> Command<T> commandFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        return jediDelegate.commandFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Command<T> commandFor(Object proxiedMethodCall, UntypedModifier mod) {
+        return jediDelegate.commandFor(proxiedMethodCall, mod);
+    }
+
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
      * <strong>Jedi</strong> <code>Command</code> object.  Use of this method is paired with a following
-     * execution of one of the void-generating methods ({@link #voidCommand()} or {@link #voidCommand(Class)}). Resulting
-     * <code>Command</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * execution of the void-generating methods ({@link #voidCommand()}. Resulting <code>Command</code> is as
+     * thread-safe as the method/chain itself.  Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -194,7 +202,6 @@ public class FuncitoJedi {
      * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Command being prepared
-     * @see #voidCommand(Class)
      * @see #voidCommand()
      */
     public static <T> T prepareVoid(T t) {
@@ -215,33 +222,18 @@ public class FuncitoJedi {
      * <p>
      * @return a Jedi <code>Command</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Command
-     * @see #voidCommand(Class)
      * @see #prepareVoid(Object)
      */
     public static <T> Command<T> voidCommand() {
         return jediDelegate.voidCommand();
     }
 
-    /**
-     * Generates a <strong>Jedi</strong> <code>Command</code> object that wraps a method call or method chain.  Resulting
-     * <code>Command</code> is as thread-safe as the method/chain itself.  This Command generator is only appropriate
-     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * This is the overloaded and safer form of {@link #voidCommand()}, which uses a target Class type to validate that
-     * the generated Command is assigned to an appropriately type-constrained Command.  Example usage is:
-     * <p>
-     * <code>
-     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Command&lt;MyClass&gt; cmd = voidCommand(MyClass.class); // added safety in assignment
-     * </code>
-     * <p>
-     * @return a Jedi <code>Command</code> object that wraps a previously prepared method call or chain.
-     * @param c the input target Class for validation of the assigned constraint-type of the Command.
-     * @param <T> is the input type of the Command
-     * @see #voidCommand()
-     * @see #prepareVoid(Object)
-     */
-    public static <T> Command<T> voidCommand(Class<T> c) {
-        return jediDelegate.voidCommand(c);
+    public static <T> Command<T> voidCommand(Modifier<T,Void> mod) {
+        return jediDelegate.voidCommand(mod);
+    }
+
+    public static <T> Command<T> voidCommand(UntypedModifier mod) {
+        return jediDelegate.voidCommand(mod);
     }
 
     public static JediDelegate delegate() {

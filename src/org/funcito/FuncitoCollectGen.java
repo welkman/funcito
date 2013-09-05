@@ -180,11 +180,19 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.closureFor(proxiedMethodCall);
     }
 
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        return     collectGenDelegate.closureFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall, UntypedModifier mod) {
+        return     collectGenDelegate.closureFor(proxiedMethodCall, mod);
+    }
+
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
      * <strong>Collections-Generic</strong> <code>Closure</code> object.  Use of this method is paired with a following
-     * execution of one of the void-generating methods ({@link #voidClosure()} or {@link #voidClosure(Class)}). Resulting
-     * <code>Closure</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * execution of the void-generating method ({@link #voidClosure()} . Resulting <code>Closure</code> is as
+     * thread-safe as the method/chain itself.  Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -213,7 +221,6 @@ public class FuncitoCollectGen {
      * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Closure being prepared
-     * @see #voidClosure(Class)
      * @see #voidClosure()
      */
     public static <T> T prepareVoid(T t) {
@@ -234,33 +241,18 @@ public class FuncitoCollectGen {
      * <p>
      * @return a Collections-Generic <code>Closure</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Closure
-     * @see #voidClosure(Class)
      * @see #prepareVoid(Object)
      */
     public static <T> Closure<T> voidClosure() {
         return     collectGenDelegate.voidClosure();
     }
 
-    /**
-     * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
-     * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator is only appropriate
-     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * This is the overloaded and safer form of {@link #voidClosure()}, which uses a target Class type to validate that
-     * the generated Closure is assigned to an appropriately type-constrained Closure.  Example usage is:
-     * <p>
-     * <code>
-     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Closure&lt;MyClass&gt; cmd = voidClosure(MyClass.class); // added safety in assignment
-     * </code>
-     * <p>
-     * @return a Collections-Generic <code>Closure</code> object that wraps a previously prepared method call or chain.
-     * @param c the input target Class for validation of the assigned constraint-type of the Closure.
-     * @param <T> is the input type of the Closure
-     * @see #voidClosure()
-     * @see #prepareVoid(Object)
-     */
-    public static <T> Closure<T> voidClosure(Class<T> c) {
-        return     collectGenDelegate.voidClosure(c);
+    public static <T> Closure<T> voidClosure(Modifier<T,Void> mod) {
+        return     collectGenDelegate.voidClosure(mod);
+    }
+
+    public static <T> Closure<T> voidClosure(UntypedModifier mod) {
+        return     collectGenDelegate.voidClosure(mod);
     }
 
     static CollectGenDelegate delegate() {

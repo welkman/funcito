@@ -55,10 +55,6 @@ public class MyClass {
     static {prepareVoid(stubbedCallsTo).inc();}
     public static final Action1<MyClass> inc = voidAction1();
 
-    // demonstrating Action1 creation with extra type-safety
-    static {prepareVoid(stubbedCallsTo).inc();}
-    public static final Action1<MyClass> inc2 = voidAction1(MyClass.class);
-
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -139,9 +135,6 @@ public class MyClass {
 
         from(list).subscribe(inc);
         from(list).map(getOther).toList().subscribe(printValues("List has incremented each again"));
-
-        from(list).subscribe(inc2);
-        from(list).map(getOther).toList().subscribe(printValues("List has incremented a 3rd time"));
     }
 
     protected static <T> Action1<T> printValues(final String desc) {

@@ -56,10 +56,6 @@ public class MyClass {
     static {prepareVoid(stubbedCallsTo).inc();}
     public static final Closure<MyClass> inc = voidClosure();
 
-    // demonstrating Closure creation with extra type-safety
-    static {prepareVoid(stubbedCallsTo).inc();}
-    public static final Closure<MyClass> inc2 = voidClosure(MyClass.class);
-
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;
@@ -140,9 +136,6 @@ public class MyClass {
 
         CollectionUtils.forAllDo(list, inc);
         printValues("List has incremented each again", CollectionUtils.collect(list, getOther));
-
-        CollectionUtils.forAllDo(list, inc2);
-        printValues("List has incremented each a 3rd time", CollectionUtils.collect(list, getOther));
     }
 
     protected static void printValues(String desc, Collection<?> list) {

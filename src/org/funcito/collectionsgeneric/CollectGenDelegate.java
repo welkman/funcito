@@ -66,20 +66,32 @@ public class CollectGenDelegate extends FuncitoDelegate {
     }
 
     public <T> Closure<T> closureFor(Object proxiedMethodCall) {
+        return closureFor(proxiedMethodCall, NoOp.NO_OP);
+    }
+
+    public <T> Closure<T> closureFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
-        return new CollectGenClosure<T>(state);
+        return new CollectGenClosure<T>(state, mod);
+    }
+
+    public <T> Closure<T> closureFor(Object proxiedMethodCall, UntypedModifier mod) {
+        InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
+        return new CollectGenClosure<T>(state, mod);
     }
 
     public <T> T prepareVoid(T t) { return t; }
 
     public <T> Closure<T> voidClosure() {
+        return voidClosure(NoOp.NO_OP);
+    }
+
+    public <T> Closure<T> voidClosure(Modifier<T,Void> mod) {
         InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
-        return new CollectGenClosure<T>(state);
+        return new CollectGenClosure<T>(state, mod);
     }
 
-    public <T> Closure<T> voidClosure(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, COLLECTGEN_VOID_CLOSURE);
-        return voidClosure();
+    public <T> Closure<T> voidClosure(UntypedModifier mod) {
+        InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
+        return new CollectGenClosure<T>(state, mod);
     }
-
 }

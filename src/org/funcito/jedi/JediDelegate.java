@@ -65,18 +65,33 @@ public class JediDelegate extends FuncitoDelegate {
 
     public <T> Command<T> commandFor(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(JEDI_COMMAND);
-        return new JediCommand<T>(state);
+        return new JediCommand<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Command<T> commandFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(JEDI_COMMAND);
+        return new JediCommand<T>(state, mod);
+    }
+
+    public <T> Command<T> commandFor(Object proxiedMethodCall, UntypedModifier mod) {
+        InvokableState state = extractInvokableState(JEDI_COMMAND);
+        return new JediCommand<T>(state, mod);
     }
 
     public <T> T prepareVoid(T t) { return t; }
 
     public <T> Command<T> voidCommand() {
         InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
-        return new JediCommand<T>(state);
+        return new JediCommand<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Command<T> voidCommand(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, JEDI_VOID_COMMAND);
-        return voidCommand();
+    public <T> Command<T> voidCommand(Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
+        return new JediCommand<T>(state, mod);
+    }
+
+    public <T> Command<T> voidCommand(UntypedModifier mod) {
+        InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
+        return new JediCommand<T>(state, mod);
     }
 }
