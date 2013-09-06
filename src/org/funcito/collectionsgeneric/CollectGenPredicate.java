@@ -17,16 +17,17 @@ package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Predicate;
 import org.funcito.FuncitoCollectGen;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.NullValidatingPredicateBase;
 
 public class CollectGenPredicate<T> implements Predicate<T> {
 
-    private NullValidatingPredicateBase<T> functionalBase;
+    private FunctorBase<T,Boolean> functorBase;
 
     public CollectGenPredicate(InvokableState state) {
         try {
-            functionalBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
+            functorBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
                     FuncitoCollectGen.class.getMethod("predicateFor", Boolean.class, boolean.class));
         } catch (NoSuchMethodException e) { // ignored
         }
@@ -34,7 +35,7 @@ public class CollectGenPredicate<T> implements Predicate<T> {
 
     @Override
     public boolean evaluate(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 
 }

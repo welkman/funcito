@@ -18,16 +18,17 @@ package org.funcito.guava;
 import com.google.common.base.Predicate;
 
 import org.funcito.*;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.NullValidatingPredicateBase;
 
 public class GuavaPredicate<T> implements Predicate<T> {
 
-    private NullValidatingPredicateBase<T> functionalBase;
+    private FunctorBase<T,Boolean> functorBase;
 
     public GuavaPredicate(InvokableState state) {
         try {
-            functionalBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
+            functorBase = new NullValidatingPredicateBase<T>(state, Predicate.class,
                     FuncitoGuava.class.getMethod("predicateFor", Boolean.class, boolean.class));
         } catch (NoSuchMethodException e) { // ignored
         }
@@ -35,7 +36,7 @@ public class GuavaPredicate<T> implements Predicate<T> {
 
     @Override
     public boolean apply(T from) {
-        return functionalBase.applyImpl(from);
+        return functorBase.applyImpl(from);
     }
 
 }
