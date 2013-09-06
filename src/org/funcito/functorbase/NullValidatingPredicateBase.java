@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal.functorbase;
+package org.funcito.functorbase;
 
 import org.funcito.FuncitoException;
 import org.funcito.internal.InvokableState;
 
 import java.lang.reflect.Method;
 
-public class NullValidatingPredicateBase<T> extends FunctorBase<T,Boolean> {
+public class NullValidatingPredicateBase<T> extends BasicFunctor<T,Boolean> {
     private String apiPredicateClass;
     private String altMethod;
 

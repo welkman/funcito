@@ -16,8 +16,8 @@
 package org.funcito.modifier;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.internal.functorbase.FunctorBase;
-import org.funcito.internal.functorbase.SafeNavFunctor;
+import org.funcito.functorbase.FunctorBase;
+import org.funcito.functorbase.SafeNavFunctor;
 
 // TODO: Javadoc
 public class UntypedSafeNav implements UntypedModifier {

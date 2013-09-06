@@ -15,7 +15,8 @@
  */
 package org.funcito.modifier;
 
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.BasicFunctor;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
@@ -24,6 +25,6 @@ public class NoOp implements UntypedModifier {
 
     @Override
     public FunctorBase makeBase(InvokableState invokableState) {
-        return new FunctorBase(invokableState);
+        return new BasicFunctor(invokableState);
     }
 }

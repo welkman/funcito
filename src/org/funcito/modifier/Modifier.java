@@ -16,7 +16,7 @@
 
 package org.funcito.modifier;
 
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc

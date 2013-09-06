@@ -19,7 +19,7 @@ import com.google.common.base.Predicate;
 
 import org.funcito.*;
 import org.funcito.internal.InvokableState;
-import org.funcito.internal.functorbase.NullValidatingPredicateBase;
+import org.funcito.functorbase.NullValidatingPredicateBase;
 
 public class GuavaPredicate<T> implements Predicate<T> {
 

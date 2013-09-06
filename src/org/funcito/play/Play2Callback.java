@@ -15,7 +15,8 @@
  */
 package org.funcito.play;
 
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.BasicFunctor;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import play.libs.F;
 
@@ -24,7 +25,7 @@ public class Play2Callback<T> implements F.Callback<T> {
     private FunctorBase<T,Void> functorBase;
 
     public Play2Callback(InvokableState state) {
-        functorBase = new FunctorBase<T, Void>(state);
+        functorBase = new BasicFunctor<T, Void>(state);
     }
 
     @Override

@@ -17,9 +17,9 @@ package org.funcito.functionaljava;
 
 import fj.F;
 
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
-import org.funcito.internal.functorbase.FunctorFactory;
+import org.funcito.functorbase.FunctorFactory;
 import org.funcito.modifier.Modifier;
 import org.funcito.modifier.UntypedModifier;
 

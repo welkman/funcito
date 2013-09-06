@@ -16,7 +16,7 @@
 package org.funcito.modifier;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.FunctorBase;
 
 // TODO: Javadoc
 public interface UntypedModifier {

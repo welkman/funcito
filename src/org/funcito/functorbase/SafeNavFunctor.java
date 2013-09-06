@@ -13,44 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.internal.functorbase;
+package org.funcito.functorbase;
 
 import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-public class FunctorBase<T, V> {
-    final protected InvokableState state;
-    final protected Invokable<T,?> firstInvokable;
-    final protected boolean unchained;
+public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
+    final private Object nullNavDefault;
 
-    @SuppressWarnings("unchecked")
-    public FunctorBase(InvokableState state) {
-        this.state = state;
-        Iterator<Invokable> iter = state.iterator();
-        // for performance of unchained invocations, extract ahead of time
-        firstInvokable = iter.next();
-        unchained = !iter.hasNext();
+    public SafeNavFunctor(InvokableState state, V nullNavDefault) {
+        super(state);
+        this.nullNavDefault = nullNavDefault;
     }
 
     @SuppressWarnings("unchecked")
     public V applyImpl(T from) {
         // unroll the first loop, to provide performance for the "90%": unchained wrapped methods
         Object retVal = firstInvokable.invoke(from);
+        if (retVal==null) {
+            return (V) nullNavDefault;
+        }
         if (unchained) {
-            validateReturnValue(retVal);
+            validateReturnValue(retVal); // TODO: determine if needed, & whether to deprecate NullValidatingPredicateBase
             return (V)retVal;
         }
         Iterator<Invokable> iter = state.iterator();
         iter.next(); // skip the head which has already been processed
         while (iter.hasNext()) {
             retVal = iter.next().invoke(retVal);
+            if (retVal==null) {
+                return (V) nullNavDefault;
+            }
         }
-        validateReturnValue(retVal);
+        validateReturnValue(retVal); // TODO: determine if needed
         return (V)retVal;
     }
-
-    protected void validateReturnValue(Object retVal) {} //default action is nothing
 
 }

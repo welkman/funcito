@@ -16,7 +16,8 @@
 package org.funcito.collectionsgeneric;
 
 import org.apache.commons.collections15.Predicate;
-import org.funcito.internal.functorbase.FunctorBase;
+import org.funcito.functorbase.BasicFunctor;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 // TODO: consider refactor to make this & GuavaDefaultablePredicate to be a single PrimitivePredicateBase
@@ -27,7 +28,7 @@ public class CollectGenDefaultablePredicate<T> implements Predicate<T> {
     private boolean defaultForNull;
 
     public CollectGenDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        functorBase = new FunctorBase<T, Boolean>(state);
+        functorBase = new BasicFunctor<T, Boolean>(state);
         this.defaultForNull = defaultForNull;
     }
 

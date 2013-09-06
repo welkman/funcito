@@ -1,5 +1,3 @@
-package org.funcito.internal.functorbase;
-
 /*
  * Copyright 2013 Project Funcito Contributors
  *
@@ -15,6 +13,7 @@ package org.funcito.internal.functorbase;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.funcito.functorbase;
 
 import org.funcito.internal.InvokableState;
 import org.funcito.modifier.Modifier;
@@ -34,7 +33,7 @@ public class FunctorFactory {
         if (mod != null) {
             return mod.makeBase(state);
         }
-        return new FunctorBase<T,V>(state);
+        return new BasicFunctor<T,V>(state);
     }
 
     // TODO: javadoc method
@@ -43,6 +42,6 @@ public class FunctorFactory {
         if (mod != null) {
             return (FunctorBase<T,V>)mod.makeBase(state);
         }
-        return new FunctorBase<T,V>(state);
+        return new BasicFunctor<T,V>(state);
     }
 }

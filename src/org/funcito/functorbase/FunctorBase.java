@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Project Funcito Contributors
+ * Copyright 2013 Project Funcito Contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.jedi;
+package org.funcito.functorbase;
 
-import jedi.functional.Filter;
-import org.funcito.functorbase.BasicFunctor;
-import org.funcito.functorbase.FunctorBase;
-import org.funcito.internal.InvokableState;
-
-public class JediFilter<T> implements Filter<T> {
-
-    private FunctorBase<T,Boolean> functorBase;
-
-    public JediFilter(InvokableState state) {
-        functorBase = new BasicFunctor<T, Boolean>(state);
-    }
-
-    @Override
-    public Boolean execute(T from) {
-        return functorBase.applyImpl(from);
-    }
+public interface FunctorBase<T, V> {
+    @SuppressWarnings("unchecked")
+    V applyImpl(T from);
 }
