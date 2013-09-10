@@ -23,6 +23,7 @@ public class JavassistProxyFactory extends ProxyFactory {
 
     private final JavassistMethodHandler handler = new JavassistMethodHandler();
 
+    @Override
     protected <T> T proxyImpl(Class<T> clazz) {
         JavassistImposterizer imposterizer = JavassistImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {

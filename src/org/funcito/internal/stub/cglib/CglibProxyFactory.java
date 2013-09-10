@@ -23,6 +23,7 @@ public class CglibProxyFactory extends ProxyFactory {
 
     private final CglibMethodInterceptor interceptor = new CglibMethodInterceptor();
 
+    @Override
     protected <T> T proxyImpl(Class<T> clazz) {
         CglibImposterizer imposterizer = CglibImposterizer.INSTANCE;
         if (!canImposterise(clazz)) {
