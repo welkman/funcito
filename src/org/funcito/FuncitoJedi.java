@@ -93,8 +93,8 @@ public class FuncitoJedi {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Modifier<?,V> mod) {
-        return jediDelegate.functorFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Modifier<T,V> mod) {
+        return jediDelegate.functorFor(proxiedMethodCall, mod);
     }
 
     // TODO: javadoc
@@ -120,6 +120,14 @@ public class FuncitoJedi {
      */
     public static <T> Filter<T> filterFor(Boolean proxiedMethodCall) {
         return jediDelegate.filterFor(proxiedMethodCall);
+    }
+
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
+        return jediDelegate.filterFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, UntypedModifier mod) {
+        return jediDelegate.filterFor(proxiedMethodCall, mod);
     }
 
     /**

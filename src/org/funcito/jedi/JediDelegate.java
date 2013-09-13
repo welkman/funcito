@@ -60,7 +60,17 @@ public class JediDelegate extends FuncitoDelegate {
 
     public <T> Filter<T> filterFor(Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(JEDI_FILTER);
-        return new JediFilter<T>(state);
+        return new JediFilter<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Filter<T> filterFor(Boolean ignoredRetVal, Modifier<T,Boolean> mod) {
+        final InvokableState state = extractInvokableState(JEDI_FILTER);
+        return new JediFilter<T>(state, mod);
+    }
+
+    public <T> Filter<T> filterFor(Boolean ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(JEDI_FILTER);
+        return new JediFilter<T>(state, mod);
     }
 
     public <T> Command<T> commandFor(Object proxiedMethodCall) {

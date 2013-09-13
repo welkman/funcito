@@ -48,11 +48,6 @@ public class MyClass {
     static {prepareVoid(stubbedCallsTo).inc();}
     public static final F.Callback<MyClass> inc = voidCallback();
 
-    // demonstrating F.Callback creation with extra type-safety
-    static {prepareVoid(stubbedCallsTo).inc();}
-    public static final F.Callback<MyClass> inc2 = voidCallback(MyClass.class);
-
-
     public MyClass(String myString, Integer other) {
         this.myString = myString;
         this.other = other;

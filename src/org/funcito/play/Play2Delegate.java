@@ -58,19 +58,33 @@ public class Play2Delegate extends FuncitoDelegate {
 
     public <T> Callback<T> callbackFor(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(PLAY2_CALLBACK);
-        return new Play2Callback<T>(state);
+        return new Play2Callback<T>(state, NoOp.NO_OP);
+    }
+
+    public <T> Callback<T> callbackFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(PLAY2_CALLBACK);
+        return new Play2Callback<T>(state, mod);
+    }
+
+    public <T> Callback<T> callbackFor(Object proxiedMethodCall, UntypedModifier mod) {
+        InvokableState state = extractInvokableState(PLAY2_CALLBACK);
+        return new Play2Callback<T>(state, mod);
     }
 
     public <T> T prepareVoid(T t) { return t; }
 
     public <T> Callback<T> voidCallback() {
         InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
-        return new Play2Callback<T>(state);
+        return new Play2Callback<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Callback<T> voidCallback(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, PLAY2_VOID_CALLBACK);
-        return voidCallback();
+    public <T> Callback<T> voidCallback(Modifier<T,Void> mod) {
+        InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
+        return new Play2Callback<T>(state, mod);
     }
 
+    public <T> Callback<T> voidCallback(UntypedModifier mod) {
+        InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
+        return new Play2Callback<T>(state, mod);
+    }
 }

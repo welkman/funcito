@@ -178,43 +178,6 @@ public class FuncitoPlay2Callback_UT {
     }
 
     @Test
-    public void testVoidCallback_typeValidationSucceeds() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        Callback<Grows> grows = voidCallback(Grows.class);
-    }
-
-    @Test
-    public void testVoidCallback_typeValidationSucceedsWithSuperClass() {
-        class Grows2 extends Grows{}
-        prepareVoid(callsTo(Grows2.class)).inc();
-
-        Callback<Grows> grows = voidCallback(Grows.class);
-    }
-
-    @Test
-    public void testVoidCallback_typeValidationFails() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Failed to create Play! Framework 2 Callback");
-        Callback<?> e = voidCallback(Number.class);  // type validation
-    }
-
-
-    @Test
-    public void testVoidCallback_typeValidationFailsButLeavesInvokableStateUnchanged() {
-        prepareVoid(CALLS_TO_GROWS).inc();
-
-        try {
-            Callback<?> e = voidCallback(Number.class);  // type validation should fail
-            fail("should have thrown exception");
-        } catch (FuncitoException fe) {
-            Callback<Grows> g = voidCallback(Grows.class);  // type validation ok
-        }
-    }
-
-    @Test
     public void testVoidCallback_badOrderOfPrepares() {
         // First call below requires a subsequent call to voidCallback() before another prepareVoid()
         prepareVoid(CALLS_TO_GROWS).inc();

@@ -139,6 +139,14 @@ public class FuncitoPlay2 {
         return     play2Delegate.callbackFor(proxiedMethodCall);
     }
 
+    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+        return     play2Delegate.callbackFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, UntypedModifier mod) {
+        return     play2Delegate.callbackFor(proxiedMethodCall, mod);
+    }
+
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
      * <strong>Play! 2</strong> <code>Callback</code> object.  Use of this method is paired with a following
@@ -172,7 +180,6 @@ public class FuncitoPlay2 {
      * @return the same Funcito proxy object that is passed in.  Provided for fluent API so that desired method chain
      * call may be directly appended.
      * @param <T> is the input type of the Callback being prepared
-     * @see #voidCallback(Class)
      * @see #voidCallback()
      */
     public static <T> T prepareVoid(T t) {
@@ -193,35 +200,19 @@ public class FuncitoPlay2 {
      * <p>
      * @return a Play! 2 <code>Callback</code> object that wraps a previously prepared method call or chain.
      * @param <T> is the input type of the Callback
-     * @see #voidCallback(Class)
      * @see #prepareVoid(Object)
      */
     public static <T> Callback<T> voidCallback() {
         return     play2Delegate.voidCallback();
     }
 
-    /**
-     * Generates a <strong>Play! 2</strong> <code>Callback</code> object that wraps a method call or method chain.  Resulting
-     * <code>Callback</code> is as thread-safe as the method/chain itself.  This Callback generator is only appropriate
-     * for method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * This is the overloaded and safer form of {@link #voidCallback()}, which uses a target Class type to validate that
-     * the generated Callback is assigned to an appropriately type-constrained Callback.  Example usage is:
-     * <p>
-     * <code>
-     *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
-     *     Callback&lt;MyClass&gt; cmd = voidCallback(MyClass.class); // added safety in assignment
-     * </code>
-     * <p>
-     * @return a Play! 2 <code>Callback</code> object that wraps a previously prepared method call or chain.
-     * @param c the input target Class for validation of the assigned constraint-type of the Callback.
-     * @param <T> is the input type of the Callback
-     * @see #voidCallback()
-     * @see #prepareVoid(Object)
-     */
-    public static <T> Callback<T> voidCallback(Class<T> c) {
-        return     play2Delegate.voidCallback(c);
+    public static <T> Callback<T> voidCallback(Modifier<T,Void> mod) {
+        return     play2Delegate.voidCallback(mod);
     }
 
+    public static <T> Callback<T> voidCallback(UntypedModifier mod) {
+        return     play2Delegate.voidCallback(mod);
+    }
 
     static Play2Delegate delegate() {
         return play2Delegate;
