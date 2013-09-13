@@ -36,7 +36,7 @@ public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
             return (V) nullNavDefault;
         }
         if (unchained) {
-            validateReturnValue(retVal); // TODO: determine if needed, & whether to deprecate NullValidatingPredicateBase
+            validateReturnValue(retVal); // TODO: determine if needed, & whether to deprecate NullValidatingPredicate
             return (V)retVal;
         }
         Iterator<Invokable> iter = state.iterator();

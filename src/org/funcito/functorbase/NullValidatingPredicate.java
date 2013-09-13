@@ -20,11 +20,11 @@ import org.funcito.internal.InvokableState;
 
 import java.lang.reflect.Method;
 
-public class NullValidatingPredicateBase<T> extends BasicFunctor<T,Boolean> {
+public class NullValidatingPredicate extends BasicFunctor<Object,Boolean> {
     private String apiPredicateClass;
     private String altMethod;
 
-    public NullValidatingPredicateBase(InvokableState state, Class<?> apiPredicateClass, Method altMethod) {
+    public NullValidatingPredicate(InvokableState state, Class<?> apiPredicateClass, Method altMethod) {
         super(state);
         this.apiPredicateClass = apiPredicateClass.getName();
         this.altMethod = altMethod.toGenericString();

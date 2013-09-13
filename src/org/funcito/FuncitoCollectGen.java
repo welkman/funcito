@@ -20,6 +20,7 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.collectionsgeneric.CollectGenDelegate;
 import org.funcito.modifier.Modifier;
+import org.funcito.modifier.Modifiers;
 import org.funcito.modifier.UntypedModifier;
 
 /**
@@ -114,7 +115,8 @@ public class FuncitoCollectGen {
      * Users of this <code>Predicate</code> should be aware of a risk with Collections-Generic Predicates (not specific to Funcito) if the
      * return type of the method being wrapped is a Boolean wrapper rather than a primitive boolean.  Such calls are allowed,
      * but there is an inherent null-pointer risk because Collections-Generic <code>Predicate.evaluate(T)</code> returns a boolean primitive.
-     * See overloaded form of this method {@link #predicateFor(Boolean, boolean)} for a mitigation of this risk.
+     * Use overloaded form of this method {@link #predicateFor(Boolean, UntypedModifier)} with the {@link org.funcito.modifier.PrimitiveBoolDefault}
+     * Modifier for a mitigation of this risk.
      * <p>
      * This method also supports wrapping methods with arguments, and method chaining, as documented in {@link #transformerFor(Object)}.
      * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoCollectGen</code> proxy object
@@ -137,8 +139,17 @@ public class FuncitoCollectGen {
      * @return a Collections-Generic  <code>Predicate</code> object that wraps the method call or method chain.
      * @see #predicateFor(Boolean)
      */
-    public static <T>Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, defaultForNull);
+    // TODO: should this be deprecated?
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, Modifiers.defaultBool(defaultForNull));
+    }
+
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedModifier mod) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, mod);
     }
 
     /**

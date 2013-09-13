@@ -15,26 +15,14 @@
  */
 package org.funcito.guava;
 
-import com.google.common.base.Predicate;
-import org.funcito.functorbase.BasicFunctor;
-import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.modifier.PrimitiveBoolDefault;
 
-// TODO: consider refactor to make this & CollectGenDefaultablePredicate to be a single PrimitivePredicateBase
-// TODO: And maybe have a corresponding Modifier (and then deprecate the special method)
-public class GuavaDefaultablePredicate<T> implements Predicate<T> {
-
-    private FunctorBase<T,Boolean> functorBase;
-    private boolean defaultForNull;
+// TODO: More documentation about deprecation, also add independent unit tests
+@Deprecated
+public class GuavaDefaultablePredicate<T> extends GuavaPredicate<T> {
 
     public GuavaDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        functorBase = new BasicFunctor<T, Boolean>(state);
-        this.defaultForNull = defaultForNull;
-    }
-
-    @Override
-    public boolean apply(T from) {
-        Boolean retVal = functorBase.applyImpl(from);
-        return (retVal==null) ? defaultForNull : retVal;
+        super(state, new PrimitiveBoolDefault<T>(defaultForNull));
     }
 }

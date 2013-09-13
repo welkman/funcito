@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.modifier;
+package org.funcito.functorbase;
 
-import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.SafeNavFunctor;
 import org.funcito.internal.InvokableState;
 
-// TODO: Javadoc
-public class SafeNav<T,V> implements Modifier<T,V> {
-    private V nullNavDefault;
+public class PrimitivePredicate<T> extends BasicFunctor<T,Boolean> {
 
-    public SafeNav(V nullNavDefault) {
-        this.nullNavDefault = nullNavDefault;
-    }
+    private boolean defaultForNull;
+
+    public PrimitivePredicate(InvokableState state, boolean defaultForNull) {
+            super(state);
+            this.defaultForNull = defaultForNull;
+        }
 
     @Override
-    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
-        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
+    public Boolean applyImpl(T from) {
+        Boolean result = super.applyImpl(from);
+        return (result==null) ? defaultForNull : result;
     }
 }

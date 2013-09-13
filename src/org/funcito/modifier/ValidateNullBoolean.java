@@ -16,19 +16,22 @@
 package org.funcito.modifier;
 
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.SafeNavFunctor;
+import org.funcito.functorbase.NullValidatingPredicate;
 import org.funcito.internal.InvokableState;
 
-// TODO: Javadoc
-public class SafeNav<T,V> implements Modifier<T,V> {
-    private V nullNavDefault;
+import java.lang.reflect.Method;
 
-    public SafeNav(V nullNavDefault) {
-        this.nullNavDefault = nullNavDefault;
+public class ValidateNullBoolean implements UntypedModifier {
+    private Class<?> apiPredicateClass;
+    private Method altMethod;
+
+    public ValidateNullBoolean(Class<?> apiPredicateClass, Method altMethod) {
+        this.apiPredicateClass = apiPredicateClass;
+        this.altMethod = altMethod;
     }
 
     @Override
-    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
-        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
+    public FunctorBase<?, Boolean> makeBase(InvokableState invokableState) {
+        return new NullValidatingPredicate(invokableState, apiPredicateClass, altMethod);
     }
 }

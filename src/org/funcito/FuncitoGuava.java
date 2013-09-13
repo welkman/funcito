@@ -19,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.guava.GuavaDelegate;
 import org.funcito.modifier.Modifier;
+import org.funcito.modifier.Modifiers;
 import org.funcito.modifier.UntypedModifier;
 
 /**
@@ -136,8 +137,17 @@ public class FuncitoGuava {
      * @return a Guava  <code>Predicate</code> object that wraps the method call or method chain.
      * @see #predicateFor(Boolean)
      */
-    public static <T>Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, defaultForNull);
+    // TODO: should this be deprecated?
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, Modifiers.defaultBool(defaultForNull));
+    }
+
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, mod);
+    }
+
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedModifier mod) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, mod);
     }
 
     static GuavaDelegate delegate() {

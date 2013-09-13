@@ -24,13 +24,18 @@ public class Modifiers {
     }
 
     // TODO: Javadoc
-    @SuppressWarnings("unchecked")
-    public static <T,V> Modifier<?,V> safeNav(V v) {
-        return new SafeNav<Object,V>(v);
+    public static <T,V> Modifier<T,V> safeNav(V v) {
+        return new SafeNav<T,V>(v);
     }
 
     // TODO: Javadoc
     public static UntypedModifier safeNav() {
         return UntypedSafeNav.SAFE_NAV;
     }
+
+    // maybe *also* make defaultTrue()/defaultFalse(), or nullIsTrue()/nullIsFalse()
+    public static <T> UntypedModifier defaultBool(boolean defaultForNull) {
+        return new PrimitiveBoolDefault<T>(defaultForNull);
+    }
+
 }

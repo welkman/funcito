@@ -20,9 +20,7 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.NoOp;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.modifier.*;
 
 import static org.funcito.internal.WrapperType.*;
 
@@ -32,7 +30,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object)
      */
-    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, NoOp.NO_OP);
     }
@@ -41,7 +39,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,Modifier)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mod);
     }
@@ -50,31 +48,41 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.UntypedModifier)
      */
-    public <T,V> Transformer<T,V> transformerFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mod);
     }
 
-    public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenPredicate<T>(state);
     }
 
+    @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
+        return predicateFor(ignoredRetVal, Modifiers.defaultBool(defaultForNull));
+    }
+
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Modifier<T,Boolean> mod) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
-        return new CollectGenDefaultablePredicate<T>(state, defaultForNull);
+        return new CollectGenPredicate<T>(state, mod);
+    }
+
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
+        return new CollectGenPredicate<T>(state, mod);
     }
 
     public <T> Closure<T> closureFor(Object proxiedMethodCall) {
         return closureFor(proxiedMethodCall, NoOp.NO_OP);
     }
 
-    public <T> Closure<T> closureFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
+    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, Modifier<T,Void> mod) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
         return new CollectGenClosure<T>(state, mod);
     }
 
-    public <T> Closure<T> closureFor(Object proxiedMethodCall, UntypedModifier mod) {
+    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, UntypedModifier mod) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
         return new CollectGenClosure<T>(state, mod);
     }

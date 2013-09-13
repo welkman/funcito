@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import org.funcito.modifier.Modifier;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
+import org.funcito.modifier.Modifiers;
 import org.funcito.modifier.NoOp;
 import org.funcito.modifier.UntypedModifier;
 
@@ -41,7 +42,7 @@ public class GuavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoGuava.functionFor(V,Modifier)</code>
      * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.modifier.Modifier)
      */
-    public <T,V> Function<T,V> functionFor(V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, Modifier<T,V> mod) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
         return new GuavaFunction<T, V>(state, mod);
     }
@@ -50,20 +51,32 @@ public class GuavaDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoGuava.functionFor(V,UntypedModifier)</code>
      * @see org.funcito.FuncitoGuava#functionFor(Object,UntypedModifier)
      */
-    public <T,V> Function<T,V> functionFor(V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedModifier mod) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
         return new GuavaFunction<T, V>(state, mod);
     }
 
     // TODO: javadoc
-    public <T> Predicate<T> predicateFor(Boolean ignoredRetVal) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused")Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
         return new GuavaPredicate<T>(state);
     }
 
     // TODO: javadoc
+    @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
-        return new GuavaDefaultablePredicate<T>(state, defaultForNull);
+        return predicateFor(ignoredRetVal, Modifiers.defaultBool(defaultForNull));
     }
+
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Modifier<T,Boolean> mod) {
+        final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
+        return new GuavaPredicate<T>(state, mod);
+    }
+
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedModifier mod) {
+        final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
+        return new GuavaPredicate<T>(state, mod);
+    }
+
+
 }
