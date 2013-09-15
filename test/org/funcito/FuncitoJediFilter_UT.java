@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
 
 public class FuncitoJediFilter_UT {
 
+    public static final BooleanThing CALL_TO_BOOL_THING = callsTo(BooleanThing.class);
+
     private static class BooleanThing {
         private Boolean myVal;
 
@@ -17,36 +19,15 @@ public class FuncitoJediFilter_UT {
     }
 
     @Test
-    public void testFilterFor_AssignToFilterWithSourceSuperType() {
-        Filter<Object> superTypeRet = filterFor(callsTo(BooleanThing.class).getVal());
+    public void testFilterFor__AssignToFilterWithMatchingSourceType() { // I.e. vanilla happy path
+        Filter<BooleanThing> superTypeRet = filterFor(CALL_TO_BOOL_THING.getVal());
         assertTrue(superTypeRet.execute(new BooleanThing(true)));
     }
 
     @Test
-    public void testFilterFor_MethodHasBooleanWrapperRetType() {
-        class BooleanWrapperRet {
-            public Boolean getBoolWrap() { return Boolean.TRUE; }
-        }
-        Filter<BooleanWrapperRet> wrapBoolPred = filterFor(callsTo(BooleanWrapperRet.class).getBoolWrap());
-        assertTrue(wrapBoolPred.execute(new BooleanWrapperRet()));
-    }
-
-    @Test
-    public void testFilterFor_MethodHasPrimitiveBooleanRetType() {
-        class PrimitiveBoolRet {
-            public boolean getPrimBool() { return true; }
-        }
-        Filter<PrimitiveBoolRet> primBoolPred = filterFor(callsTo(PrimitiveBoolRet.class).getPrimBool());
-        assertTrue(primBoolPred.execute(new PrimitiveBoolRet()));
-    }
-
-    @Test
-    public void testFilterFor_ValidateDetectsMismatchedGenericTypes() {
-        Filter<PrimitiveBoolRetGeneric<String>> stringPred = filterFor(callsTo(PrimitiveBoolRetGeneric.class).getVal());
-        PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
-
-        // The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        stringPred.execute(integerGeneric);
+    public void testFilterFor_AssignToFilterWithSourceSuperType() {
+        Filter<Object> superTypeRet = filterFor(callsTo(BooleanThing.class).getVal());
+        assertTrue(superTypeRet.execute(new BooleanThing(true)));
     }
 
     @Test
@@ -55,6 +36,14 @@ public class FuncitoJediFilter_UT {
         PrimitiveBoolRetGeneric<Integer> integerGeneric = new PrimitiveBoolRetGeneric<Integer>();
 
         assertTrue(stringPred.execute(integerGeneric));
+    }
+
+    @Test
+    public void testFilterFor_ExpressionsWithOperatorsAreUnsupported() {
+        Filter<BooleanThing> boolInstancePred = filterFor( CALL_TO_BOOL_THING.getVal() instanceof Boolean);
+
+        // NOTE: this test is a test that proves and documents a limitation of Funcito
+        assertFalse( boolInstancePred.execute(new BooleanThing(false)) ); // does not return true because operator not captured
     }
 
     class PrimitiveBoolRetGeneric<T> {
