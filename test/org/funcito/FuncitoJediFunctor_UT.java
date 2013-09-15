@@ -16,11 +16,8 @@ package org.funcito;
  * limitations under the License.
  */
 
-import com.google.common.collect.Lists;
 import jedi.functional.Functor;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.funcito.FuncitoJedi.*;
 import static org.junit.Assert.*;
@@ -58,54 +55,6 @@ public class FuncitoJediFunctor_UT {
     }
 
     @Test
-    public void testFunctorFor_MethodHasPrimitiveWrapperRetType() {
-        class IntegerWrapperRet {
-            public Integer getVal() { return 123; }
-        }
-        Functor<IntegerWrapperRet, Integer> wrapperIntFunc = functorFor(callsTo(IntegerWrapperRet.class).getVal());
-        assertEquals(123, wrapperIntFunc.execute(new IntegerWrapperRet()).intValue());
-    }
-
-    @Test
-    public void testFunctorFor_MethodHasPrimitiveRetType() {
-        class PrimitiveIntRet {
-            public int getVal() { return 123; }
-        }
-        Functor<PrimitiveIntRet, Integer> primIntFunc = functorFor(callsTo(PrimitiveIntRet.class).getVal());
-        assertEquals(123, primIntFunc.execute(new PrimitiveIntRet()).intValue());
-    }
-
-    @Test
-    public void testFunctorFor_MethodHasNonPrimitiveArrayRetType() {
-        class NonPrimArrayRet {
-            public Object[] getVal() { return new Object[] {"ABC", Integer.MAX_VALUE}; }
-        }
-        Functor<NonPrimArrayRet, Object[]> wrapperIntFunc = functorFor(callsTo(NonPrimArrayRet.class).getVal());
-        assertEquals(2, wrapperIntFunc.execute(new NonPrimArrayRet()).length);
-    }
-
-    @Test
-    public void testFunctorFor_MethodHasPrimitiveArrayRetType() {
-        class PrimArrayRet {
-            public int[] getVal() { return new int[] {1,2,3}; }
-        }
-        Functor<PrimArrayRet, int[]> wrapperIntFunc = functorFor(callsTo(PrimArrayRet.class).getVal());
-        assertEquals(3, wrapperIntFunc.execute(new PrimArrayRet()).length);
-    }
-
-    @Test
-    public void testFunctorFor_ValidateDetectsMismatchedGenericTypes() {
-        class Generic<T> {
-            public Integer getVal() { return 123; }
-        }
-        Functor<Generic<String>, Integer> stringFunc = functorFor(callsTo(Generic.class).getVal());
-        Generic<Integer> integerGeneric = new Generic<Integer>();
-
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        stringFunc.apply(integerGeneric);
-    }
-
-    @Test
     public void testFunctorFor_AllowUpcastToExtensionGenericType() {
         class Generic<T> {
             public Integer getVal() { return 123; }
@@ -126,15 +75,5 @@ public class FuncitoJediFunctor_UT {
         assertEquals("dog", pluralFunc.execute(dog));
     }
 
-    @Test
-    public void testFunctorFor_SingleArgBinding() {
-        List<String> callsToList = callsTo(List.class);
-        Functor<List<String>,String> getElem0Func = functorFor(callsToList.get(0));
-        Functor<List<String>,String> getElem2Func = functorFor(callsToList.get(2));
-        List<String> list = Lists.newArrayList("Zero", "One", "Two");
-
-        assertEquals("Zero", getElem0Func.execute(list));
-        assertEquals("Two", getElem2Func.execute(list));
-    }
 }
 
