@@ -18,20 +18,20 @@ package org.funcito.collectionsgeneric;
 import org.apache.commons.collections15.Closure;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
-import org.funcito.functorbase.FunctorFactory;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.functorfactory.FunctorFactory;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 
 public class CollectGenClosure<T> implements Closure<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public CollectGenClosure(InvokableState state, Modifier<T,Void> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public CollectGenClosure(InvokableState state, Mode<T,Void> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public CollectGenClosure(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public CollectGenClosure(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override
