@@ -23,8 +23,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import rx.util.functions.Action1;
 
-import java.util.ArrayList;
-
 import static org.funcito.FuncitoRxJava.*;
 import static org.junit.Assert.*;
 
@@ -45,12 +43,8 @@ public class FuncitoRxJavaAction1_UT {
         public String incAndReturn() {
             return Integer.toString(++i);
         }
-        public void inc() {
-            i++;
-        }
-        public void dec() {
-            i--;
-        }
+        public void inc() { i++; }
+        public void dec() { i--; }
     }
 
     @Test
@@ -67,21 +61,8 @@ public class FuncitoRxJavaAction1_UT {
     class Generic<N extends Number> {
         Double number;
         public Generic(N n) { number = n.doubleValue(); }
-        public Double incAndGet() {
-            return ++number;
-        }
-        public void voidInc() {
-            ++number;
-        }
-    }
-
-    @Test
-    public void testAction1For_ValidateDetectsMismatchedGenericTypes() {
-        Action1<Generic<Float>> floatGenericAction1 = action1For(callsTo(Generic.class).incAndGet());
-        Generic<Integer> integerGeneric = new Generic<Integer>(0);
-
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericAction1.call(integerGeneric);
+        public Double incAndGet() { return ++number; }
+        public void voidInc() { ++number; }
     }
 
     @Test
@@ -93,30 +74,6 @@ public class FuncitoRxJavaAction1_UT {
         incAction1.call(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
-    }
-
-    @Test
-    public void testAction1For_SingleArgBinding() {
-        class IncList extends ArrayList<Integer> {
-            public int incIndex(int i) {
-                int oldVal = this.get(i);
-                int newVal = oldVal + 1;
-                this.set(i, newVal);
-                return newVal;
-            }
-        }
-        IncList callsToIncList = callsTo(IncList.class);
-        Action1<IncList> incElem0Action = action1For(callsToIncList.incIndex(0));
-        Action1<IncList> incElem2Action = action1For(callsToIncList.incIndex(2));
-        IncList list = new IncList();
-        list.add(0); list.add(100); list.add(1000);
-
-        incElem0Action.call(list);
-        incElem2Action.call(list);
-
-        assertEquals(1, list.get(0).intValue());
-        assertEquals(100, list.get(1).intValue()); // unchanged
-        assertEquals(1001, list.get(2).intValue());
     }
 
     @Test

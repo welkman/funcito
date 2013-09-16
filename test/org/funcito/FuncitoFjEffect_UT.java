@@ -25,8 +25,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-
 import static org.funcito.FuncitoFJ.*;
 import static org.junit.Assert.*;
 
@@ -47,12 +45,8 @@ public class FuncitoFjEffect_UT {
         public String incAndReturn() {
             return Integer.toString(++i);
         }
-        public void inc() {
-            i++;
-        }
-        public void dec() {
-            i--;
-        }
+        public void inc() { i++; }
+        public void dec() { i--; }
     }
 
     @Test
@@ -69,21 +63,8 @@ public class FuncitoFjEffect_UT {
     class Generic<N extends Number> {
         Double number;
         public Generic(N n) { number = n.doubleValue(); }
-        public Double incAndGet() {
-            return ++number;
-        }
-        public void voidInc() {
-            ++number;
-        }
-    }
-
-    @Test
-    public void testEffectFor_ValidateDetectsMismatchedGenericTypes() {
-        Effect<Generic<Float>> floatGenericEffect = effectFor(callsTo(Generic.class).incAndGet());
-        Generic<Integer> integerGeneric = new Generic<Integer>(0);
-
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericEffect.f(integerGeneric);
+        public Double incAndGet() { return ++number; }
+        public void voidInc() { ++number; }
     }
 
     @Test
@@ -95,30 +76,6 @@ public class FuncitoFjEffect_UT {
         incEffect.e(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
-    }
-
-    @Test
-    public void testEffectFor_SingleArgBinding() {
-        class IncList extends ArrayList<Integer> {
-            public int incIndex(int i) {
-                int oldVal = this.get(i);
-                int newVal = oldVal + 1;
-                this.set(i, newVal);
-                return newVal;
-            }
-        }
-        IncList callsToIncList = callsTo(IncList.class);
-        Effect<IncList> incElem0Func = effectFor(callsToIncList.incIndex(0));
-        Effect<IncList> incElem2Func = effectFor(callsToIncList.incIndex(2));
-        IncList list = new IncList();
-        list.add(0); list.add(100); list.add(1000);
-
-        incElem0Func.e(list);
-        incElem2Func.e(list);
-
-        assertEquals(1, list.get(0).intValue());
-        assertEquals(100, list.get(1).intValue()); // unchanged
-        assertEquals(1001, list.get(2).intValue());
     }
 
     @Test

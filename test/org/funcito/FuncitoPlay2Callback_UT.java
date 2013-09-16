@@ -8,11 +8,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import play.libs.F.Callback;
 
-import java.util.ArrayList;
-
 import static org.funcito.FuncitoPlay2.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Copyright 2013 Project Funcito Contributors
@@ -47,12 +44,8 @@ public class FuncitoPlay2Callback_UT {
         public String incAndReturn() {
             return Integer.toString(++i);
         }
-        public void inc() {
-            i++;
-        }
-        public void dec() {
-            i--;
-        }
+        public void inc() { i++; }
+        public void dec() { i--; }
     }
 
     @Test
@@ -69,21 +62,8 @@ public class FuncitoPlay2Callback_UT {
     class Generic<N extends Number> {
         Double number;
         public Generic(N n) { number = n.doubleValue(); }
-        public Double incAndGet() {
-            return ++number;
-        }
-        public void voidInc() {
-            ++number;
-        }
-    }
-
-    @Test
-    public void testCallbackFor_ValidateDetectsMismatchedGenericTypes() {
-        Callback<Generic<Float>> floatGenericCallback = callbackFor(callsTo(Generic.class).incAndGet());
-        Generic<Integer> integerGeneric = new Generic<Integer>(0);
-
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericCallback.f(integerGeneric);
+        public Double incAndGet() { return ++number; }
+        public void voidInc() { ++number; }
     }
 
     @Test
@@ -95,30 +75,6 @@ public class FuncitoPlay2Callback_UT {
         incCallback.invoke(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
-    }
-
-    @Test
-    public void testCallbackFor_SingleArgBinding() throws Throwable {
-        class IncList extends ArrayList<Integer> {
-            public int incIndex(int i) {
-                int oldVal = this.get(i);
-                int newVal = oldVal + 1;
-                this.set(i, newVal);
-                return newVal;
-            }
-        }
-        IncList callsToIncList = callsTo(IncList.class);
-        Callback<IncList> incElem0Func = callbackFor(callsToIncList.incIndex(0));
-        Callback<IncList> incElem2Func = callbackFor(callsToIncList.incIndex(2));
-        IncList list = new IncList();
-        list.add(0); list.add(100); list.add(1000);
-
-        incElem0Func.invoke(list);
-        incElem2Func.invoke(list);
-
-        assertEquals(1, list.get(0).intValue());
-        assertEquals(100, list.get(1).intValue()); // unchanged
-        assertEquals(1001, list.get(2).intValue());
     }
 
     @Test

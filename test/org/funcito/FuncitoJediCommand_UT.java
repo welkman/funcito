@@ -8,8 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-
 import static org.funcito.FuncitoJedi.*;
 import static org.junit.Assert.*;
 
@@ -46,12 +44,8 @@ public class FuncitoJediCommand_UT {
         public String incAndReturn() {
             return Integer.toString(++i);
         }
-        public void inc() {
-            i++;
-        }
-        public void dec() {
-            i--;
-        }
+        public void inc() { i++; }
+        public void dec() { i--; }
     }
 
     @Test
@@ -68,21 +62,8 @@ public class FuncitoJediCommand_UT {
     class Generic<N extends Number> {
         Double number;
         public Generic(N n) { number = n.doubleValue(); }
-        public Double incAndGet() {
-            return ++number;
-        }
-        public void voidInc() {
-            ++number;
-        }
-    }
-
-    @Test
-    public void testCommandFor_ValidateDetectsMismatchedGenericTypes() {
-        Command<Generic<Float>> floatGenericCommand = commandFor(callsTo(Generic.class).incAndGet());
-        Generic<Integer> integerGeneric = new Generic<Integer>(0);
-
-//        The below can't actually be compiled, which proves the test passes: compile time mismatch detection
-//        floatGenericCommand.f(integerGeneric);
+        public Double incAndGet() { return ++number; }
+        public void voidInc() { ++number; }
     }
 
     @Test
@@ -94,30 +75,6 @@ public class FuncitoJediCommand_UT {
         incCommand.execute(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
-    }
-
-    @Test
-    public void testCommandFor_SingleArgBinding() {
-        class IncList extends ArrayList<Integer> {
-            public int incIndex(int i) {
-                int oldVal = this.get(i);
-                int newVal = oldVal + 1;
-                this.set(i, newVal);
-                return newVal;
-            }
-        }
-        IncList callsToIncList = callsTo(IncList.class);
-        Command<IncList> incElem0Func = commandFor(callsToIncList.incIndex(0));
-        Command<IncList> incElem2Func = commandFor(callsToIncList.incIndex(2));
-        IncList list = new IncList();
-        list.add(0); list.add(100); list.add(1000);
-
-        incElem0Func.execute(list);
-        incElem2Func.execute(list);
-
-        assertEquals(1, list.get(0).intValue());
-        assertEquals(100, list.get(1).intValue()); // unchanged
-        assertEquals(1001, list.get(2).intValue());
     }
 
     @Test
