@@ -16,23 +16,22 @@
 package org.funcito.jedi;
 
 import jedi.functional.Filter;
-import org.funcito.functorbase.BasicFunctor;
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.FunctorFactory;
+import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 
 public class JediFilter<T> implements Filter<T> {
 
     private FunctorBase<T,Boolean> functorBase;
 
-    public JediFilter(InvokableState state, Modifier<T,Boolean> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public JediFilter(InvokableState state, Mode<T,Boolean> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public JediFilter(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public JediFilter(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override

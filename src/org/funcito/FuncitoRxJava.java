@@ -15,8 +15,8 @@
  */
 package org.funcito;
 
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 import org.funcito.rxjava.RxJavaDelegate;
 import rx.util.functions.Action1;
 import rx.util.functions.Func1;
@@ -91,13 +91,13 @@ public class FuncitoRxJava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, Modifier<?,V> mod) {
-        return rxJavaDelegate.func1For(proxiedMethodCall, (Modifier<T, V>) mod);
+    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, Mode<?,V> mode) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, (Mode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, UntypedModifier mod) {
-        return rxJavaDelegate.func1For(proxiedMethodCall, mod);
+    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, UntypedMode mode) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, mode);
     }
 
     /**
@@ -139,12 +139,12 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.action1For(proxiedMethodCall);
     }
 
-    public static <T> Action1<T> action1For(Object proxiedMethodCall, Modifier<T,Void> mod) {
-        return     rxJavaDelegate.action1For(proxiedMethodCall, mod);
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, Mode<T,Void> mode) {
+        return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
-    public static <T> Action1<T> action1For(Object proxiedMethodCall, UntypedModifier mod) {
-        return     rxJavaDelegate.action1For(proxiedMethodCall, mod);
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, UntypedMode mode) {
+        return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
     /**
@@ -206,12 +206,12 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.voidAction1();
     }
 
-    public static <T> Action1<T> voidAction1(Modifier<T,Void> mod) {
-        return     rxJavaDelegate.voidAction1(mod);
+    public static <T> Action1<T> voidAction1(Mode<T,Void> mode) {
+        return     rxJavaDelegate.voidAction1(mode);
     }
 
-    public static <T> Action1<T> voidAction1(UntypedModifier mod) {
-        return     rxJavaDelegate.voidAction1(mod);
+    public static <T> Action1<T> voidAction1(UntypedMode mode) {
+        return     rxJavaDelegate.voidAction1(mode);
     }
 
     static RxJavaDelegate delegate() {

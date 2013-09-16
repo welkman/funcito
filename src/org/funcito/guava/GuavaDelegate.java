@@ -17,12 +17,12 @@ package org.funcito.guava;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.funcito.modifier.Modifier;
+import org.funcito.mode.Mode;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifiers;
-import org.funcito.modifier.NoOp;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Modes;
+import org.funcito.mode.NoOp;
+import org.funcito.mode.UntypedMode;
 
 import static org.funcito.internal.WrapperType.GUAVA_PREDICATE;
 import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
@@ -39,21 +39,21 @@ public class GuavaDelegate extends FuncitoDelegate {
     }
 
     /**
-     * Delegated version of <code>FuncitoGuava.functionFor(V,Modifier)</code>
-     * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.modifier.Modifier)
+     * Delegated version of <code>FuncitoGuava.functionFor(V,Mode)</code>
+     * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.mode.Mode)
      */
-    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, Mode<T,V> mode) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
-        return new GuavaFunction<T, V>(state, mod);
+        return new GuavaFunction<T, V>(state, mode);
     }
 
     /**
-     * Delegated version of <code>FuncitoGuava.functionFor(V,UntypedModifier)</code>
-     * @see org.funcito.FuncitoGuava#functionFor(Object,UntypedModifier)
+     * Delegated version of <code>FuncitoGuava.functionFor(V,UntypedMode)</code>
+     * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.mode.UntypedMode)
      */
-    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedMode mode) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
-        return new GuavaFunction<T, V>(state, mod);
+        return new GuavaFunction<T, V>(state, mode);
     }
 
     // TODO: javadoc
@@ -65,17 +65,17 @@ public class GuavaDelegate extends FuncitoDelegate {
     // TODO: javadoc
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        return predicateFor(ignoredRetVal, Modifiers.defaultBool(defaultForNull));
+        return predicateFor(ignoredRetVal, Modes.defaultBool(defaultForNull));
     }
 
-    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Modifier<T,Boolean> mod) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode<T,Boolean> mode) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
-        return new GuavaPredicate<T>(state, mod);
+        return new GuavaPredicate<T>(state, mode);
     }
 
-    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedModifier mod) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedMode mode) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
-        return new GuavaPredicate<T>(state, mod);
+        return new GuavaPredicate<T>(state, mode);
     }
 
 

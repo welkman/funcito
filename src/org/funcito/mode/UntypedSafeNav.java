@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.modifier;
+package org.funcito.mode;
 
 import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.SafeNavFunctor;
 
 // TODO: Javadoc
-public class UntypedSafeNav implements UntypedModifier {
+public class UntypedSafeNav implements UntypedMode {
 
     public static final UntypedSafeNav SAFE_NAV = new UntypedSafeNav();
 

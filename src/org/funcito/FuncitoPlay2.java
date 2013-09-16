@@ -15,8 +15,8 @@
  */
 package org.funcito;
 
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 import org.funcito.play.Play2Delegate;
 import play.libs.F.Function;
 import play.libs.F.Callback;
@@ -91,13 +91,13 @@ public class FuncitoPlay2 {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
-        return play2Delegate.functionFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode<?,V> mode) {
+        return play2Delegate.functionFor(proxiedMethodCall, (Mode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
-        return play2Delegate.functionFor(proxiedMethodCall, mod);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedMode mode) {
+        return play2Delegate.functionFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -139,12 +139,12 @@ public class FuncitoPlay2 {
         return     play2Delegate.callbackFor(proxiedMethodCall);
     }
 
-    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
-        return     play2Delegate.callbackFor(proxiedMethodCall, mod);
+    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+        return     play2Delegate.callbackFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, UntypedModifier mod) {
-        return     play2Delegate.callbackFor(proxiedMethodCall, mod);
+    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, UntypedMode mode) {
+        return     play2Delegate.callbackFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -206,12 +206,12 @@ public class FuncitoPlay2 {
         return     play2Delegate.voidCallback();
     }
 
-    public static <T> Callback<T> voidCallback(Modifier<T,Void> mod) {
-        return     play2Delegate.voidCallback(mod);
+    public static <T> Callback<T> voidCallback(Mode<T,Void> mode) {
+        return     play2Delegate.voidCallback(mode);
     }
 
-    public static <T> Callback<T> voidCallback(UntypedModifier mod) {
-        return     play2Delegate.voidCallback(mod);
+    public static <T> Callback<T> voidCallback(UntypedMode mode) {
+        return     play2Delegate.voidCallback(mode);
     }
 
     static Play2Delegate delegate() {

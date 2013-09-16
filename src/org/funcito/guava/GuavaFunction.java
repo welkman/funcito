@@ -18,21 +18,21 @@ package org.funcito.guava;
 import com.google.common.base.Function;
 
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.FunctorFactory;
-import org.funcito.modifier.Modifier;
+import org.funcito.functorfactory.FunctorFactory;
+import org.funcito.mode.Mode;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.UntypedMode;
 
 public class GuavaFunction<T, V> implements Function<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public GuavaFunction(InvokableState state, Modifier<T,V> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public GuavaFunction(InvokableState state, Mode<T,V> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public GuavaFunction(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public GuavaFunction(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override

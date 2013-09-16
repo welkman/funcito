@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.functorbase;
+package org.funcito.functorfactory;
 
+import org.funcito.functorbase.BasicFunctor;
+import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 
 // TODO: javadoc class
 public class FunctorFactory {
@@ -29,18 +31,18 @@ public class FunctorFactory {
     public static FunctorFactory instance() { return INSTANCE; }
 
     // TODO: javadoc method
-    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, Modifier<T,V> mod) {
-        if (mod != null) {
-            return mod.makeBase(state);
+    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, Mode<T,V> mode) {
+        if (mode != null) {
+            return mode.makeBase(state);
         }
         return new BasicFunctor<T,V>(state);
     }
 
     // TODO: javadoc method
     @SuppressWarnings("unchecked")
-    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, UntypedModifier mod) {
-        if (mod != null) {
-            return (FunctorBase<T,V>)mod.makeBase(state);
+    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, UntypedMode mode) {
+        if (mode != null) {
+            return (FunctorBase<T,V>)mode.makeBase(state);
         }
         return new BasicFunctor<T,V>(state);
     }

@@ -16,7 +16,7 @@
 package org.funcito.collectionsgeneric;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.PrimitiveBoolDefault;
+import org.funcito.mode.PrimitiveBoolDefault;
 
 // TODO: document the deprecation, also add independent unit tests
 @Deprecated

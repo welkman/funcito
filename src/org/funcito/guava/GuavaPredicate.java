@@ -19,11 +19,11 @@ import com.google.common.base.Predicate;
 
 import org.funcito.*;
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.FunctorFactory;
+import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
-import org.funcito.modifier.ValidateNullBoolean;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
+import org.funcito.mode.ValidateNullBoolean;
 
 import java.lang.reflect.Method;
 
@@ -42,12 +42,12 @@ public class GuavaPredicate<T> implements Predicate<T> {
         this(state, new ValidateNullBoolean(Predicate.class, altMethod));
     }
 
-    public GuavaPredicate(InvokableState state, Modifier<T,Boolean> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public GuavaPredicate(InvokableState state, Mode<T,Boolean> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public GuavaPredicate(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public GuavaPredicate(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override

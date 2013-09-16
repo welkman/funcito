@@ -19,9 +19,9 @@ import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.collectionsgeneric.CollectGenDelegate;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.Modifiers;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.Modes;
+import org.funcito.mode.UntypedMode;
 
 /**
  * This class is the static entry point of the Funcito API for Collections-Generic.
@@ -93,13 +93,13 @@ public class FuncitoCollectGen {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, Modifier<?,V> mod) {
-        return collectGenDelegate.transformerFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, Mode<?,V> mode) {
+        return collectGenDelegate.transformerFor(proxiedMethodCall, (Mode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, UntypedModifier mod) {
-        return collectGenDelegate.transformerFor(proxiedMethodCall, mod);
+    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, UntypedMode mode) {
+        return collectGenDelegate.transformerFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -115,8 +115,8 @@ public class FuncitoCollectGen {
      * Users of this <code>Predicate</code> should be aware of a risk with Collections-Generic Predicates (not specific to Funcito) if the
      * return type of the method being wrapped is a Boolean wrapper rather than a primitive boolean.  Such calls are allowed,
      * but there is an inherent null-pointer risk because Collections-Generic <code>Predicate.evaluate(T)</code> returns a boolean primitive.
-     * Use overloaded form of this method {@link #predicateFor(Boolean, UntypedModifier)} with the {@link org.funcito.modifier.PrimitiveBoolDefault}
-     * Modifier for a mitigation of this risk.
+     * Use overloaded form of this method {@link #predicateFor(Boolean, org.funcito.mode.UntypedMode)} with the {@link org.funcito.mode.PrimitiveBoolDefault}
+     * Mode for a mitigation of this risk.
      * <p>
      * This method also supports wrapping methods with arguments, and method chaining, as documented in {@link #transformerFor(Object)}.
      * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoCollectGen</code> proxy object
@@ -141,15 +141,15 @@ public class FuncitoCollectGen {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, Modifiers.defaultBool(defaultForNull));
+        return collectGenDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, mod);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedModifier mod) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, mod);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedMode mode) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -191,12 +191,12 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.closureFor(proxiedMethodCall);
     }
 
-    public static <T> Closure<T> closureFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
-        return     collectGenDelegate.closureFor(proxiedMethodCall, mod);
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+        return     collectGenDelegate.closureFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Closure<T> closureFor(Object proxiedMethodCall, UntypedModifier mod) {
-        return     collectGenDelegate.closureFor(proxiedMethodCall, mod);
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall, UntypedMode mode) {
+        return     collectGenDelegate.closureFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -258,12 +258,12 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.voidClosure();
     }
 
-    public static <T> Closure<T> voidClosure(Modifier<T,Void> mod) {
-        return     collectGenDelegate.voidClosure(mod);
+    public static <T> Closure<T> voidClosure(Mode<T,Void> mode) {
+        return     collectGenDelegate.voidClosure(mode);
     }
 
-    public static <T> Closure<T> voidClosure(UntypedModifier mod) {
-        return     collectGenDelegate.voidClosure(mod);
+    public static <T> Closure<T> voidClosure(UntypedMode mode) {
+        return     collectGenDelegate.voidClosure(mode);
     }
 
     static CollectGenDelegate delegate() {

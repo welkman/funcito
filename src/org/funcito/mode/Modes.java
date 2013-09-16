@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.modifier;
+package org.funcito.mode;
 
 // TODO: Javadoc
-public class Modifiers {
+public class Modes {
 
     // TODO: Javadoc
-    public static UntypedModifier noOp() {
+    public static UntypedMode noOp() {
         return NoOp.NO_OP;
     }
 
     // TODO: Javadoc
-    public static <T,V> Modifier<T,V> safeNav(V v) {
+    public static <T,V> Mode<T,V> safeNav(V v) {
         return new SafeNav<T,V>(v);
     }
 
     // TODO: Javadoc
-    public static UntypedModifier safeNav() {
+    public static UntypedMode safeNav() {
         return UntypedSafeNav.SAFE_NAV;
     }
 
     // maybe *also* make defaultTrue()/defaultFalse(), or nullIsTrue()/nullIsFalse()
-    public static <T> UntypedModifier defaultBool(boolean defaultForNull) {
+    public static <T> UntypedMode defaultBool(boolean defaultForNull) {
         return new PrimitiveBoolDefault<T>(defaultForNull);
     }
 

@@ -20,7 +20,7 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.*;
+import org.funcito.mode.*;
 
 import static org.funcito.internal.WrapperType.*;
 
@@ -36,21 +36,21 @@ public class CollectGenDelegate extends FuncitoDelegate {
     }
 
     /**
-     * Delegated version of <code>FuncitoCollectGen.transformerFor(V,Modifier)</code>
-     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.Modifier)
+     * Delegated version of <code>FuncitoCollectGen.transformerFor(V,Mode)</code>
+     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.mode.Mode)
      */
-    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, Modifier<T,V> mod) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, Mode<T,V> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
-        return new CollectGenTransformer<T, V>(state, mod);
+        return new CollectGenTransformer<T, V>(state, mode);
     }
 
     /**
-     * Delegated version of <code>FuncitoCollectGen.transformerFor(V,UntypedModifier)</code>
-     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.modifier.UntypedModifier)
+     * Delegated version of <code>FuncitoCollectGen.transformerFor(V,UntypedMode)</code>
+     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.mode.UntypedMode)
      */
-    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedModifier mod) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, UntypedMode mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
-        return new CollectGenTransformer<T, V>(state, mod);
+        return new CollectGenTransformer<T, V>(state, mode);
     }
 
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal) {
@@ -60,31 +60,31 @@ public class CollectGenDelegate extends FuncitoDelegate {
 
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        return predicateFor(ignoredRetVal, Modifiers.defaultBool(defaultForNull));
+        return predicateFor(ignoredRetVal, Modes.defaultBool(defaultForNull));
     }
 
-    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Modifier<T,Boolean> mod) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode<T,Boolean> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
-        return new CollectGenPredicate<T>(state, mod);
+        return new CollectGenPredicate<T>(state, mode);
     }
 
-    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedModifier mod) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, UntypedMode mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
-        return new CollectGenPredicate<T>(state, mod);
+        return new CollectGenPredicate<T>(state, mode);
     }
 
     public <T> Closure<T> closureFor(Object proxiedMethodCall) {
         return closureFor(proxiedMethodCall, NoOp.NO_OP);
     }
 
-    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, Modifier<T,Void> mod) {
+    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, Mode<T,Void> mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
-        return new CollectGenClosure<T>(state, mod);
+        return new CollectGenClosure<T>(state, mode);
     }
 
-    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, UntypedModifier mod) {
+    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, UntypedMode mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
-        return new CollectGenClosure<T>(state, mod);
+        return new CollectGenClosure<T>(state, mode);
     }
 
     public <T> T prepareVoid(T t) { return t; }
@@ -93,13 +93,13 @@ public class CollectGenDelegate extends FuncitoDelegate {
         return voidClosure(NoOp.NO_OP);
     }
 
-    public <T> Closure<T> voidClosure(Modifier<T,Void> mod) {
+    public <T> Closure<T> voidClosure(Mode<T,Void> mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
-        return new CollectGenClosure<T>(state, mod);
+        return new CollectGenClosure<T>(state, mode);
     }
 
-    public <T> Closure<T> voidClosure(UntypedModifier mod) {
+    public <T> Closure<T> voidClosure(UntypedMode mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
-        return new CollectGenClosure<T>(state, mod);
+        return new CollectGenClosure<T>(state, mode);
     }
 }

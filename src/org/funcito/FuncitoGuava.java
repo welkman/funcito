@@ -18,9 +18,9 @@ package org.funcito;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.guava.GuavaDelegate;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.Modifiers;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.Modes;
+import org.funcito.mode.UntypedMode;
 
 /**
  * This class is the static entry point of the Funcito API for Google Guava.
@@ -92,13 +92,13 @@ public class FuncitoGuava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Modifier<?,V> mod) {
-        return guavaDelegate.functionFor(proxiedMethodCall, (Modifier<T, V>) mod);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode<?,V> mode) {
+        return guavaDelegate.functionFor(proxiedMethodCall, (Mode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedModifier mod) {
-        return guavaDelegate.functionFor(proxiedMethodCall, mod);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedMode mode) {
+        return guavaDelegate.functionFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -139,15 +139,15 @@ public class FuncitoGuava {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, Modifiers.defaultBool(defaultForNull));
+        return guavaDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, mod);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedModifier mod) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, mod);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedMode mode) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, mode);
     }
 
     static GuavaDelegate delegate() {

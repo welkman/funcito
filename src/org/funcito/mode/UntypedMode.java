@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.modifier;
+package org.funcito.mode;
 
-import org.funcito.functorbase.BasicFunctor;
-import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.functorbase.FunctorBase;
 
 // TODO: Javadoc
-public class NoOp implements UntypedModifier {
-    public static final UntypedModifier NO_OP = new NoOp();
-
-    @Override
-    public FunctorBase makeBase(InvokableState invokableState) {
-        return new BasicFunctor(invokableState);
-    }
+public interface UntypedMode {
+    FunctorBase<?,?> makeBase(InvokableState invokableState);
 }

@@ -18,11 +18,11 @@ package org.funcito.collectionsgeneric;
 import org.apache.commons.collections15.Predicate;
 import org.funcito.FuncitoCollectGen;
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.FunctorFactory;
+import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
-import org.funcito.modifier.ValidateNullBoolean;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
+import org.funcito.mode.ValidateNullBoolean;
 
 import java.lang.reflect.Method;
 
@@ -42,12 +42,12 @@ public class CollectGenPredicate<T> implements Predicate<T> {
         this(state, new ValidateNullBoolean(Predicate.class, altMethod));
     }
 
-    public CollectGenPredicate(InvokableState state, Modifier<T,Boolean> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public CollectGenPredicate(InvokableState state, Mode<T,Boolean> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public CollectGenPredicate(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public CollectGenPredicate(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override

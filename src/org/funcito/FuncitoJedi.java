@@ -4,8 +4,8 @@ import jedi.functional.Command;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 import org.funcito.jedi.JediDelegate;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 
 /*
  * Copyright 2011-2013 Project Funcito Contributors
@@ -93,13 +93,13 @@ public class FuncitoJedi {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Modifier<T,V> mod) {
-        return jediDelegate.functorFor(proxiedMethodCall, mod);
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Mode<T,V> mode) {
+        return jediDelegate.functorFor(proxiedMethodCall, mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, UntypedModifier mod) {
-        return jediDelegate.functorFor(proxiedMethodCall, mod);
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, UntypedMode mode) {
+        return jediDelegate.functorFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -122,12 +122,12 @@ public class FuncitoJedi {
         return jediDelegate.filterFor(proxiedMethodCall);
     }
 
-    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Modifier<T,Boolean> mod) {
-        return jediDelegate.filterFor(proxiedMethodCall, mod);
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
+        return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, UntypedModifier mod) {
-        return jediDelegate.filterFor(proxiedMethodCall, mod);
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, UntypedMode mode) {
+        return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -169,12 +169,12 @@ public class FuncitoJedi {
         return jediDelegate.commandFor(proxiedMethodCall);
     }
 
-    public static <T> Command<T> commandFor(Object proxiedMethodCall, Modifier<T,Void> mod) {
-        return jediDelegate.commandFor(proxiedMethodCall, mod);
+    public static <T> Command<T> commandFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+        return jediDelegate.commandFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Command<T> commandFor(Object proxiedMethodCall, UntypedModifier mod) {
-        return jediDelegate.commandFor(proxiedMethodCall, mod);
+    public static <T> Command<T> commandFor(Object proxiedMethodCall, UntypedMode mode) {
+        return jediDelegate.commandFor(proxiedMethodCall, mode);
     }
 
     /**
@@ -236,12 +236,12 @@ public class FuncitoJedi {
         return jediDelegate.voidCommand();
     }
 
-    public static <T> Command<T> voidCommand(Modifier<T,Void> mod) {
-        return jediDelegate.voidCommand(mod);
+    public static <T> Command<T> voidCommand(Mode<T,Void> mode) {
+        return jediDelegate.voidCommand(mode);
     }
 
-    public static <T> Command<T> voidCommand(UntypedModifier mod) {
-        return jediDelegate.voidCommand(mod);
+    public static <T> Command<T> voidCommand(UntypedMode mode) {
+        return jediDelegate.voidCommand(mode);
     }
 
     public static JediDelegate delegate() {

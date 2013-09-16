@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.funcito.modifier;
+package org.funcito.mode;
 
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.NullValidatingPredicate;
@@ -21,7 +21,7 @@ import org.funcito.internal.InvokableState;
 
 import java.lang.reflect.Method;
 
-public class ValidateNullBoolean implements UntypedModifier {
+public class ValidateNullBoolean implements UntypedMode {
     private Class<?> apiPredicateClass;
     private Method altMethod;
 

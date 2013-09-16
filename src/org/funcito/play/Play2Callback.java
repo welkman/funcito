@@ -15,24 +15,23 @@
  */
 package org.funcito.play;
 
-import org.funcito.functorbase.BasicFunctor;
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.FunctorFactory;
+import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.Modifier;
-import org.funcito.modifier.UntypedModifier;
+import org.funcito.mode.Mode;
+import org.funcito.mode.UntypedMode;
 import play.libs.F;
 
 public class Play2Callback<T> implements F.Callback<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public Play2Callback(InvokableState state, Modifier<T,Void> mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public Play2Callback(InvokableState state, Mode<T,Void> mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public Play2Callback(InvokableState state, UntypedModifier mod) {
-        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mod);
+    public Play2Callback(InvokableState state, UntypedMode mode) {
+        functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
     @Override

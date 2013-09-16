@@ -16,7 +16,7 @@
 package org.funcito.guava;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.modifier.PrimitiveBoolDefault;
+import org.funcito.mode.PrimitiveBoolDefault;
 
 // TODO: More documentation about deprecation, also add independent unit tests
 @Deprecated
