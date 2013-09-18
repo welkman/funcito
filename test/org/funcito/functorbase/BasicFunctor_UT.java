@@ -9,13 +9,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.funcito.FuncitoGuava.callsTo;
 import static org.junit.Assert.assertEquals;
 
 public class BasicFunctor_UT {
 
     private final FuncitoDelegate delegate = new FuncitoDelegate();
-    private StringThing CALLS_TO_STRING_THING = callsTo(StringThing.class);
+    private StringThing CALLS_TO_STRING_THING = delegate.callsTo(StringThing.class);
 
     private class StringThing {
         protected String myString;
@@ -64,7 +63,7 @@ public class BasicFunctor_UT {
         class NonPrimArrayRet {
             public Object[] getVal() { return new Object[] {"ABC", Integer.MAX_VALUE}; }
         }
-        callsTo(NonPrimArrayRet.class).getVal();
+        delegate.callsTo(NonPrimArrayRet.class).getVal();
         BasicFunctor<NonPrimArrayRet, Object[]> wrapperIntFunc = new BasicFunctor<NonPrimArrayRet, Object[]>(getState());
 
         assertEquals(2, wrapperIntFunc.applyImpl(new NonPrimArrayRet()).length);
@@ -75,7 +74,7 @@ public class BasicFunctor_UT {
         class PrimArrayRet {
             public int[] getVal() { return new int[] {1,2,3}; }
         }
-        callsTo(PrimArrayRet.class).getVal();
+        delegate.callsTo(PrimArrayRet.class).getVal();
         BasicFunctor<PrimArrayRet, int[]> wrapperIntFunc = new BasicFunctor<PrimArrayRet, int[]>(getState());
 
         assertEquals(3, wrapperIntFunc.applyImpl(new PrimArrayRet()).length);
@@ -83,7 +82,7 @@ public class BasicFunctor_UT {
 
     @Test
     public void test_ValidateDetectsMismatchedGenericTypes() {
-        callsTo(List.class).size();
+        delegate.callsTo(List.class).size();
         BasicFunctor<List<String>, Integer> stringListFunc = new BasicFunctor<List<String>, Integer>(getState());
 
         List<Integer> integerList = new ArrayList<Integer>();
@@ -96,7 +95,7 @@ public class BasicFunctor_UT {
 
     @Test
     public void test_SingleArgBinding() {
-        List<String> callsToList = callsTo(List.class);
+        List<String> callsToList = delegate.callsTo(List.class);
         callsToList.get(0);
         BasicFunctor<List<String>,String> getElem0Func = new BasicFunctor<List<String>,String>(getState());
         callsToList.get(2);
