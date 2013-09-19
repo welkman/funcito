@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BasicFunctor_UT {
 
@@ -106,7 +108,23 @@ public class BasicFunctor_UT {
         assertEquals("Two", getElem2Func.applyImpl(list));
     }
 
-    // TODO: multi-arg binding, and chained with arg binding
+    @Test
+    public void test_MultiArgBinding() {
+        class MyMath {
+            private int val;
+            public MyMath(int val) { this.val = val; }
+            public Boolean between(int low, int high) { return (val>=low) && (val<=high); }
+        }
+
+        delegate.callsTo(MyMath.class).between(3,5);
+        BasicFunctor<MyMath,Boolean> functor = new BasicFunctor<MyMath, Boolean>(getState());
+
+        assertFalse(functor.applyImpl(new MyMath(2)));
+        assertTrue(functor.applyImpl(new MyMath(3)));
+        assertTrue(functor.applyImpl(new MyMath(4)));
+        assertTrue(functor.applyImpl(new MyMath(5)));
+        assertFalse(functor.applyImpl(new MyMath(6)));
+    }
 
     @Test
     public void test_methodChain() {
