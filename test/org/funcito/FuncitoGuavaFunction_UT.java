@@ -73,68 +73,24 @@ public class FuncitoGuavaFunction_UT {
         assertEquals("dog", pluralFunc.apply(dog));
     }
 
-    class A {
-        private B b;
-        public B getB() { return b;}
-        public void setB(B b) { this.b = b; }
-    }
-
-    class B {
-        private C c;
-        public C getC() { return c;}
-        public void setC(C c) { this.c = c; }
-    }
-
-    class C {}
-
-    @Test
-    public void testFunctionFor_SafeNav_NoChain() {
-        A a = new A();
-        B b = new B(); // not setting this value into A
-
-        Function<A,B> func = functionFor(callsTo(A.class).getB(), safeNav(b));
-
-        assertSame(b, func.apply(a));
-    }
 
     @Test
     public void testFunctionFor_SafeNav_NoChainNullDefault() {
-        A a = new A();
-        assertNull(a.getB());
+        class Child {}
+        class Parent {
+            public Child getChild() { return null; }
+        }
+        Parent parent = new Parent();
+        assertNull(parent.getChild());
 
         // Note that in parameterized version, null must be cast for compile to work.
-        Function<A,B> func = functionFor(callsTo(A.class).getB(), safeNav((B)null));
-        Function<A,B> func2 = functionFor(callsTo(A.class).getB(), safeNav());
-        Function<A,B> func3 = functionFor(callsTo(A.class).getB(), SAFE_NAV);
+        Function<Parent, Child> func = functionFor(callsTo(Parent.class).getChild(), safeNav((Child)null));
+        Function<Parent, Child> func2 = functionFor(callsTo(Parent.class).getChild(), safeNav());
+        Function<Parent, Child> func3 = functionFor(callsTo(Parent.class).getChild(), SAFE_NAV);
 
-        assertNull(func.apply(a));
-        assertNull(func2.apply(a));
-        assertNull(func3.apply(a));
-    }
-
-    @Test
-    public void testFunctionFor_SafeNav_ChainedWithInitialNull() {
-        A a = new A();
-        C c = new C();
-
-        Function<A,C> func = functionFor(callsTo(A.class).getB().getC(), safeNav(c));
-
-        assertSame(c, func.apply(a));
-    }
-
-    @Test
-    public void testFunctionFor_SafeNav_ChainedNoNulls() {
-        A a = new A();
-        B b = new B();
-        C c = new C();
-        C differentC = new C();
-        a.setB(b);
-        b.setC(c);
-
-        Function<A,C> func = functionFor(callsTo(A.class).getB().getC(), safeNav(differentC));
-
-        assertSame(c, func.apply(a));
-        assertNotSame(differentC, func.apply(a));
+        assertNull(func.apply(parent));
+        assertNull(func2.apply(parent));
+        assertNull(func3.apply(parent));
     }
 }
 

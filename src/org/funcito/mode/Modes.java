@@ -33,7 +33,7 @@ public class Modes {
         return UntypedSafeNav.SAFE_NAV;
     }
 
-    // maybe *also* make defaultTrue()/defaultFalse(), or nullIsTrue()/nullIsFalse()
+    // TODO: maybe *also* make defaultTrue()/defaultFalse(), or nullIsTrue()/nullIsFalse()
     public static <T> UntypedMode defaultBool(boolean defaultForNull) {
         return new PrimitiveBoolDefault<T>(defaultForNull);
     }
