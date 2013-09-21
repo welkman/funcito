@@ -12,7 +12,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * This is a base class for testing other FunctorBase implementation classes
+ * This is a base class for testing other FunctorBase implementation classes.
+ * NOTE: that all Functors in these tests return Boolean, so that this base class may be used for testing Predicates.
  */
 abstract public class FunctorBaseTestBase {
 
@@ -20,15 +21,13 @@ abstract public class FunctorBaseTestBase {
     private StringThing CALLS_TO_STRING_THING = delegate.callsTo(StringThing.class);
 
     class StringThing {
-        protected String s1, s2;
+        protected String s1;
 
         public StringThing(String s1) { this.s1 = s1; }
-        public StringThing(String s1, String s2) { this.s1 = s1; this.s2 = s2; }
-        public int size() { return s1 ==null ? 0 : s1.length(); }
         public String toString() { return s1; }
-        public StringThing plusABC() { return new StringThing(this.toString() + "ABC"); }
-        public boolean sameLength() { return s1.length() == s2.length(); }
-        public Boolean s1Empty() { return s1==null || s1.isEmpty(); }
+        public StringThing chop() { return new StringThing(toString().substring(1)); }
+        public Boolean empty() { return s1==null || s1.isEmpty(); }
+        public boolean emptyPrim() { return empty(); }
     }
 
     @After
@@ -41,7 +40,7 @@ abstract public class FunctorBaseTestBase {
 
     @Test
     public void test_AssignToFunctorWithMatchingTypes() { // happy path
-        CALLS_TO_STRING_THING.s1Empty(); // prime the pump
+        CALLS_TO_STRING_THING.empty(); // prime the pump
         FunctorBase<StringThing,Boolean> functor = makeFunctorForTest();
 
         assertTrue(functor.applyImpl(new StringThing(null)));
@@ -49,19 +48,19 @@ abstract public class FunctorBaseTestBase {
 
     @Test
     public void test_primitiveReturnType() {
-        CALLS_TO_STRING_THING.size(); // size() return type is primitive int
-        FunctorBase<StringThing,Integer> functor = makeFunctorForTest();
+        CALLS_TO_STRING_THING.emptyPrim(); // return type is primitive boolean
+        FunctorBase<StringThing,Boolean> functor = makeFunctorForTest();
 
-        assertEquals(3, functor.applyImpl(new StringThing("ABC")).intValue());
+        assertFalse(functor.applyImpl(new StringThing("ABC")));
     }
 
     @Test
     public void test_RepeatedUsage() {
-        CALLS_TO_STRING_THING.sameLength();
+        CALLS_TO_STRING_THING.empty();
         FunctorBase<StringThing, Boolean> functor = makeFunctorForTest();
 
-        assertTrue(functor.applyImpl(new StringThing("ABC", "XYZ")));
-        assertFalse(functor.applyImpl(new StringThing("ABC", "XYZ2")));
+        assertTrue(functor.applyImpl(new StringThing("")));
+        assertFalse(functor.applyImpl(new StringThing("A")));
     }
 
     @Test
@@ -90,9 +89,6 @@ abstract public class FunctorBaseTestBase {
         assertFalse(getElem3Func.applyImpl(list));
     }
 
-    // TODO, need to make all functors in all tests here return Boolean, so that this can be used as base test
-    // for predicates as well
-
     @Test
     public void test_MultiArgBinding() {
         class MyMath {
@@ -112,25 +108,25 @@ abstract public class FunctorBaseTestBase {
     }
 
     @Test
-    public void test_methodChain() {
-        CALLS_TO_STRING_THING.plusABC().size();
-        FunctorBase<StringThing,Integer> sizePlus3Func = makeFunctorForTest();
-        StringThing origLength3 = new StringThing("123");
-        StringThing origLength6 = new StringThing("123456");
+    public void test_methodSingleChain() {
+        CALLS_TO_STRING_THING.chop().empty();
+        FunctorBase<StringThing,Boolean> chopEmpty = makeFunctorForTest();
+        StringThing origLength1 = new StringThing("1");
+        StringThing origLength2 = new StringThing("12");
 
-        assertEquals(6, (int) sizePlus3Func.applyImpl(origLength3));
-        assertEquals(9, (int) sizePlus3Func.applyImpl(origLength6));
+        assertTrue(chopEmpty.applyImpl(origLength1));
+        assertFalse(chopEmpty.applyImpl(origLength2));
     }
 
     @Test
     public void test_methodMultiChain() {
-        CALLS_TO_STRING_THING.plusABC().plusABC().size();
-        FunctorBase<StringThing,Integer> sizePlus3Plus3Func = makeFunctorForTest();
+        CALLS_TO_STRING_THING.chop().chop().empty();
+        FunctorBase<StringThing,Boolean> chopEmpty = makeFunctorForTest();
+        StringThing origLength2 = new StringThing("12");
         StringThing origLength3 = new StringThing("123");
-        StringThing origLength6 = new StringThing("123456");
 
-        assertEquals(9, (int)sizePlus3Plus3Func.applyImpl(origLength3));
-        assertEquals(12, (int) sizePlus3Plus3Func.applyImpl(origLength6));
+        assertTrue(chopEmpty.applyImpl(origLength2));
+        assertFalse(chopEmpty.applyImpl(origLength3));
     }
 
     @Test(expected = NullPointerException.class)

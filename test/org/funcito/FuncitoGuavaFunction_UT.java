@@ -65,6 +65,7 @@ public class FuncitoGuavaFunction_UT {
 
     @Test
     public void testFunctionFor_ExpressionsWithOperatorsAreUnsupported() {
+        // badly formed Funcito function: the "+" operator cannot be captured
         Function<StringThing,String> pluralFunc = functionFor(CALLS_TO_STRING_THING.toString() + "s");
         StringThing dog = new StringThing("dog");
 

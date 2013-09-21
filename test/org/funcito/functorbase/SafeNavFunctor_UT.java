@@ -62,6 +62,17 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     }
 
     @Test
+    public void testChainedWithNonInitialNull() {
+        CALLS_TO_A.getB().getC();
+        C differentC = new C();
+        SafeNavFunctor<A,C> func = new SafeNavFunctor<A,C>(getState(), differentC);
+
+        a.setB(b);
+        assertSame(differentC, func.applyImpl(a));
+        assertNotSame(c, func.applyImpl(a));
+    }
+
+    @Test
     public void testChainedNoNulls() {
         C differentC = new C();
         a.setB(b);
