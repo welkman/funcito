@@ -33,7 +33,7 @@ public class NullValidatingPredicate extends BasicFunctor<Object,Boolean> {
     @Override
     protected void validateReturnValue(Object retVal) {
         if (retVal==null) {
-            throw new FuncitoException(apiPredicateClass + " had a null Boolean return value.\n " +
+            throw new FuncitoException(apiPredicateClass + " returned a null Boolean return value.\n " +
                 apiPredicateClass + " expects a non-null Boolean so that it can be autoboxed to a primitive boolean.\n " +
                 "You might consider the alternate method: " + altMethod);
         }

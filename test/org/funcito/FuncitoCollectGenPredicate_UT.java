@@ -58,7 +58,7 @@ public class FuncitoCollectGenPredicate_UT {
         BooleanThing nullThing = new BooleanThing(null);
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("Predicate had a null Boolean");
+        thrown.expectMessage("Predicate returned a null Boolean");
         pred.evaluate(nullThing);
     }
 

@@ -58,7 +58,7 @@ public class FuncitoGuavaPredicate_UT {
         BooleanThing nullThing = new BooleanThing(null);
 
         thrown.expect(FuncitoException.class);
-        thrown.expectMessage("had a null Boolean");
+        thrown.expectMessage("returned a null Boolean");
         pred.apply(nullThing);
     }
 

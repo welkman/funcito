@@ -36,7 +36,9 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     class C {}
 
     @Test
-    public void testNoChain() {
+    public void testSafeNav_NoChain() {
+        assertNull(a.getB());
+
         CALLS_TO_A.getB(); // prime the pump
         SafeNavFunctor<A,B> func = new SafeNavFunctor<A,B>(getState(), b);
 
@@ -44,7 +46,7 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     }
 
     @Test
-    public void testNoChainNullDefault() {
+    public void testSafeNav_NoChainNullDefault() {
         assertNull(a.getB());
 
         CALLS_TO_A.getB();
@@ -54,7 +56,9 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     }
 
     @Test
-    public void testChainedWithInitialNull() {
+    public void testSafeNav_ChainedWithInitialNull() {
+        assertNull(a.getB());
+
         CALLS_TO_A.getB().getC();
         SafeNavFunctor<A,C> func = new SafeNavFunctor<A,C>(getState(), c);
 
@@ -62,18 +66,18 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     }
 
     @Test
-    public void testChainedWithNonInitialNull() {
-        CALLS_TO_A.getB().getC();
-        C differentC = new C();
-        SafeNavFunctor<A,C> func = new SafeNavFunctor<A,C>(getState(), differentC);
-
+    public void testSafeNav_ChainedWithNonInitialNull() {
         a.setB(b);
-        assertSame(differentC, func.applyImpl(a));
-        assertNotSame(c, func.applyImpl(a));
+        assertNull(b.getC());
+
+        CALLS_TO_A.getB().getC();
+        SafeNavFunctor<A,C> func = new SafeNavFunctor<A,C>(getState(), c);
+
+        assertSame(c, func.applyImpl(a));
     }
 
     @Test
-    public void testChainedNoNulls() {
+    public void testSafeNav_ChainedNoNulls() {
         C differentC = new C();
         a.setB(b);
         b.setC(c);
