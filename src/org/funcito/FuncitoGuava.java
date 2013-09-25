@@ -142,8 +142,8 @@ public class FuncitoGuava {
         return guavaDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, mode);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)mode);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedMode mode) {

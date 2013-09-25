@@ -144,8 +144,8 @@ public class FuncitoCollectGen {
         return collectGenDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, mode);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)mode);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedMode mode) {

@@ -2,6 +2,9 @@ package org.funcito;
 
 import org.apache.commons.collections15.Predicate;
 import org.funcito.internal.WrapperType;
+import org.funcito.mode.Mode;
+import org.funcito.mode.Modes;
+import org.funcito.mode.UntypedMode;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,6 +83,34 @@ public class FuncitoCollectGenPredicate_UT {
 
         // NOTE: this test is a test that proves and documents a limitation of Funcito
         assertFalse( boolInstancePred.evaluate(new BooleanThing(false)) ); // does not return true because operator not captured
+    }
+
+    @Test
+    public void testPredicateFor_UntypedMode() {
+        BooleanThing nullThing = new BooleanThing(null);
+
+        UntypedMode untypedMode = Modes.defaultBool(true);
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
+        assertTrue(pred.evaluate(nullThing));
+
+        // do the same test for "false"
+        untypedMode = Modes.defaultBool(false);
+        pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
+        assertFalse(pred.evaluate(nullThing));
+    }
+
+    @Test
+    public void testPredicateFor_Mode() {
+        BooleanThing nullThing = new BooleanThing(null);
+
+        Mode<Object,Boolean> mode = Modes.safeNav(true);
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
+        assertTrue(pred.evaluate(nullThing));
+
+        // do the same test for "false"
+        mode = Modes.safeNav(false);
+        pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
+        assertFalse(pred.evaluate(nullThing));
     }
 
     class PrimitiveBoolRetGeneric<T> {
