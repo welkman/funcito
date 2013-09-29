@@ -21,9 +21,7 @@ public class FuncitoCollectGenPredicate_UT {
 
     private static class BooleanThing {
         private Boolean myVal;
-
         public BooleanThing(Boolean myVal) { this.myVal = myVal; }
-
         public Boolean getVal() { return myVal; }
     }
 
@@ -87,16 +85,11 @@ public class FuncitoCollectGenPredicate_UT {
 
     @Test
     public void testPredicateFor_UntypedMode() {
-        BooleanThing nullThing = new BooleanThing(null);
+        BooleanThing nullThing = new BooleanThing(true);
 
-        UntypedMode untypedMode = Modes.defaultBool(true);
-        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
+        UntypedMode mode = Modes.noOp();
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.evaluate(nullThing));
-
-        // do the same test for "false"
-        untypedMode = Modes.defaultBool(false);
-        pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
-        assertFalse(pred.evaluate(nullThing));
     }
 
     @Test

@@ -60,7 +60,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
 
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        return predicateFor(ignoredRetVal, Modes.defaultBool(defaultForNull));
+        return predicateFor(ignoredRetVal, (Mode<T,Boolean>)Modes.tailDefault(defaultForNull));
     }
 
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode<T,Boolean> mode) {

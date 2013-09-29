@@ -87,18 +87,12 @@ public class FuncitoGuavaPredicate_UT {
 
     @Test
     public void testPredicateFor_UntypedMode() {
-        BooleanThing nullThing = new BooleanThing(null);
+        BooleanThing nullThing = new BooleanThing(true);
 
-        UntypedMode untypedMode = Modes.defaultBool(true);
-        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
+        UntypedMode mode = Modes.noOp();
+        Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.apply(nullThing));
-
-        // do the same test for "false"
-        untypedMode = Modes.defaultBool(false);
-        pred = predicateFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
-        assertFalse(pred.apply(nullThing));
     }
-
 
     @Test
     public void testPredicateFor_Mode() {

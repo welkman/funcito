@@ -51,23 +51,18 @@ public class FuncitoJediFilter_UT {
 
     @Test
     public void testPredicateFor_UntypedMode() {
-        BooleanThing nullThing = new BooleanThing(null);
+        BooleanThing nullThing = new BooleanThing(true);
 
-        UntypedMode untypedMode = Modes.defaultBool(true);
-        Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
+        UntypedMode mode = Modes.noOp();
+        Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.execute(nullThing));
-
-        // do the same test for "false"
-        untypedMode = Modes.defaultBool(false);
-        pred = filterFor(CALL_TO_BOOL_THING.getVal(), untypedMode);
-        assertFalse(pred.execute(nullThing));
     }
 
     @Test
     public void testPredicateFor_Mode() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        Mode<Object,Boolean> mode = Modes.safeNav(true);
+        Mode<BooleanThing,Boolean> mode = Modes.safeNav(true);
         Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.execute(nullThing));
 

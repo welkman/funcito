@@ -33,9 +33,9 @@ public class Modes {
         return UntypedSafeNav.SAFE_NAV;
     }
 
-    // TODO: maybe *also* make defaultTrue()/defaultFalse(), or nullIsTrue()/nullIsFalse()
-    public static <T> UntypedMode defaultBool(boolean defaultForNull) {
-        return new PrimitiveBoolDefault<T>(defaultForNull);
+    // TODO: Javadoc
+    public static <T,V> Mode<T,V> tailDefault(V defaultForNull) {
+        return new TailDefault<T,V>(defaultForNull);
     }
 
 }

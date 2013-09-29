@@ -122,8 +122,8 @@ public class FuncitoJedi {
         return jediDelegate.filterFor(proxiedMethodCall);
     }
 
-    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {
-        return jediDelegate.filterFor(proxiedMethodCall, (Mode<T,Boolean>)mode);
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Mode<T,Boolean> mode) {
+        return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
 
     public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, UntypedMode mode) {

@@ -139,7 +139,7 @@ public class FuncitoGuava {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
+        return guavaDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)Modes.tailDefault(defaultForNull));
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {

@@ -16,13 +16,13 @@
 package org.funcito.guava;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.PrimitiveBoolDefault;
+import org.funcito.mode.TailDefault;
 
 // TODO: More documentation about deprecation, also add independent unit tests
 @Deprecated
 public class GuavaDefaultablePredicate<T> extends GuavaPredicate<T> {
 
     public GuavaDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        super(state, new PrimitiveBoolDefault<T>(defaultForNull));
+        super(state, new TailDefault<T,Boolean>(defaultForNull));
     }
 }

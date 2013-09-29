@@ -17,18 +17,18 @@ package org.funcito.functorbase;
 
 import org.funcito.internal.InvokableState;
 
-public class PrimitivePredicate<T> extends BasicFunctor<T,Boolean> {
+public class TailDefaultFunctor<T,V> extends BasicFunctor<T,V> {
 
-    private boolean defaultForNull;
+    private V defaultForNull;
 
-    public PrimitivePredicate(InvokableState state, boolean defaultForNull) {
+    public TailDefaultFunctor(InvokableState state, V defaultForNull) {
             super(state);
             this.defaultForNull = defaultForNull;
         }
 
     @Override
-    public Boolean applyImpl(T from) {
-        Boolean result = super.applyImpl(from);
+    public V applyImpl(T from) {
+        V result = super.applyImpl(from);
         return (result==null) ? defaultForNull : result;
     }
 }

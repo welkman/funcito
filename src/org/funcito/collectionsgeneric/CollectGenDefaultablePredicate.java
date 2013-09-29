@@ -16,13 +16,13 @@
 package org.funcito.collectionsgeneric;
 
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.PrimitiveBoolDefault;
+import org.funcito.mode.TailDefault;
 
 // TODO: document the deprecation, also add independent unit tests
 @Deprecated
 public class CollectGenDefaultablePredicate<T> extends CollectGenPredicate<T> {
 
     public CollectGenDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        super(state, new PrimitiveBoolDefault<T>(defaultForNull));
+        super(state, new TailDefault<T,Boolean>(defaultForNull));
     }
 }

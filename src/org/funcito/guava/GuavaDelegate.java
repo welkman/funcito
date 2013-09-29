@@ -17,12 +17,9 @@ package org.funcito.guava;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.funcito.mode.Mode;
+import org.funcito.mode.*;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.Modes;
-import org.funcito.mode.NoOp;
-import org.funcito.mode.UntypedMode;
 
 import static org.funcito.internal.WrapperType.GUAVA_PREDICATE;
 import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
@@ -65,7 +62,7 @@ public class GuavaDelegate extends FuncitoDelegate {
     // TODO: javadoc
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        return predicateFor(ignoredRetVal, Modes.defaultBool(defaultForNull));
+        return predicateFor(ignoredRetVal, (Mode<T,Boolean>)Modes.tailDefault(defaultForNull));
     }
 
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode<T,Boolean> mode) {

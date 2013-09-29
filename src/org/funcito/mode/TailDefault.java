@@ -16,19 +16,19 @@
 package org.funcito.mode;
 
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.PrimitivePredicate;
+import org.funcito.functorbase.TailDefaultFunctor;
 import org.funcito.internal.InvokableState;
 
-public class PrimitiveBoolDefault<T> implements UntypedMode {
+public class TailDefault<T,V> implements Mode<T,V> {
 
-    private boolean defaultForNull;
+    private V defaultForNull;
 
-    public PrimitiveBoolDefault(boolean defaultForNull) {
+    public TailDefault(V defaultForNull) {
         this.defaultForNull = defaultForNull;
     }
 
     @Override
-    public FunctorBase<T, Boolean> makeBase(InvokableState invokableState) {
-        return new PrimitivePredicate<T>(invokableState, defaultForNull);
+    public FunctorBase<T, V> makeBase(InvokableState invokableState) {
+        return new TailDefaultFunctor<T,V>(invokableState, defaultForNull);
     }
 }

@@ -115,7 +115,7 @@ public class FuncitoCollectGen {
      * Users of this <code>Predicate</code> should be aware of a risk with Collections-Generic Predicates (not specific to Funcito) if the
      * return type of the method being wrapped is a Boolean wrapper rather than a primitive boolean.  Such calls are allowed,
      * but there is an inherent null-pointer risk because Collections-Generic <code>Predicate.evaluate(T)</code> returns a boolean primitive.
-     * Use overloaded form of this method {@link #predicateFor(Boolean, org.funcito.mode.UntypedMode)} with the {@link org.funcito.mode.PrimitiveBoolDefault}
+     * Use overloaded form of this method {@link #predicateFor(Boolean, org.funcito.mode.UntypedMode)} with the {@link org.funcito.mode.TailDefault}
      * Mode for a mitigation of this risk.
      * <p>
      * This method also supports wrapping methods with arguments, and method chaining, as documented in {@link #transformerFor(Object)}.
@@ -141,7 +141,7 @@ public class FuncitoCollectGen {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, Modes.defaultBool(defaultForNull));
+        return collectGenDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)Modes.tailDefault(defaultForNull));
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {
