@@ -30,8 +30,9 @@ public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
 
     @SuppressWarnings("unchecked")
     public V applyImpl(T from) {
-        // TODO: determine whether to null check "from" also... this would be different from the
-        // TODO: ...GuavaPredicate (and collectgen) defaultable factory methods, using DefaultablePredicate.
+        if (from==null) {
+            return (V) nullNavDefault;
+        }
         // unroll the first loop, to provide performance for the "90%": unchained wrapped methods
         Object retVal = firstInvokable.invoke(from);
         if (retVal==null) {

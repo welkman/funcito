@@ -57,6 +57,14 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
 
     @Test
     public void testSafeNav_ChainedWithInitialNull() {
+        CALLS_TO_A.getB();
+        SafeNavFunctor<A,B> func = new SafeNavFunctor<A,B>(getState(), b);
+
+        assertSame(b, func.applyImpl(null));
+    }
+
+    @Test
+    public void testSafeNav_ChainedWithMiddleNull() {
         assertNull(a.getB());
 
         CALLS_TO_A.getB().getC();
@@ -66,7 +74,7 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
     }
 
     @Test
-    public void testSafeNav_ChainedWithNonInitialNull() {
+    public void testSafeNav_ChainedWithTailNull() {
         a.setB(b);
         assertNull(b.getC());
 
