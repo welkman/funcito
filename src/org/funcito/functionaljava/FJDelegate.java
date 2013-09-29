@@ -42,7 +42,7 @@ public class FJDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoFJ.functionFor(V,TypedMode)</code>
      * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> F<T,V> fFor(V ignoredRetVal, TypedMode<T,V> mode) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, mode);
     }
@@ -61,7 +61,7 @@ public class FJDelegate extends FuncitoDelegate {
         return new FjEffect<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(FJ_EFFECT);
         return new FjEffect<T>(state, mode);
     }
@@ -78,7 +78,7 @@ public class FJDelegate extends FuncitoDelegate {
         return new FjEffect<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Effect<T> voidEffect(TypedMode<T,Void> mode) {
+    public <T> Effect<T> voidEffect(TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
         return new FjEffect<T>(state, mode);
     }

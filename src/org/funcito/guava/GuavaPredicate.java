@@ -42,7 +42,7 @@ public class GuavaPredicate<T> implements Predicate<T> {
         this(state, new ValidateNullBoolean(Predicate.class, altMethod));
     }
 
-    public GuavaPredicate(InvokableState state, TypedMode<T,Boolean> mode) {
+    public GuavaPredicate(InvokableState state, TypedMode<Boolean> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

@@ -26,7 +26,7 @@ public class RxJavaFunc1<T, V> implements Func1<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public RxJavaFunc1(InvokableState state, TypedMode<T,V> mode) {
+    public RxJavaFunc1(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

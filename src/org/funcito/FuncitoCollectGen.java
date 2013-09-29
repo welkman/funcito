@@ -93,8 +93,8 @@ public class FuncitoCollectGen {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, TypedMode<?,V> mode) {
-        return collectGenDelegate.transformerFor(proxiedMethodCall, (TypedMode<T, V>) mode);
+    public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, TypedMode<V> mode) {
+        return collectGenDelegate.transformerFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
     // TODO: javadoc
@@ -141,11 +141,11 @@ public class FuncitoCollectGen {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)Modes.tailDefault(defaultForNull));
+        return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<?,Boolean> mode) {
-        return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)mode);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
+        return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)mode);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode mode) {
@@ -191,7 +191,7 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.closureFor(proxiedMethodCall);
     }
 
-    public static <T> Closure<T> closureFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public static <T> Closure<T> closureFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     collectGenDelegate.closureFor(proxiedMethodCall, mode);
     }
 
@@ -258,7 +258,7 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.voidClosure();
     }
 
-    public static <T> Closure<T> voidClosure(TypedMode<T,Void> mode) {
+    public static <T> Closure<T> voidClosure(TypedMode<Void> mode) {
         return     collectGenDelegate.voidClosure(mode);
     }
 

@@ -42,7 +42,7 @@ public class Play2Delegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoPlay2.functionFor(V,TypedMode)</code>
      * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> Function<T,V> functionFor(V ignoredRetVal, TypedMode<T,V> mode) {
+    public <T,V> Function<T,V> functionFor(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
         return new Play2Function<T, V>(state, mode);
     }
@@ -61,7 +61,7 @@ public class Play2Delegate extends FuncitoDelegate {
         return new Play2Callback<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(PLAY2_CALLBACK);
         return new Play2Callback<T>(state, mode);
     }
@@ -78,7 +78,7 @@ public class Play2Delegate extends FuncitoDelegate {
         return new Play2Callback<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Callback<T> voidCallback(TypedMode<T,Void> mode) {
+    public <T> Callback<T> voidCallback(TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
         return new Play2Callback<T>(state, mode);
     }

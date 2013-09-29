@@ -39,7 +39,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,TypedMode)</code>
      * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, TypedMode<T,V> mode) {
+    public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mode);
     }
@@ -60,10 +60,10 @@ public class CollectGenDelegate extends FuncitoDelegate {
 
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
-        return predicateFor(ignoredRetVal, (TypedMode<T,Boolean>)Modes.tailDefault(defaultForNull));
+        return predicateFor(ignoredRetVal, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
-    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, TypedMode<T,Boolean> mode) {
+    public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, TypedMode<Boolean> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenPredicate<T>(state, mode);
     }
@@ -77,7 +77,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
         return closureFor(proxiedMethodCall, NoOp.NO_OP);
     }
 
-    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public <T> Closure<T> closureFor(@SuppressWarnings("unused") Object proxiedMethodCall, TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_CLOSURE);
         return new CollectGenClosure<T>(state, mode);
     }
@@ -93,7 +93,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
         return voidClosure(NoOp.NO_OP);
     }
 
-    public <T> Closure<T> voidClosure(TypedMode<T,Void> mode) {
+    public <T> Closure<T> voidClosure(TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(COLLECTGEN_VOID_CLOSURE);
         return new CollectGenClosure<T>(state, mode);
     }

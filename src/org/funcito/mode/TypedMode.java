@@ -20,6 +20,6 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public interface TypedMode<T,V> {
-    FunctorBase<T,V> makeBase(InvokableState invokableState);
+public interface TypedMode<V> {
+    FunctorBase<?,V> makeBase(InvokableState invokableState);
 }

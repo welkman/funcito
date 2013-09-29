@@ -26,7 +26,7 @@ public class JediFilter<T> implements Filter<T> {
 
     private FunctorBase<T,Boolean> functorBase;
 
-    public JediFilter(InvokableState state, TypedMode<T,Boolean> mode) {
+    public JediFilter(InvokableState state, TypedMode<Boolean> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

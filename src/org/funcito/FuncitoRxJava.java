@@ -91,8 +91,8 @@ public class FuncitoRxJava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, TypedMode<?,V> mode) {
-        return rxJavaDelegate.func1For(proxiedMethodCall, (TypedMode<T, V>) mode);
+    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, TypedMode<V> mode) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
     // TODO: javadoc
@@ -139,7 +139,7 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.action1For(proxiedMethodCall);
     }
 
-    public static <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
@@ -206,7 +206,7 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.voidAction1();
     }
 
-    public static <T> Action1<T> voidAction1(TypedMode<T,Void> mode) {
+    public static <T> Action1<T> voidAction1(TypedMode<Void> mode) {
         return     rxJavaDelegate.voidAction1(mode);
     }
 

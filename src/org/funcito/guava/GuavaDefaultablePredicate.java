@@ -23,6 +23,6 @@ import org.funcito.mode.TailDefault;
 public class GuavaDefaultablePredicate<T> extends GuavaPredicate<T> {
 
     public GuavaDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        super(state, new TailDefault<T,Boolean>(defaultForNull));
+        super(state, new TailDefault<Boolean>(defaultForNull));
     }
 }

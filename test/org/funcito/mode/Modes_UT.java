@@ -63,8 +63,8 @@ public class Modes_UT {
         CALLS_TO_A.getB().getC();
 
         C defaultC = new C();
-        TypedMode<A,C> mode = Modes.safeNav(defaultC);
-        FunctorBase<A,C> functorBase = mode.makeBase(getState());
+        TypedMode<C> mode = Modes.safeNav(defaultC);
+        FunctorBase<A,C> functorBase = (FunctorBase<A, C>) mode.makeBase(getState());
 
         assertTrue(mode instanceof TypedSafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
@@ -78,8 +78,8 @@ public class Modes_UT {
         b.setC(c);
         C defaultC = new C();
 
-        TypedMode<A,C> mode = Modes.safeNav(defaultC);
-        FunctorBase<A,C> functorBase = mode.makeBase(getState());
+        TypedMode<C> mode = Modes.safeNav(defaultC);
+        FunctorBase<A,C> functorBase = (FunctorBase<A, C>) mode.makeBase(getState());
 
         assertTrue(mode instanceof TypedSafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
@@ -118,8 +118,8 @@ public class Modes_UT {
         CALLS_TO_A.getB();
         B defaultB = new B();
 
-        TypedMode<A,B> mode = Modes.tailDefault(defaultB);
-        FunctorBase<A,B> functorBase = mode.makeBase(getState());
+        TypedMode<B> mode = Modes.tailDefault(defaultB);
+        FunctorBase<A,B> functorBase = (FunctorBase<A, B>) mode.makeBase(getState());
 
         assertTrue(mode instanceof TailDefault);
         assertTrue(functorBase instanceof TailDefaultFunctor);
@@ -132,8 +132,8 @@ public class Modes_UT {
         a.setB(b);
         B defaultB = new B();
 
-        TypedMode<A,B> mode = Modes.tailDefault(defaultB);
-        FunctorBase<A,B> functorBase = mode.makeBase(getState());
+        TypedMode<B> mode = Modes.tailDefault(defaultB);
+        FunctorBase<A,B> functorBase = (FunctorBase<A, B>) mode.makeBase(getState());
 
         assertTrue(mode instanceof TailDefault);
         assertTrue(functorBase instanceof TailDefaultFunctor);
@@ -145,8 +145,8 @@ public class Modes_UT {
         CALLS_TO_A.getB().getC();
         C defaultC = new C();
 
-        TypedMode<A,C> mode = Modes.tailDefault(defaultC);
-        FunctorBase<A,C> functorBase = mode.makeBase(getState());
+        TypedMode<C> mode = Modes.tailDefault(defaultC);
+        FunctorBase<A,C> functorBase = (FunctorBase<A, C>) mode.makeBase(getState());
 
         expected.expect(FuncitoException.class);
         expected.expectMessage("NullPointerException");

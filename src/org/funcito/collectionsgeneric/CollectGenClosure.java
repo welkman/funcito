@@ -26,7 +26,7 @@ public class CollectGenClosure<T> implements Closure<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public CollectGenClosure(InvokableState state, TypedMode<T,Void> mode) {
+    public CollectGenClosure(InvokableState state, TypedMode<Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

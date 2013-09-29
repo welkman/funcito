@@ -93,7 +93,7 @@ public class FuncitoJedi {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, TypedMode<T,V> mode) {
+    public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, TypedMode<V> mode) {
         return jediDelegate.functorFor(proxiedMethodCall, mode);
     }
 
@@ -122,7 +122,7 @@ public class FuncitoJedi {
         return jediDelegate.filterFor(proxiedMethodCall);
     }
 
-    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, TypedMode<T,Boolean> mode) {
+    public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
         return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
 
@@ -169,7 +169,7 @@ public class FuncitoJedi {
         return jediDelegate.commandFor(proxiedMethodCall);
     }
 
-    public static <T> Command<T> commandFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public static <T> Command<T> commandFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return jediDelegate.commandFor(proxiedMethodCall, mode);
     }
 
@@ -236,7 +236,7 @@ public class FuncitoJedi {
         return jediDelegate.voidCommand();
     }
 
-    public static <T> Command<T> voidCommand(TypedMode<T,Void> mode) {
+    public static <T> Command<T> voidCommand(TypedMode<Void> mode) {
         return jediDelegate.voidCommand(mode);
     }
 

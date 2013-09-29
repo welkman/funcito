@@ -27,7 +27,7 @@ public class FjF<T,V> extends F<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public FjF(InvokableState state, TypedMode<T,V> mode) {
+    public FjF(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

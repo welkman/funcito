@@ -91,8 +91,8 @@ public class FuncitoPlay2 {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<?,V> mode) {
-        return play2Delegate.functionFor(proxiedMethodCall, (TypedMode<T, V>) mode);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<V> mode) {
+        return play2Delegate.functionFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
     // TODO: javadoc
@@ -139,7 +139,7 @@ public class FuncitoPlay2 {
         return     play2Delegate.callbackFor(proxiedMethodCall);
     }
 
-    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public static <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     play2Delegate.callbackFor(proxiedMethodCall, mode);
     }
 
@@ -206,7 +206,7 @@ public class FuncitoPlay2 {
         return     play2Delegate.voidCallback();
     }
 
-    public static <T> Callback<T> voidCallback(TypedMode<T,Void> mode) {
+    public static <T> Callback<T> voidCallback(TypedMode<Void> mode) {
         return     play2Delegate.voidCallback(mode);
     }
 

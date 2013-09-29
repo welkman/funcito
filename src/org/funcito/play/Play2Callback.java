@@ -26,7 +26,7 @@ public class Play2Callback<T> implements F.Callback<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public Play2Callback(InvokableState state, TypedMode<T,Void> mode) {
+    public Play2Callback(InvokableState state, TypedMode<Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

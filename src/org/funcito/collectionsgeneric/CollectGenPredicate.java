@@ -42,7 +42,7 @@ public class CollectGenPredicate<T> implements Predicate<T> {
         this(state, new ValidateNullBoolean(Predicate.class, altMethod));
     }
 
-    public CollectGenPredicate(InvokableState state, TypedMode<T,Boolean> mode) {
+    public CollectGenPredicate(InvokableState state, TypedMode<Boolean> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

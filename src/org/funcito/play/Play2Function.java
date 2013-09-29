@@ -26,7 +26,7 @@ public class Play2Function<T, V> implements Function<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public Play2Function(InvokableState state, TypedMode<T,V> mode) {
+    public Play2Function(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

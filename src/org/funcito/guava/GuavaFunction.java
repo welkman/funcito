@@ -27,7 +27,7 @@ public class GuavaFunction<T, V> implements Function<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public GuavaFunction(InvokableState state, TypedMode<T,V> mode) {
+    public GuavaFunction(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

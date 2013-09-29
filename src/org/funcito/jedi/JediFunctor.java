@@ -26,7 +26,7 @@ public class JediFunctor<T, V> implements Functor<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public JediFunctor(InvokableState state, TypedMode<T,V> mode) {
+    public JediFunctor(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

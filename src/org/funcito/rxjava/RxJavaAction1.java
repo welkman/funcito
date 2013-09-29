@@ -26,7 +26,7 @@ public class RxJavaAction1<T> implements Action1<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public RxJavaAction1(InvokableState state, TypedMode<T,Void> mode) {
+    public RxJavaAction1(InvokableState state, TypedMode<Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

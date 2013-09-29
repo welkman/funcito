@@ -20,7 +20,7 @@ import org.funcito.functorbase.SafeNavFunctor;
 import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public class TypedSafeNav<T,V> implements TypedMode<T,V> {
+public class TypedSafeNav<V> implements TypedMode<V> {
     private V nullNavDefault;
 
     public TypedSafeNav(V nullNavDefault) {
@@ -28,7 +28,7 @@ public class TypedSafeNav<T,V> implements TypedMode<T,V> {
     }
 
     @Override
-    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
-        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
+    public FunctorBase<?,V> makeBase(InvokableState invokableState) {
+        return new SafeNavFunctor<Object,V>(invokableState, nullNavDefault);
     }
 }

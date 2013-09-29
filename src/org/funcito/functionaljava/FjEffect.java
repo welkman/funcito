@@ -26,7 +26,7 @@ public class FjEffect<T> extends Effect<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public FjEffect(InvokableState state, TypedMode<T,Void> mode) {
+    public FjEffect(InvokableState state, TypedMode<Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

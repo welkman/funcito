@@ -23,6 +23,6 @@ import org.funcito.mode.TailDefault;
 public class CollectGenDefaultablePredicate<T> extends CollectGenPredicate<T> {
 
     public CollectGenDefaultablePredicate(InvokableState state, boolean defaultForNull) {
-        super(state, new TailDefault<T,Boolean>(defaultForNull));
+        super(state, new TailDefault<Boolean>(defaultForNull));
     }
 }

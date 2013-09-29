@@ -24,8 +24,8 @@ public class Modes {
     }
 
     // TODO: Javadoc
-    public static <T,V> TypedMode<T,V> safeNav(V v) {
-        return new TypedSafeNav<T,V>(v);
+    public static <T,V> TypedMode<V> safeNav(V v) {
+        return new TypedSafeNav<V>(v);
     }
 
     // TODO: Javadoc
@@ -34,8 +34,8 @@ public class Modes {
     }
 
     // TODO: Javadoc
-    public static <T,V> TypedMode<T,V> tailDefault(V defaultForNull) {
-        return new TailDefault<T,V>(defaultForNull);
+    public static <T,V> TypedMode<V> tailDefault(V defaultForNull) {
+        return new TailDefault<V>(defaultForNull);
     }
 
 }

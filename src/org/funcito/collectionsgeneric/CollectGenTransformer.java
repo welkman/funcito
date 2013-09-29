@@ -26,7 +26,7 @@ public class CollectGenTransformer<T, V> implements Transformer<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public CollectGenTransformer(InvokableState state, TypedMode<T,V> mode) {
+    public CollectGenTransformer(InvokableState state, TypedMode<V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

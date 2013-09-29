@@ -94,8 +94,8 @@ public class FuncitoFJ {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> F<T,V> fFor(V proxiedMethodCall, TypedMode<?,V> mode) {
-        return fjDelegate.fFor(proxiedMethodCall, (TypedMode<T, V>) mode);
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall, TypedMode<V> mode) {
+        return fjDelegate.fFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
     // TODO: javadoc
@@ -142,7 +142,7 @@ public class FuncitoFJ {
         return fjDelegate.effectFor(proxiedMethodCall);
     }
 
-    public static <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
+    public static <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return fjDelegate.effectFor(proxiedMethodCall, mode);
     }
 
@@ -209,7 +209,7 @@ public class FuncitoFJ {
         return fjDelegate.voidEffect();
     }
 
-    public static <T> Effect<T> voidEffect(TypedMode<T,Void> mode) {
+    public static <T> Effect<T> voidEffect(TypedMode<Void> mode) {
         return fjDelegate.voidEffect(mode);
     }
 

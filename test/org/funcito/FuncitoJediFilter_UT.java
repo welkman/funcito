@@ -62,7 +62,7 @@ public class FuncitoJediFilter_UT {
     public void testPredicateFor_TypedMode() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        TypedMode<BooleanThing,Boolean> mode = Modes.safeNav(true);
+        TypedMode<Boolean> mode = Modes.safeNav(true);
         Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.execute(nullThing));
 

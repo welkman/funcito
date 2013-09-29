@@ -26,7 +26,7 @@ public class JediCommand<T> implements Command<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public JediCommand(InvokableState state, TypedMode<T,Void> mode) {
+    public JediCommand(InvokableState state, TypedMode<Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

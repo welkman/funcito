@@ -92,8 +92,8 @@ public class FuncitoGuava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<?,V> mode) {
-        return guavaDelegate.functionFor(proxiedMethodCall, (TypedMode<T, V>) mode);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<V> mode) {
+        return guavaDelegate.functionFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
     // TODO: javadoc
@@ -139,11 +139,11 @@ public class FuncitoGuava {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)Modes.tailDefault(defaultForNull));
+        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<?,Boolean> mode) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)mode);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)mode);
     }
 
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode mode) {

@@ -31,9 +31,9 @@ public class FunctorFactory {
     public static FunctorFactory instance() { return INSTANCE; }
 
     // TODO: javadoc method
-    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, TypedMode<T,V> mode) {
+    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, TypedMode<V> mode) {
         if (mode != null) {
-            return mode.makeBase(state);
+            return (FunctorBase<T, V>) mode.makeBase(state);
         }
         return new BasicFunctor<T,V>(state);
     }
