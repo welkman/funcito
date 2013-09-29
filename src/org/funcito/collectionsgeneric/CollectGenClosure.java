@@ -20,17 +20,17 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 
 public class CollectGenClosure<T> implements Closure<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public CollectGenClosure(InvokableState state, Mode<T,Void> mode) {
+    public CollectGenClosure(InvokableState state, TypedMode<T,Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public CollectGenClosure(InvokableState state, UntypedMode mode) {
+    public CollectGenClosure(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

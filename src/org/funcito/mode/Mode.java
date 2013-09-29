@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.funcito.mode;
 
-import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.functorbase.FunctorBase;
 
 // TODO: Javadoc
-public interface Mode<T,V> {
-    FunctorBase<T,V> makeBase(InvokableState invokableState);
+public interface Mode {
+    FunctorBase<?,?> makeBase(InvokableState invokableState);
 }

@@ -19,18 +19,18 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 import play.libs.F.Function;
 
 public class Play2Function<T, V> implements Function<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public Play2Function(InvokableState state, Mode<T,V> mode) {
+    public Play2Function(InvokableState state, TypedMode<T,V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public Play2Function(InvokableState state, UntypedMode mode) {
+    public Play2Function(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

@@ -20,17 +20,17 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 
 public class JediFunctor<T, V> implements Functor<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public JediFunctor(InvokableState state, Mode<T,V> mode) {
+    public JediFunctor(InvokableState state, TypedMode<T,V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public JediFunctor(InvokableState state, UntypedMode mode) {
+    public JediFunctor(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

@@ -15,10 +15,20 @@
  */
 package org.funcito.mode;
 
-import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
+import org.funcito.functorbase.SafeNavFunctor;
+import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public interface UntypedMode {
-    FunctorBase<?,?> makeBase(InvokableState invokableState);
+public class TypedSafeNav<T,V> implements TypedMode<T,V> {
+    private V nullNavDefault;
+
+    public TypedSafeNav(V nullNavDefault) {
+        this.nullNavDefault = nullNavDefault;
+    }
+
+    @Override
+    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
+        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
+    }
 }

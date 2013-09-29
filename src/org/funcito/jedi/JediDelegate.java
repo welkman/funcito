@@ -6,8 +6,8 @@ import jedi.functional.Functor;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
 import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.NoOp;
-import org.funcito.mode.UntypedMode;
 
 import static org.funcito.internal.WrapperType.JEDI_FUNCTOR;
 import static org.funcito.internal.WrapperType.JEDI_FILTER;
@@ -41,19 +41,19 @@ public class JediDelegate extends FuncitoDelegate {
     }
 
     /**
-     * Delegated version of <code>FuncitoJedi.functorFor(V,Mode)</code>
-     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.Mode)
+     * Delegated version of <code>FuncitoJedi.functorFor(V,TypedMode)</code>
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> Functor<T,V> functorFor(V ignoredRetVal, Mode<T,V> mode) {
+    public <T,V> Functor<T,V> functorFor(V ignoredRetVal, TypedMode<T,V> mode) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
         return new JediFunctor<T, V>(state, mode);
     }
 
     /**
-     * Delegated version of <code>FuncitoJedi.functorFor(V,UntypedMode)</code>
-     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.UntypedMode)
+     * Delegated version of <code>FuncitoJedi.functorFor(V,Mode)</code>
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.Mode)
      */
-    public <T,V> Functor<T,V> functorFor(V ignoredRetVal, UntypedMode mode) {
+    public <T,V> Functor<T,V> functorFor(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
         return new JediFunctor<T, V>(state, mode);
     }
@@ -63,12 +63,12 @@ public class JediDelegate extends FuncitoDelegate {
         return new JediFilter<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Filter<T> filterFor(Boolean ignoredRetVal, Mode<T,Boolean> mode) {
+    public <T> Filter<T> filterFor(Boolean ignoredRetVal, TypedMode<T,Boolean> mode) {
         final InvokableState state = extractInvokableState(JEDI_FILTER);
         return new JediFilter<T>(state, mode);
     }
 
-    public <T> Filter<T> filterFor(Boolean ignoredRetVal, UntypedMode mode) {
+    public <T> Filter<T> filterFor(Boolean ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(JEDI_FILTER);
         return new JediFilter<T>(state, mode);
     }
@@ -78,12 +78,12 @@ public class JediDelegate extends FuncitoDelegate {
         return new JediCommand<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Command<T> commandFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+    public <T> Command<T> commandFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(JEDI_COMMAND);
         return new JediCommand<T>(state, mode);
     }
 
-    public <T> Command<T> commandFor(Object proxiedMethodCall, UntypedMode mode) {
+    public <T> Command<T> commandFor(Object proxiedMethodCall, Mode mode) {
         InvokableState state = extractInvokableState(JEDI_COMMAND);
         return new JediCommand<T>(state, mode);
     }
@@ -95,12 +95,12 @@ public class JediDelegate extends FuncitoDelegate {
         return new JediCommand<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Command<T> voidCommand(Mode<T,Void> mode) {
+    public <T> Command<T> voidCommand(TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
         return new JediCommand<T>(state, mode);
     }
 
-    public <T> Command<T> voidCommand(UntypedMode mode) {
+    public <T> Command<T> voidCommand(Mode mode) {
         InvokableState state = extractInvokableState(JEDI_VOID_COMMAND);
         return new JediCommand<T>(state, mode);
     }

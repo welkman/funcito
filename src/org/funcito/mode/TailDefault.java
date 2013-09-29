@@ -19,7 +19,7 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.TailDefaultFunctor;
 import org.funcito.internal.InvokableState;
 
-public class TailDefault<T,V> implements Mode<T,V> {
+public class TailDefault<T,V> implements TypedMode<T,V> {
 
     private V defaultForNull;
 

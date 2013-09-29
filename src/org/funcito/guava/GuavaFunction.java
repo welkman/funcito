@@ -19,19 +19,19 @@ import com.google.common.base.Function;
 
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorfactory.FunctorFactory;
-import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.Mode;
 
 public class GuavaFunction<T, V> implements Function<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public GuavaFunction(InvokableState state, Mode<T,V> mode) {
+    public GuavaFunction(InvokableState state, TypedMode<T,V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public GuavaFunction(InvokableState state, UntypedMode mode) {
+    public GuavaFunction(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

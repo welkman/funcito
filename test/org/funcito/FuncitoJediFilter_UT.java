@@ -1,9 +1,9 @@
 package org.funcito;
 
 import jedi.functional.Filter;
-import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Modes;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.Mode;
 import org.junit.Test;
 
 import static org.funcito.FuncitoJedi.*;
@@ -50,19 +50,19 @@ public class FuncitoJediFilter_UT {
     }
 
     @Test
-    public void testPredicateFor_UntypedMode() {
+    public void testPredicateFor_Mode() {
         BooleanThing nullThing = new BooleanThing(true);
 
-        UntypedMode mode = Modes.noOp();
+        Mode mode = Modes.noOp();
         Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.execute(nullThing));
     }
 
     @Test
-    public void testPredicateFor_Mode() {
+    public void testPredicateFor_TypedMode() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        Mode<BooleanThing,Boolean> mode = Modes.safeNav(true);
+        TypedMode<BooleanThing,Boolean> mode = Modes.safeNav(true);
         Filter<BooleanThing> pred = filterFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.execute(nullThing));
 

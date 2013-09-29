@@ -16,7 +16,7 @@
 package org.funcito;
 
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 import org.funcito.rxjava.RxJavaDelegate;
 import rx.util.functions.Action1;
 import rx.util.functions.Func1;
@@ -91,12 +91,12 @@ public class FuncitoRxJava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, Mode<?,V> mode) {
-        return rxJavaDelegate.func1For(proxiedMethodCall, (Mode<T, V>) mode);
+    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, TypedMode<?,V> mode) {
+        return rxJavaDelegate.func1For(proxiedMethodCall, (TypedMode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, UntypedMode mode) {
+    public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, Mode mode) {
         return rxJavaDelegate.func1For(proxiedMethodCall, mode);
     }
 
@@ -139,11 +139,11 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.action1For(proxiedMethodCall);
     }
 
-    public static <T> Action1<T> action1For(Object proxiedMethodCall, Mode<T,Void> mode) {
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<T,Void> mode) {
         return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
-    public static <T> Action1<T> action1For(Object proxiedMethodCall, UntypedMode mode) {
+    public static <T> Action1<T> action1For(Object proxiedMethodCall, Mode mode) {
         return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
@@ -206,11 +206,11 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.voidAction1();
     }
 
-    public static <T> Action1<T> voidAction1(Mode<T,Void> mode) {
+    public static <T> Action1<T> voidAction1(TypedMode<T,Void> mode) {
         return     rxJavaDelegate.voidAction1(mode);
     }
 
-    public static <T> Action1<T> voidAction1(UntypedMode mode) {
+    public static <T> Action1<T> voidAction1(Mode mode) {
         return     rxJavaDelegate.voidAction1(mode);
     }
 

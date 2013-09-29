@@ -19,8 +19,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.funcito.guava.GuavaDelegate;
 import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Modes;
-import org.funcito.mode.UntypedMode;
 
 /**
  * This class is the static entry point of the Funcito API for Google Guava.
@@ -92,12 +92,12 @@ public class FuncitoGuava {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode<?,V> mode) {
-        return guavaDelegate.functionFor(proxiedMethodCall, (Mode<T, V>) mode);
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<?,V> mode) {
+        return guavaDelegate.functionFor(proxiedMethodCall, (TypedMode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, UntypedMode mode) {
+    public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode mode) {
         return guavaDelegate.functionFor(proxiedMethodCall, mode);
     }
 
@@ -139,14 +139,14 @@ public class FuncitoGuava {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)Modes.tailDefault(defaultForNull));
+        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)Modes.tailDefault(defaultForNull));
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode<?,Boolean> mode) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (Mode<T,Boolean>)mode);
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<?,Boolean> mode) {
+        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<T,Boolean>)mode);
     }
 
-    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, UntypedMode mode) {
+    public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode mode) {
         return guavaDelegate.predicateFor(proxiedMethodCall, mode);
     }
 

@@ -21,8 +21,8 @@ import org.funcito.*;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
 import org.funcito.mode.ValidateNullBoolean;
 
 import java.lang.reflect.Method;
@@ -42,11 +42,11 @@ public class GuavaPredicate<T> implements Predicate<T> {
         this(state, new ValidateNullBoolean(Predicate.class, altMethod));
     }
 
-    public GuavaPredicate(InvokableState state, Mode<T,Boolean> mode) {
+    public GuavaPredicate(InvokableState state, TypedMode<T,Boolean> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public GuavaPredicate(InvokableState state, UntypedMode mode) {
+    public GuavaPredicate(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

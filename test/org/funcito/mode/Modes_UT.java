@@ -51,7 +51,7 @@ public class Modes_UT {
     public void testNoOp() {
         CALLS_TO_A.getB().getC();
 
-        UntypedMode mode = Modes.noOp();
+        Mode mode = Modes.noOp();
         FunctorBase<A,C> functorBase = (FunctorBase<A,C>)mode.makeBase(getState());
 
         assertTrue(mode instanceof  NoOp);
@@ -63,10 +63,10 @@ public class Modes_UT {
         CALLS_TO_A.getB().getC();
 
         C defaultC = new C();
-        Mode<A,C> mode = Modes.safeNav(defaultC);
+        TypedMode<A,C> mode = Modes.safeNav(defaultC);
         FunctorBase<A,C> functorBase = mode.makeBase(getState());
 
-        assertTrue(mode instanceof SafeNav);
+        assertTrue(mode instanceof TypedSafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
         assertSame(defaultC, functorBase.applyImpl(a));
     }
@@ -78,37 +78,37 @@ public class Modes_UT {
         b.setC(c);
         C defaultC = new C();
 
-        Mode<A,C> mode = Modes.safeNav(defaultC);
+        TypedMode<A,C> mode = Modes.safeNav(defaultC);
         FunctorBase<A,C> functorBase = mode.makeBase(getState());
 
-        assertTrue(mode instanceof SafeNav);
+        assertTrue(mode instanceof TypedSafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
         assertNotSame(defaultC, functorBase.applyImpl(a));
         assertSame(c, functorBase.applyImpl(a));
     }
 
     @Test
-    public void testUntypedSafeNav_forNullDefault() {
+    public void testSafeNav_forNullDefault() {
         CALLS_TO_A.getB().getC();
 
-        UntypedMode mode = Modes.safeNav();
+        Mode mode = Modes.safeNav();
         FunctorBase<A,C> functorBase = (FunctorBase<A,C>)mode.makeBase(getState());
 
-        assertTrue(mode instanceof UntypedSafeNav);
+        assertTrue(mode instanceof SafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
         assertNull(functorBase.applyImpl(a));
     }
 
     @Test
-    public void testUntypedSafeNav_noDefaultNeeded() {
+    public void testSafeNav_noDefaultNeeded() {
         CALLS_TO_A.getB().getC();
         a.setB(b);
         b.setC(c);
 
-        UntypedMode mode = Modes.safeNav();
+        Mode mode = Modes.safeNav();
         FunctorBase<A,C> functorBase = (FunctorBase<A,C>)mode.makeBase(getState());
 
-        assertTrue(mode instanceof UntypedSafeNav);
+        assertTrue(mode instanceof SafeNav);
         assertTrue(functorBase instanceof SafeNavFunctor);
         assertSame(c, functorBase.applyImpl(a));
     }
@@ -118,7 +118,7 @@ public class Modes_UT {
         CALLS_TO_A.getB();
         B defaultB = new B();
 
-        Mode<A,B> mode = Modes.tailDefault(defaultB);
+        TypedMode<A,B> mode = Modes.tailDefault(defaultB);
         FunctorBase<A,B> functorBase = mode.makeBase(getState());
 
         assertTrue(mode instanceof TailDefault);
@@ -132,7 +132,7 @@ public class Modes_UT {
         a.setB(b);
         B defaultB = new B();
 
-        Mode<A,B> mode = Modes.tailDefault(defaultB);
+        TypedMode<A,B> mode = Modes.tailDefault(defaultB);
         FunctorBase<A,B> functorBase = mode.makeBase(getState());
 
         assertTrue(mode instanceof TailDefault);
@@ -145,7 +145,7 @@ public class Modes_UT {
         CALLS_TO_A.getB().getC();
         C defaultC = new C();
 
-        Mode<A,C> mode = Modes.tailDefault(defaultC);
+        TypedMode<A,C> mode = Modes.tailDefault(defaultC);
         FunctorBase<A,C> functorBase = mode.makeBase(getState());
 
         expected.expect(FuncitoException.class);

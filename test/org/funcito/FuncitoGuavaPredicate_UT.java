@@ -2,9 +2,9 @@ package org.funcito;
 
 import com.google.common.base.Predicate;
 import org.funcito.internal.WrapperType;
-import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Modes;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.Mode;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -86,19 +86,19 @@ public class FuncitoGuavaPredicate_UT {
     }
 
     @Test
-    public void testPredicateFor_UntypedMode() {
+    public void testPredicateFor_Mode() {
         BooleanThing nullThing = new BooleanThing(true);
 
-        UntypedMode mode = Modes.noOp();
+        Mode mode = Modes.noOp();
         Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.apply(nullThing));
     }
 
     @Test
-    public void testPredicateFor_Mode() {
+    public void testPredicateFor_TypedMode() {
         BooleanThing nullThing = new BooleanThing(null);
 
-        Mode<Object,Boolean> mode = Modes.safeNav(true);
+        TypedMode<Object,Boolean> mode = Modes.safeNav(true);
         Predicate<BooleanThing> pred = predicateFor(CALL_TO_BOOL_THING.getVal(), mode);
         assertTrue(pred.apply(nullThing));
 

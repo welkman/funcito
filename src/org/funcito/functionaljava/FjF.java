@@ -21,17 +21,17 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 
 public class FjF<T,V> extends F<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public FjF(InvokableState state, Mode<T,V> mode) {
+    public FjF(InvokableState state, TypedMode<T,V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public FjF(InvokableState state, UntypedMode mode) {
+    public FjF(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

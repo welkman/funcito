@@ -18,19 +18,19 @@ package org.funcito.play;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.internal.InvokableState;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
 import play.libs.F;
 
 public class Play2Callback<T> implements F.Callback<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public Play2Callback(InvokableState state, Mode<T,Void> mode) {
+    public Play2Callback(InvokableState state, TypedMode<T,Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public Play2Callback(InvokableState state, UntypedMode mode) {
+    public Play2Callback(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

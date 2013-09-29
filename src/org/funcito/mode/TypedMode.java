@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.funcito.mode;
 
-import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
-import org.funcito.functorbase.SafeNavFunctor;
+import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public class UntypedSafeNav implements UntypedMode {
-
-    public static final UntypedSafeNav SAFE_NAV = new UntypedSafeNav();
-
-    @Override
-    public FunctorBase<?,?> makeBase(InvokableState invokableState) {
-        return new SafeNavFunctor<Object,Object>(invokableState, null);
-    }
+public interface TypedMode<T,V> {
+    FunctorBase<T,V> makeBase(InvokableState invokableState);
 }

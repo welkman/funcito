@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.funcito.FuncitoGuava.*;
-import static org.funcito.mode.UntypedSafeNav.SAFE_NAV;
+import static org.funcito.mode.SafeNav.SAFE_NAV;
 import static org.funcito.mode.Modes.*;
 import static org.junit.Assert.*;
 

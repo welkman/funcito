@@ -15,20 +15,17 @@
  */
 package org.funcito.mode;
 
+import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.SafeNavFunctor;
-import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public class SafeNav<T,V> implements Mode<T,V> {
-    private V nullNavDefault;
+public class SafeNav implements Mode {
 
-    public SafeNav(V nullNavDefault) {
-        this.nullNavDefault = nullNavDefault;
-    }
+    public static final SafeNav SAFE_NAV = new SafeNav();
 
     @Override
-    public FunctorBase<T,V> makeBase(InvokableState invokableState) {
-        return new SafeNavFunctor<T,V>(invokableState, nullNavDefault);
+    public FunctorBase<?,?> makeBase(InvokableState invokableState) {
+        return new SafeNavFunctor<Object,Object>(invokableState, null);
     }
 }

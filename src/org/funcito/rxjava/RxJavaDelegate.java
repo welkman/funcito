@@ -17,9 +17,9 @@ package org.funcito.rxjava;
 
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.NoOp;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.Mode;
 import rx.util.functions.Action1;
 import rx.util.functions.Func1;
 
@@ -28,7 +28,7 @@ import static org.funcito.internal.WrapperType.*;
 public class RxJavaDelegate extends FuncitoDelegate {
 
     /**
-     * Delegated version of <code>FuncitoRxJava.func1For(V,Mode)</code>
+     * Delegated version of <code>FuncitoRxJava.func1For(V,TypedMode)</code>
      * @see org.funcito.FuncitoRxJava#func1For(Object)
      */
     public <T,V> Func1<T,V> func1For(V ignoredRetVal) {
@@ -37,19 +37,19 @@ public class RxJavaDelegate extends FuncitoDelegate {
     }
 
     /**
-     * Delegated version of <code>FuncitoRxJava.func1For(V,Mode)</code>
-     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.Mode)
+     * Delegated version of <code>FuncitoRxJava.func1For(V,TypedMode)</code>
+     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> Func1<T,V> func1For(V ignoredRetVal, Mode<T,V> mode) {
+    public <T,V> Func1<T,V> func1For(V ignoredRetVal, TypedMode<T,V> mode) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
         return new RxJavaFunc1<T, V>(state, mode);
     }
 
     /**
-     * Delegated version of <code>FuncitoRxJava.func1For(V,UntypedMode)</code>
-     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.UntypedMode)
+     * Delegated version of <code>FuncitoRxJava.func1For(V,Mode)</code>
+     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.Mode)
      */
-    public <T,V> Func1<T,V> func1For(V ignoredRetVal, UntypedMode mode) {
+    public <T,V> Func1<T,V> func1For(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
         return new RxJavaFunc1<T, V>(state, mode);
     }
@@ -59,12 +59,12 @@ public class RxJavaDelegate extends FuncitoDelegate {
         return new RxJavaAction1<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Action1<T> action1For(Object proxiedMethodCall, Mode<T,Void> mode) {
+    public <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
 
-    public <T> Action1<T> action1For(Object proxiedMethodCall, UntypedMode mode) {
+    public <T> Action1<T> action1For(Object proxiedMethodCall, Mode mode) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
@@ -76,12 +76,12 @@ public class RxJavaDelegate extends FuncitoDelegate {
         return new RxJavaAction1<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Action1<T> voidAction1(Mode<T,Void> mode) {
+    public <T> Action1<T> voidAction1(TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
 
-    public <T> Action1<T> voidAction1(UntypedMode mode) {
+    public <T> Action1<T> voidAction1(Mode mode) {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }

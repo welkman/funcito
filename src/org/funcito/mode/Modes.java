@@ -19,22 +19,22 @@ package org.funcito.mode;
 public class Modes {
 
     // TODO: Javadoc
-    public static UntypedMode noOp() {
+    public static Mode noOp() {
         return NoOp.NO_OP;
     }
 
     // TODO: Javadoc
-    public static <T,V> Mode<T,V> safeNav(V v) {
-        return new SafeNav<T,V>(v);
+    public static <T,V> TypedMode<T,V> safeNav(V v) {
+        return new TypedSafeNav<T,V>(v);
     }
 
     // TODO: Javadoc
-    public static UntypedMode safeNav() {
-        return UntypedSafeNav.SAFE_NAV;
+    public static Mode safeNav() {
+        return SafeNav.SAFE_NAV;
     }
 
     // TODO: Javadoc
-    public static <T,V> Mode<T,V> tailDefault(V defaultForNull) {
+    public static <T,V> TypedMode<T,V> tailDefault(V defaultForNull) {
         return new TailDefault<T,V>(defaultForNull);
     }
 

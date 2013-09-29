@@ -20,8 +20,8 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
 // TODO: Javadoc
-public class NoOp implements UntypedMode {
-    public static final UntypedMode NO_OP = new NoOp();
+public class NoOp implements Mode {
+    public static final Mode NO_OP = new NoOp();
 
     @Override
     public FunctorBase makeBase(InvokableState invokableState) {

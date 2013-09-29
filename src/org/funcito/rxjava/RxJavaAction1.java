@@ -18,19 +18,19 @@ package org.funcito.rxjava;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
 import rx.util.functions.Action1;
 
 public class RxJavaAction1<T> implements Action1<T> {
 
     private FunctorBase<T,Void> functorBase;
 
-    public RxJavaAction1(InvokableState state, Mode<T,Void> mode) {
+    public RxJavaAction1(InvokableState state, TypedMode<T,Void> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public RxJavaAction1(InvokableState state, UntypedMode mode) {
+    public RxJavaAction1(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

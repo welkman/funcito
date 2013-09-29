@@ -4,8 +4,8 @@ import org.funcito.functorbase.BasicFunctor;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.Invokable;
 import org.funcito.internal.InvokableState;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,8 +20,8 @@ public class FunctorFactory_UT {
 
     private FunctorFactory factory = FunctorFactory.instance();
     @Mock private InvokableState state;
-    @Mock private UntypedMode untypedMode;
     @Mock private Mode mode;
+    @Mock private TypedMode typedMode;
     @Mock private FunctorBase functorBase;
     @Mock private Iterator<Invokable> iter;
 
@@ -32,25 +32,7 @@ public class FunctorFactory_UT {
     }
 
     @Test
-    public void testMakeFunctionalBase_UntypedMode() {
-        when(untypedMode.makeBase(state)).thenReturn(functorBase);
-
-        FunctorBase result = factory.makeFunctionalBase(state, untypedMode);
-
-        assertSame(functorBase, result);
-    }
-
-    @Test
-    public void testMakeFunctionalBase_UntypedModeNull() {
-        when(untypedMode.makeBase(state)).thenReturn(functorBase);
-
-        FunctorBase result = factory.makeFunctionalBase(state, (UntypedMode)null);
-
-        assertEquals(BasicFunctor.class, result.getClass());
-    }
-
-    @Test
-    public void testMakeFunctionalBase_TypedMode() {
+    public void testMakeFunctionalBase_Mode() {
         when(mode.makeBase(state)).thenReturn(functorBase);
 
         FunctorBase result = factory.makeFunctionalBase(state, mode);
@@ -59,10 +41,28 @@ public class FunctorFactory_UT {
     }
 
     @Test
-    public void testMakeFunctionalBase_TypedModeNull() {
+    public void testMakeFunctionalBase_NullMode() {
         when(mode.makeBase(state)).thenReturn(functorBase);
 
         FunctorBase result = factory.makeFunctionalBase(state, (Mode)null);
+
+        assertEquals(BasicFunctor.class, result.getClass());
+    }
+
+    @Test
+    public void testMakeFunctionalBase_TypedMode() {
+        when(typedMode.makeBase(state)).thenReturn(functorBase);
+
+        FunctorBase result = factory.makeFunctionalBase(state, typedMode);
+
+        assertSame(functorBase, result);
+    }
+
+    @Test
+    public void testMakeFunctionalBase_NullTypedMode() {
+        when(typedMode.makeBase(state)).thenReturn(functorBase);
+
+        FunctorBase result = factory.makeFunctionalBase(state, (TypedMode)null);
 
         assertEquals(BasicFunctor.class, result.getClass());
     }

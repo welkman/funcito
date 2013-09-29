@@ -4,7 +4,7 @@ import fj.Effect;
 import fj.F;
 import org.funcito.functionaljava.FJDelegate;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 
 /*
  * Copyright 2013 Project Funcito Contributors
@@ -94,12 +94,12 @@ public class FuncitoFJ {
 
     // TODO: javadoc
     @SuppressWarnings("unchecked")
-    public static <T,V> F<T,V> fFor(V proxiedMethodCall, Mode<?,V> mode) {
-        return fjDelegate.fFor(proxiedMethodCall, (Mode<T, V>) mode);
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall, TypedMode<?,V> mode) {
+        return fjDelegate.fFor(proxiedMethodCall, (TypedMode<T, V>) mode);
     }
 
     // TODO: javadoc
-    public static <T,V> F<T,V> fFor(V proxiedMethodCall, UntypedMode mode) {
+    public static <T,V> F<T,V> fFor(V proxiedMethodCall, Mode mode) {
         return fjDelegate.fFor(proxiedMethodCall, mode);
     }
 
@@ -142,11 +142,11 @@ public class FuncitoFJ {
         return fjDelegate.effectFor(proxiedMethodCall);
     }
 
-    public static <T> Effect<T> effectFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+    public static <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
         return fjDelegate.effectFor(proxiedMethodCall, mode);
     }
 
-    public static <T> Effect<T> effectFor(Object proxiedMethodCall, UntypedMode mode) {
+    public static <T> Effect<T> effectFor(Object proxiedMethodCall, Mode mode) {
         return fjDelegate.effectFor(proxiedMethodCall, mode);
     }
 
@@ -209,11 +209,11 @@ public class FuncitoFJ {
         return fjDelegate.voidEffect();
     }
 
-    public static <T> Effect<T> voidEffect(Mode<T,Void> mode) {
+    public static <T> Effect<T> voidEffect(TypedMode<T,Void> mode) {
         return fjDelegate.voidEffect(mode);
     }
 
-    public static <T> Effect<T> voidEffect(UntypedMode mode) {
+    public static <T> Effect<T> voidEffect(Mode mode) {
         return fjDelegate.voidEffect(mode);
     }
 

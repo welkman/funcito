@@ -20,17 +20,17 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.TypedMode;
 
 public class CollectGenTransformer<T, V> implements Transformer<T,V> {
 
     private FunctorBase<T,V> functorBase;
 
-    public CollectGenTransformer(InvokableState state, Mode<T,V> mode) {
+    public CollectGenTransformer(InvokableState state, TypedMode<T,V> mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 
-    public CollectGenTransformer(InvokableState state, UntypedMode mode) {
+    public CollectGenTransformer(InvokableState state, Mode mode) {
         functorBase = FunctorFactory.instance().makeFunctionalBase(state, mode);
     }
 

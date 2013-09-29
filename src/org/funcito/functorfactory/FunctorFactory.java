@@ -18,8 +18,8 @@ package org.funcito.functorfactory;
 import org.funcito.functorbase.BasicFunctor;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import org.funcito.mode.UntypedMode;
 
 // TODO: javadoc class
 public class FunctorFactory {
@@ -31,7 +31,7 @@ public class FunctorFactory {
     public static FunctorFactory instance() { return INSTANCE; }
 
     // TODO: javadoc method
-    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, Mode<T,V> mode) {
+    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, TypedMode<T,V> mode) {
         if (mode != null) {
             return mode.makeBase(state);
         }
@@ -40,7 +40,7 @@ public class FunctorFactory {
 
     // TODO: javadoc method
     @SuppressWarnings("unchecked")
-    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, UntypedMode mode) {
+    public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, Mode mode) {
         if (mode != null) {
             return (FunctorBase<T,V>)mode.makeBase(state);
         }

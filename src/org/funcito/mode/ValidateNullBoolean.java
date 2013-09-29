@@ -21,7 +21,7 @@ import org.funcito.internal.InvokableState;
 
 import java.lang.reflect.Method;
 
-public class ValidateNullBoolean implements UntypedMode {
+public class ValidateNullBoolean implements Mode {
     private Class<?> apiPredicateClass;
     private Method altMethod;
 

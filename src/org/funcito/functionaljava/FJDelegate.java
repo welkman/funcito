@@ -4,9 +4,9 @@ import fj.Effect;
 import fj.F;
 import org.funcito.internal.FuncitoDelegate;
 import org.funcito.internal.InvokableState;
-import org.funcito.mode.Mode;
+import org.funcito.mode.TypedMode;
 import org.funcito.mode.NoOp;
-import org.funcito.mode.UntypedMode;
+import org.funcito.mode.Mode;
 
 import static org.funcito.internal.WrapperType.FJ_EFFECT;
 import static org.funcito.internal.WrapperType.FJ_F;
@@ -39,19 +39,19 @@ public class FJDelegate extends FuncitoDelegate {
     }
 
     /**
-     * Delegated version of <code>FuncitoFJ.functionFor(V,Mode)</code>
-     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.Mode)
+     * Delegated version of <code>FuncitoFJ.functionFor(V,TypedMode)</code>
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.TypedMode)
      */
-    public <T,V> F<T,V> fFor(V ignoredRetVal, Mode<T,V> mode) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal, TypedMode<T,V> mode) {
         final InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, mode);
     }
 
     /**
-     * Delegated version of <code>FuncitoFJ.fFor(V,UntypedMode)</code>
-     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.UntypedMode)
+     * Delegated version of <code>FuncitoFJ.fFor(V,Mode)</code>
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.Mode)
      */
-    public <T,V> F<T,V> fFor(V ignoredRetVal, UntypedMode mode) {
+    public <T,V> F<T,V> fFor(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(FJ_F);
         return new FjF<T, V>(state, mode);
     }
@@ -61,12 +61,12 @@ public class FJDelegate extends FuncitoDelegate {
         return new FjEffect<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Effect<T> effectFor(Object proxiedMethodCall, Mode<T,Void> mode) {
+    public <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(FJ_EFFECT);
         return new FjEffect<T>(state, mode);
     }
 
-    public <T> Effect<T> effectFor(Object proxiedMethodCall, UntypedMode mode) {
+    public <T> Effect<T> effectFor(Object proxiedMethodCall, Mode mode) {
         InvokableState state = extractInvokableState(FJ_EFFECT);
         return new FjEffect<T>(state, mode);
     }
@@ -78,12 +78,12 @@ public class FJDelegate extends FuncitoDelegate {
         return new FjEffect<T>(state, NoOp.NO_OP);
     }
 
-    public <T> Effect<T> voidEffect(Mode<T,Void> mode) {
+    public <T> Effect<T> voidEffect(TypedMode<T,Void> mode) {
         InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
         return new FjEffect<T>(state, mode);
     }
 
-    public <T> Effect<T> voidEffect(UntypedMode mode) {
+    public <T> Effect<T> voidEffect(Mode mode) {
         InvokableState state = extractInvokableState(FJ_VOID_EFFECT);
         return new FjEffect<T>(state, mode);
     }
