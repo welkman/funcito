@@ -1,9 +1,12 @@
 package org.funcito;
 
 import fj.F;
+import org.funcito.internal.WrapperType;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.funcito.FuncitoFJ.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 public class FuncitoFjF_UT {
@@ -16,6 +19,20 @@ public class FuncitoFjF_UT {
         public StringThing(String myString) { this.myString = myString; }
         public int size() { return myString.length(); }
         public String toString() { return myString; }
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            // cleanup aftermath of failed tests
+            delegate().extractInvokableState(WrapperType.FJ_F);
+        } catch (Throwable t) {}
+    }
+
+    @Test
+    public void testFunctionFor_AssignToFunctionWithMatchingTypes() { // I.e. vanilla happy path
+        F<StringThing, Integer> superTypeRet = fFor(CALLS_TO_STRING_THING.size());
+        assertEquals(3, superTypeRet.f(new StringThing("ABC")).intValue());
     }
 
     @Test
@@ -37,7 +54,7 @@ public class FuncitoFjF_UT {
         class Generic<T> {
             public Integer getVal() { return 123; }
         }
-        F<Generic<? extends Object>, Integer> stringFunc = fFor(callsTo(Generic.class).getVal());
+        F<Generic<?>, Integer> stringFunc = fFor(callsTo(Generic.class).getVal());
         Generic<Integer> integerGeneric = new Generic<Integer>();
 
         assertEquals(123, stringFunc.f(integerGeneric).intValue());
@@ -51,6 +68,24 @@ public class FuncitoFjF_UT {
         // NOTE: this test is a test that proves and documents a limitation of Funcito
         assertFalse("dogs".equals( pluralFunc.f(dog)));
         assertEquals("dog", pluralFunc.f(dog));
+    }
+
+    @Test
+    public void testFunctionFor_SafeNav_NoChainNullDefault() {
+        class Child {}
+        class Parent {
+            public Child getChild() { return null; }
+        }
+        Parent parent = new Parent();
+        Child altChild = new Child();
+        assertNull(parent.getChild());
+
+        // Note that in parameterized version, null must be cast for compile to work.
+        F<Parent, Child> func = fFor(callsTo(Parent.class).getChild(), safeNav(altChild));
+        F<Parent, Child> func2 = fFor(callsTo(Parent.class).getChild(), safeNav());
+
+        assertSame(altChild, func.f(parent));
+        assertNull(func2.f(parent));
     }
 }
 

@@ -6,8 +6,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.funcito.FuncitoCollectGen.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.funcito.mode.Modes.safeNav;
+import static org.junit.Assert.*;
 
 public class FuncitoCollectGenTransformer_UT {
 
@@ -25,7 +25,7 @@ public class FuncitoCollectGenTransformer_UT {
     public void tearDown() {
         try {
             // cleanup aftermath of failed tests
-            delegate().extractInvokableState(WrapperType.GUAVA_FUNCTION);
+            delegate().extractInvokableState(WrapperType.COLLECTGEN_TRANSFORMER);
         } catch (Throwable t) {}
     }
 
@@ -69,6 +69,24 @@ public class FuncitoCollectGenTransformer_UT {
         // NOTE: this test is a test that proves and documents a limitation of Funcito
         assertFalse("dogs".equals( pluralFunc.transform(dog)));
         assertEquals("dog", pluralFunc.transform(dog));
+    }
+
+    @Test
+    public void testFunctionFor_TypedAndUntypedModes() {
+        class Child {}
+        class Parent {
+            public Child getChild() { return null; }
+        }
+        Parent parent = new Parent();
+        Child altChild = new Child();
+        assertNull(parent.getChild());
+
+        // Note that in parameterized version, null must be cast for compile to work.
+        Transformer<Parent, Child> func = transformerFor(callsTo(Parent.class).getChild(), safeNav(altChild));
+        Transformer<Parent, Child> func2 = transformerFor(callsTo(Parent.class).getChild(), safeNav());
+
+        assertSame(altChild, func.transform(parent));
+        assertNull(func2.transform(parent));
     }
 }
 

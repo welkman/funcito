@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.funcito.FuncitoGuava.*;
-import static org.funcito.mode.SafeNav.SAFE_NAV;
 import static org.funcito.mode.Modes.*;
 import static org.junit.Assert.*;
 
@@ -30,7 +29,6 @@ public class FuncitoGuavaFunction_UT {
         } catch (Throwable t) {}
     }
 
-    // TODO: rename as happy path in all API UTs
     @Test
     public void testFunctionFor_AssignToFunctionWithMatchingTypes() { // I.e. vanilla happy path
         Function<StringThing, Integer> superTypeRet = functionFor(CALLS_TO_STRING_THING.size());
@@ -51,6 +49,7 @@ public class FuncitoGuavaFunction_UT {
         assertEquals(6, n);
     }
 
+    // TODO: revisit what the purpose of this test is, see if I can make it more clear
     @Test
     public void testFunctionFor_AllowUpcastToExtensionGenericType() {
         class Generic<T> {
@@ -74,24 +73,22 @@ public class FuncitoGuavaFunction_UT {
         assertEquals("dog", pluralFunc.apply(dog));
     }
 
-
     @Test
-    public void testFunctionFor_SafeNav_NoChainNullDefault() {
+    public void testFunctionFor_TypedAndUntypedModes() {
         class Child {}
         class Parent {
             public Child getChild() { return null; }
         }
         Parent parent = new Parent();
+        Child altChild = new Child();
         assertNull(parent.getChild());
 
         // Note that in parameterized version, null must be cast for compile to work.
-        Function<Parent, Child> func = functionFor(callsTo(Parent.class).getChild(), safeNav((Child)null));
+        Function<Parent, Child> func = functionFor(callsTo(Parent.class).getChild(), safeNav(altChild));
         Function<Parent, Child> func2 = functionFor(callsTo(Parent.class).getChild(), safeNav());
-        Function<Parent, Child> func3 = functionFor(callsTo(Parent.class).getChild(), SAFE_NAV);
 
-        assertNull(func.apply(parent));
+        assertSame(altChild, func.apply(parent));
         assertNull(func2.apply(parent));
-        assertNull(func3.apply(parent));
     }
 }
 

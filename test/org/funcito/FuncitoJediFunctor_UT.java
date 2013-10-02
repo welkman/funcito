@@ -17,9 +17,12 @@ package org.funcito;
  */
 
 import jedi.functional.Functor;
+import org.funcito.internal.WrapperType;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.funcito.FuncitoJedi.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 public class FuncitoJediFunctor_UT {
@@ -32,6 +35,14 @@ public class FuncitoJediFunctor_UT {
         public StringThing(String myString) { this.myString = myString; }
         public int size() { return myString.length(); }
         public String toString() { return myString; }
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            // cleanup aftermath of failed tests
+            delegate().extractInvokableState(WrapperType.JEDI_FUNCTOR);
+        } catch (Throwable t) {}
     }
 
     @Test
@@ -66,7 +77,7 @@ public class FuncitoJediFunctor_UT {
     }
 
     @Test
-    public void testFunctionFor_ExpressionsWithOperatorsAreUnsupported() {
+    public void testFunctorFor_ExpressionsWithOperatorsAreUnsupported() {
         Functor<StringThing,String> pluralFunc = functorFor(CALLS_TO_STRING_THING.toString() + "s");
         StringThing dog = new StringThing("dog");
 
@@ -75,5 +86,22 @@ public class FuncitoJediFunctor_UT {
         assertEquals("dog", pluralFunc.execute(dog));
     }
 
+    @Test
+    public void testFunctorFor_TypedAndUntypedModes() {
+        class Child {}
+        class Parent {
+            public Child getChild() { return null; }
+        }
+        Parent parent = new Parent();
+        Child altChild = new Child();
+        assertNull(parent.getChild());
+
+        // Note that in parameterized version, null must be cast for compile to work.
+        Functor<Parent, Child> func = functorFor(callsTo(Parent.class).getChild(), safeNav(altChild));
+        Functor<Parent, Child> func2 = functorFor(callsTo(Parent.class).getChild(), safeNav());
+
+        assertSame(altChild, func.execute(parent));
+        assertNull(func2.execute(parent));
+    }
 }
 
