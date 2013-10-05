@@ -93,7 +93,7 @@ public class FuncitoCollectGenClosure_UT {
     }
 
     @Test
-    public void testFunctionFor_TypedAndUntypedModes() {
+    public void testClosureFor_TypedAndUntypedModes() {
         Closure<Grows> closure = closureFor(CALLS_TO_GROWS.incAndReturn(), safeNav());
         // Without safeNav() untyped Mode, this results in a NPE
         closure.execute(null);

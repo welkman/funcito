@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.funcito.FuncitoJedi.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 /**
@@ -41,11 +42,23 @@ public class FuncitoJediCommand_UT {
 
     public class Grows {
         int i = 0;
-        public String incAndReturn() {
-            return Integer.toString(++i);
+        public Grows incAndReturn() {
+            ++i;
+            return this;
         }
         public void inc() { i++; }
         public void dec() { i--; }
+    }
+
+    @Test
+    public void testCommandFor_AssignToCommandWithMatchingSourceType() {
+        Grows grows = new Grows();
+
+        Command<Grows> superTypeRet = commandFor(CALLS_TO_GROWS.incAndReturn()); // Happy Path!
+        assertEquals(0, grows.i);
+
+        superTypeRet.execute(grows);
+        assertEquals(1, grows.i);
     }
 
     @Test
@@ -75,6 +88,17 @@ public class FuncitoJediCommand_UT {
         incCommand.execute(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
+    }
+
+    @Test
+    public void testCommandFor_TypedAndUntypedModes() {
+        Command<Grows> command = commandFor(CALLS_TO_GROWS.incAndReturn(), safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        command.execute(null);
+
+        command = commandFor(CALLS_TO_GROWS.incAndReturn(), safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        command.execute(null);
     }
 
     @Test
@@ -155,7 +179,7 @@ public class FuncitoJediCommand_UT {
     }
 
     @Test
-    public void testVoidCommand_preparedForNonVoidMethod() {
+    public void testVoidCommand_preparedForNonVoidMethodIsOk() {
         Grows grows = new Grows();
         assertEquals(0, grows.i);
 
@@ -166,5 +190,19 @@ public class FuncitoJediCommand_UT {
 
         assertEquals(1, grows.i);
     }
+
+    @Test
+    public void testVoidCommand_TypedAndUntypedModes() {
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Command<Grows> command = voidCommand(safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        command.execute(null);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        command = voidCommand(safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        command.execute(null);
+    }
+
 }
 
