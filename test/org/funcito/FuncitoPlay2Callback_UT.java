@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import play.libs.F.Callback;
 
 import static org.funcito.FuncitoPlay2.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 /**
@@ -41,8 +42,9 @@ public class FuncitoPlay2Callback_UT {
 
     public class Grows {
         int i = 0;
-        public String incAndReturn() {
-            return Integer.toString(++i);
+        public Grows incAndReturn() {
+            ++i;
+            return this;
         }
         public void inc() { i++; }
         public void dec() { i--; }
@@ -53,6 +55,17 @@ public class FuncitoPlay2Callback_UT {
         Grows grows = new Grows();
 
         Callback<Object> superTypeRet = callbackFor(CALLS_TO_GROWS.incAndReturn()); // Generic type is Object instead of Grows
+        assertEquals(0, grows.i);
+
+        superTypeRet.invoke(grows);
+        assertEquals(1, grows.i);
+    }
+
+    @Test
+    public void testCallbackFor_AssignToCallbackWithMatchingSourceType() throws Throwable {
+        Grows grows = new Grows();
+
+        Callback<Grows> superTypeRet = callbackFor(CALLS_TO_GROWS.incAndReturn()); // Happy Path!
         assertEquals(0, grows.i);
 
         superTypeRet.invoke(grows);
@@ -75,6 +88,17 @@ public class FuncitoPlay2Callback_UT {
         incCallback.invoke(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
+    }
+
+    @Test
+    public void testCallbackFor_TypedAndUntypedModes() throws Throwable {
+        Callback<Grows> callback = callbackFor(CALLS_TO_GROWS.incAndReturn(), safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        callback.invoke(null);
+
+        callback = callbackFor(CALLS_TO_GROWS.incAndReturn(), safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        callback.invoke(null);
     }
 
     @Test
@@ -165,6 +189,19 @@ public class FuncitoPlay2Callback_UT {
         e.invoke(grows);
 
         assertEquals(1, grows.i);
+    }
+
+    @Test
+    public void testVoidCallback_TypedAndUntypedModes() throws Throwable {
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Callback<Grows> callback = voidCallback(safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        callback.invoke(null);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        callback = voidCallback(safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        callback.invoke(null);
     }
 }
 
