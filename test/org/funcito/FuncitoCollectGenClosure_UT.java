@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.funcito.FuncitoCollectGen.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 /**
@@ -40,12 +41,26 @@ public class FuncitoCollectGenClosure_UT {
     }
 
     public class Grows {
-        int i = 0;
-        public String incAndReturn() {
-            return Integer.toString(++i);
+        int i;
+        public Grows(int i) { this.i = i; };
+        public Grows() { this(0); };
+        public Grows incAndReturn() {
+            ++i;
+            return this;
         }
         public void inc() { i++; }
         public void dec() { i--; }
+    }
+
+    @Test
+    public void testClosureFor_AssignToClosureWithMatchingSourceType() {
+        Grows grows = new Grows();
+
+        Closure<Grows> superTypeRet = closureFor(CALLS_TO_GROWS.incAndReturn()); // happy path
+        assertEquals(0, grows.i);
+
+        superTypeRet.execute(grows);
+        assertEquals(1, grows.i);
     }
 
     @Test
@@ -75,6 +90,17 @@ public class FuncitoCollectGenClosure_UT {
         incClosure.execute(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
+    }
+
+    @Test
+    public void testFunctionFor_TypedAndUntypedModes() {
+        Closure<Grows> closure = closureFor(CALLS_TO_GROWS.incAndReturn(), safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        closure.execute(null);
+
+        closure = closureFor(CALLS_TO_GROWS.incAndReturn(), safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        closure.execute(null);
     }
 
     @Test
@@ -146,7 +172,7 @@ public class FuncitoCollectGenClosure_UT {
     }
 
     @Test
-    public void testVoidClosure_interleavedPreparesDifferentSourcesAlsoNotOk() {
+    public void testVoidClosure_interleavedPreparesFromDifferentSourcesAlsoNotOk() {
         prepareVoid(CALLS_TO_GROWS).inc();
 
         thrown.expect(FuncitoException.class);
@@ -155,7 +181,7 @@ public class FuncitoCollectGenClosure_UT {
     }
 
     @Test
-    public void testVoidClosure_preparedForNonVoidMethod() {
+    public void testVoidClosure_preparedForNonVoidMethodIsOk() {
         Grows grows = new Grows();
         assertEquals(0, grows.i);
 
@@ -165,6 +191,19 @@ public class FuncitoCollectGenClosure_UT {
         e.execute(grows);
 
         assertEquals(1, grows.i);
+    }
+
+    @Test
+    public void testVoidClosure_TypedAndUntypedModes() {
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Closure<Grows> closure = voidClosure(safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        closure.execute(null);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        closure = voidClosure(safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        closure.execute(null);
     }
 }
 
