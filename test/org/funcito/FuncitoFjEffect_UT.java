@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.funcito.FuncitoFJ.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 public class FuncitoFjEffect_UT {
@@ -42,11 +43,23 @@ public class FuncitoFjEffect_UT {
 
     public class Grows {
         int i = 0;
-        public String incAndReturn() {
-            return Integer.toString(++i);
+        public Grows incAndReturn() {
+            ++i;
+            return this;
         }
         public void inc() { i++; }
         public void dec() { i--; }
+    }
+
+    @Test
+    public void testEffectFor_AssignToEffectWithMatchingSourceType() {
+        Grows grows = new Grows();
+
+        Effect<Grows> superTypeRet = effectFor(CALLS_TO_GROWS.incAndReturn()); // Happy Path!
+        assertEquals(0, grows.i);
+
+        superTypeRet.e(grows);
+        assertEquals(1, grows.i);
     }
 
     @Test
@@ -76,6 +89,17 @@ public class FuncitoFjEffect_UT {
         incEffect.e(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
+    }
+
+    @Test
+    public void testEffectFor_TypedAndUntypedModes() throws Throwable {
+        Effect<Grows> effect = effectFor(CALLS_TO_GROWS.incAndReturn(), safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        effect.e(null);
+
+        effect = effectFor(CALLS_TO_GROWS.incAndReturn(), safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        effect.e(null);
     }
 
     @Test
@@ -166,6 +190,19 @@ public class FuncitoFjEffect_UT {
         e.e(grows);
 
         assertEquals(1, grows.i);
+    }
+
+    @Test
+    public void testVoidEffect_TypedAndUntypedModes() throws Throwable {
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Effect<Grows> effect = voidEffect(safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        effect.e(null);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        effect = voidEffect(safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        effect.e(null);
     }
 }
 

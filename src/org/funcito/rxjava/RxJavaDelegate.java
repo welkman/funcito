@@ -85,10 +85,4 @@ public class RxJavaDelegate extends FuncitoDelegate {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
-
-    public <T> Action1<T> voidAction1(Class<T> validationTargetClass) {
-        validatePreparedVoidCall(validationTargetClass, RXJAVA_VOID_ACTION1);
-        return voidAction1();
-    }
-
 }

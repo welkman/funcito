@@ -24,6 +24,7 @@ import org.junit.rules.ExpectedException;
 import rx.util.functions.Action1;
 
 import static org.funcito.FuncitoRxJava.*;
+import static org.funcito.mode.Modes.safeNav;
 import static org.junit.Assert.*;
 
 public class FuncitoRxJavaAction1_UT {
@@ -40,11 +41,23 @@ public class FuncitoRxJavaAction1_UT {
 
     public class Grows {
         int i = 0;
-        public String incAndReturn() {
-            return Integer.toString(++i);
+        public Grows incAndReturn() {
+            ++i;
+            return this;
         }
         public void inc() { i++; }
         public void dec() { i--; }
+    }
+
+    @Test
+    public void testAction1For_AssignToAction1WithMatchingSourceType() {
+        Grows grows = new Grows();
+
+        Action1<Grows> superTypeRet = action1For(CALLS_TO_GROWS.incAndReturn()); // Happy Path!
+        assertEquals(0, grows.i);
+
+        superTypeRet.call(grows);
+        assertEquals(1, grows.i);
     }
 
     @Test
@@ -74,6 +87,17 @@ public class FuncitoRxJavaAction1_UT {
         incAction1.call(integerGeneric);
 
         assertEquals(1.0, integerGeneric.number, 0.01);
+    }
+
+    @Test
+    public void testEffectFor_TypedAndUntypedModes() throws Throwable {
+        Action1<Grows> action1 = action1For(CALLS_TO_GROWS.incAndReturn(), safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        action1.call(null);
+
+        action1 = action1For(CALLS_TO_GROWS.incAndReturn(), safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        action1.call(null);
     }
 
     @Test
@@ -164,6 +188,19 @@ public class FuncitoRxJavaAction1_UT {
         action.call(grows);
 
         assertEquals(1, grows.i);
+    }
+
+    @Test
+    public void testVoidAction1_TypedAndUntypedModes() throws Throwable {
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        Action1<Grows> action1 = voidAction1(safeNav());
+        // Without safeNav() untyped Mode, this results in a NPE
+        action1.call(null);
+
+        prepareVoid(CALLS_TO_GROWS).incAndReturn();
+        action1 = voidAction1(safeNav((Void)null));
+        // Without safeNav() TypedMode, this results in a NPE
+        action1.call(null);
     }
 }
 
