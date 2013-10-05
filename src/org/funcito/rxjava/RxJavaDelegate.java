@@ -54,33 +54,61 @@ public class RxJavaDelegate extends FuncitoDelegate {
         return new RxJavaFunc1<T, V>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.action1For(Object)</code>
+     * @see org.funcito.FuncitoRxJava#action1For(Object)
+     */
     public <T> Action1<T> action1For(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
         return new RxJavaAction1<T>(state, NoOp.NO_OP);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.action1For(Object,TypedMode)</code>
+     * @see org.funcito.FuncitoRxJava#action1For(Object,TypedMode)
+     */
     public <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.action1For(Object,Mode)</code>
+     * @see org.funcito.FuncitoRxJava#action1For(Object,Mode)
+     */
     public <T> Action1<T> action1For(Object proxiedMethodCall, Mode mode) {
         InvokableState state = extractInvokableState(RXJAVA_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.prepareVoid(T)</code>
+     * @see org.funcito.FuncitoRxJava#prepareVoid(T)
+     */
     public <T> T prepareVoid(T t) { return t; }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.voidAction1()</code>
+     * @see org.funcito.FuncitoRxJava#voidAction1()
+     */
     public <T> Action1<T> voidAction1() {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, NoOp.NO_OP);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.voidAction1(TypedMode)</code>
+     * @see org.funcito.FuncitoRxJava#voidAction1(TypedMode)
+     */
     public <T> Action1<T> voidAction1(TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoRxJava.voidAction1(Mode)</code>
+     * @see org.funcito.FuncitoRxJava#voidAction1(Mode)
+     */
     public <T> Action1<T> voidAction1(Mode mode) {
         InvokableState state = extractInvokableState(RXJAVA_VOID_ACTION1);
         return new RxJavaAction1<T>(state, mode);

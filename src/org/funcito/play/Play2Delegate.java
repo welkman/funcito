@@ -56,33 +56,61 @@ public class Play2Delegate extends FuncitoDelegate {
         return new Play2Function<T, V>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.callbackFor(Object,TypedMode)</code>
+     * @see org.funcito.FuncitoPlay2#callbackFor(Object)
+     */
     public <T> Callback<T> callbackFor(Object proxiedMethodCall) {
         InvokableState state = extractInvokableState(PLAY2_CALLBACK);
         return new Play2Callback<T>(state, NoOp.NO_OP);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.callbackFor(Object,TypedMode)</code>
+     * @see org.funcito.FuncitoPlay2#callbackFor(Object,TypedMode)
+     */
     public <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(PLAY2_CALLBACK);
         return new Play2Callback<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.callbackFor(Object,Mode)</code>
+     * @see org.funcito.FuncitoPlay2#callbackFor(Object,TypedMode)
+     */
     public <T> Callback<T> callbackFor(Object proxiedMethodCall, Mode mode) {
         InvokableState state = extractInvokableState(PLAY2_CALLBACK);
         return new Play2Callback<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.prepareVoid(T)</code>
+     * @see org.funcito.FuncitoPlay2#prepareVoid(T)
+     */
     public <T> T prepareVoid(T t) { return t; }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.voidCallback()</code>
+     * @see org.funcito.FuncitoPlay2#voidCallback()
+     */
     public <T> Callback<T> voidCallback() {
         InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
         return new Play2Callback<T>(state, NoOp.NO_OP);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.voidCallback(TypedMode)</code>
+     * @see org.funcito.FuncitoPlay2#voidCallback(TypedMode)
+     */
     public <T> Callback<T> voidCallback(TypedMode<Void> mode) {
         InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
         return new Play2Callback<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoPlay2.voidCallback(Mode)</code>
+     * @see org.funcito.FuncitoPlay2#voidCallback(Mode)
+     */
     public <T> Callback<T> voidCallback(Mode mode) {
         InvokableState state = extractInvokableState(PLAY2_VOID_CALLBACK);
         return new Play2Callback<T>(state, mode);
