@@ -40,7 +40,7 @@ public class Play2Delegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoPlay2.functionFor(V,TypedMode)</code>
-     * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.mode.TypedMode)
+     * @see org.funcito.FuncitoPlay2#functionFor(Object, TypedMode)
      */
     public <T,V> Function<T,V> functionFor(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);
@@ -49,7 +49,7 @@ public class Play2Delegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoPlay2.functionFor(V,Mode)</code>
-     * @see org.funcito.FuncitoPlay2#functionFor(Object, org.funcito.mode.Mode)
+     * @see org.funcito.FuncitoPlay2#functionFor(Object, Mode)
      */
     public <T,V> Function<T,V> functionFor(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(PLAY2_FUNCTION);

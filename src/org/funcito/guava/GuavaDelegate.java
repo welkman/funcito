@@ -37,7 +37,7 @@ public class GuavaDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoGuava.functionFor(V,TypedMode)</code>
-     * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.mode.TypedMode)
+     * @see org.funcito.FuncitoGuava#functionFor(Object, TypedMode)
      */
     public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
@@ -46,34 +46,47 @@ public class GuavaDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoGuava.functionFor(V,Mode)</code>
-     * @see org.funcito.FuncitoGuava#functionFor(Object, org.funcito.mode.Mode)
+     * @see org.funcito.FuncitoGuava#functionFor(Object, Mode)
      */
     public <T,V> Function<T,V> functionFor(@SuppressWarnings("unused") V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(GUAVA_FUNCTION);
         return new GuavaFunction<T, V>(state, mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Delegated version of <code>FuncitoGuava.predicateFor(Boolean)</code>
+     * @see org.funcito.FuncitoGuava#predicateFor(Boolean)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused")Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
         return new GuavaPredicate<T>(state);
     }
 
-    // TODO: javadoc
+    /**
+     * Delegated version of <code>FuncitoGuava.predicateFor(Boolean, boolean)</code>
+     * @see org.funcito.FuncitoGuava#predicateFor(Boolean,boolean)
+     * @deprecated It is recommended that <code>FuncitoGuava.predicateFor(Boolean, TypedMode<Boolean>)</code> be used instead with <code>Modes.tailDefault(Boolean)</code> or <code>Modes.safeNav(Boolean)</code>
+     */
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
         return predicateFor(ignoredRetVal, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
+    /**
+     * Delegated version of <code>FuncitoGuava.predicateFor(Boolean,TypedMode)</code>
+     * @see org.funcito.FuncitoGuava#predicateFor(Boolean,TypedMode)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, TypedMode<Boolean> mode) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
         return new GuavaPredicate<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoGuava.predicateFor(Boolean,Mode)</code>
+     * @see org.funcito.FuncitoGuava#predicateFor(Boolean,Mode)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(GUAVA_PREDICATE);
         return new GuavaPredicate<T>(state, mode);
     }
-
-
 }

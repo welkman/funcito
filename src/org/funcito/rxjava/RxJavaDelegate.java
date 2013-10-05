@@ -38,7 +38,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoRxJava.func1For(V,TypedMode)</code>
-     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.TypedMode)
+     * @see org.funcito.FuncitoRxJava#func1For(Object, TypedMode)
      */
     public <T,V> Func1<T,V> func1For(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);
@@ -47,7 +47,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoRxJava.func1For(V,Mode)</code>
-     * @see org.funcito.FuncitoRxJava#func1For(Object, org.funcito.mode.Mode)
+     * @see org.funcito.FuncitoRxJava#func1For(Object, Mode)
      */
     public <T,V> Func1<T,V> func1For(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(RXJAVA_FUNC1);

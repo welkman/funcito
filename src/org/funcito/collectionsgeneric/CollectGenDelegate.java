@@ -37,7 +37,7 @@ public class CollectGenDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,TypedMode)</code>
-     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.mode.TypedMode)
+     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, TypedMode)
      */
     public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
@@ -46,28 +46,45 @@ public class CollectGenDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoCollectGen.transformerFor(V,Mode)</code>
-     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, org.funcito.mode.Mode)
+     * @see org.funcito.FuncitoCollectGen#transformerFor(Object, Mode)
      */
     public <T,V> Transformer<T,V> transformerFor(@SuppressWarnings("unused") V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_TRANSFORMER);
         return new CollectGenTransformer<T, V>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoCollectGen.predicateFor(V)</code>
+     * @see org.funcito.FuncitoCollectGen#predicateFor(Boolean)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenPredicate<T>(state);
     }
 
+    /**
+     * Delegated version of <code>FuncitoCollectGen.predicateFor(Boolean, boolean)</code>
+     * @see org.funcito.FuncitoCollectGen#predicateFor(Boolean,boolean)
+     * @deprecated It is recommended that <code>FuncitoCollectGen.predicateFor(Boolean, TypedMode<Boolean>)</code> be used instead with <code>Modes.tailDefault(Boolean)</code> or <code>Modes.safeNav(Boolean)</code>
+     */
     @Deprecated
     public <T> Predicate<T> predicateFor(Boolean ignoredRetVal, boolean defaultForNull) {
         return predicateFor(ignoredRetVal, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
+    /**
+     * Delegated version of <code>FuncitoCollectGen.predicateFor(V,TypedMode)</code>
+     * @see org.funcito.FuncitoCollectGen#predicateFor(Boolean, TypedMode)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, TypedMode<Boolean> mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenPredicate<T>(state, mode);
     }
 
+    /**
+     * Delegated version of <code>FuncitoCollectGen.predicateFor(V,Mode)</code>
+     * @see org.funcito.FuncitoCollectGen#predicateFor(Boolean, Mode)
+     */
     public <T> Predicate<T> predicateFor(@SuppressWarnings("unused") Boolean ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(COLLECTGEN_PREDICATE);
         return new CollectGenPredicate<T>(state, mode);
