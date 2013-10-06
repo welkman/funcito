@@ -91,13 +91,28 @@ public class FuncitoJedi {
         return jediDelegate.functorFor(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoJedi.functorFor(V)</code>
+     * @see #functorFor(V)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Functor</code>
+     * @return a Jedi <code>Functor</code> object that wraps the method call or chain.
+     */
     public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, TypedMode<V> mode) {
         return jediDelegate.functorFor(proxiedMethodCall, mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoJedi.functorFor(V)</code>
+     * @see #functorFor(V)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Functor</code>
+     * @return a Jedi <code>Functor</code> object that wraps the method call or chain.
+     */
     public static <T,V> Functor<T,V> functorFor(V proxiedMethodCall, Mode mode) {
         return jediDelegate.functorFor(proxiedMethodCall, mode);
     }
@@ -122,10 +137,28 @@ public class FuncitoJedi {
         return jediDelegate.filterFor(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoJedi.filterFor(V)</code>
+     * @see #filterFor(Boolean)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Filter</code>
+     * @return a Jedi <code>Filter</code> object that wraps the method call or chain.
+     */
     public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
         return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoJedi.filterFor(V)</code>
+     * @see #filterFor(Boolean)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Filter</code>
+     * @return a Jedi <code>Filter</code> object that wraps the method call or chain.
+     */
     public static <T> Filter<T> filterFor(Boolean proxiedMethodCall, Mode mode) {
         return jediDelegate.filterFor(proxiedMethodCall, mode);
     }
@@ -169,10 +202,28 @@ public class FuncitoJedi {
         return jediDelegate.commandFor(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoJedi.commandFor(V)</code>
+     * @see #commandFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Command</code>
+     * @return a Jedi <code>Command</code> object that wraps the method call or chain.
+     */
     public static <T> Command<T> commandFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return jediDelegate.commandFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoJedi.commandFor(V)</code>
+     * @see #commandFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Command</code>
+     * @return a Jedi <code>Command</code> object that wraps the method call or chain.
+     */
     public static <T> Command<T> commandFor(Object proxiedMethodCall, Mode mode) {
         return jediDelegate.commandFor(proxiedMethodCall, mode);
     }
@@ -236,10 +287,26 @@ public class FuncitoJedi {
         return jediDelegate.voidCommand();
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoJedi.voidCommand()</code>
+     * @see #voidCommand()
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Command</code>
+     * @return a Jedi <code>Command</code> object that wraps the method call or chain.
+     */
     public static <T> Command<T> voidCommand(TypedMode<Void> mode) {
         return jediDelegate.voidCommand(mode);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoJedi.voidCommand()</code>
+     * @see #voidCommand()
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Command</code>
+     * @return a Jedi <code>Command</code> object that wraps the method call or chain.
+     */
     public static <T> Command<T> voidCommand(Mode mode) {
         return jediDelegate.voidCommand(mode);
     }

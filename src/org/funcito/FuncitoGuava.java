@@ -90,13 +90,28 @@ public class FuncitoGuava {
         return guavaDelegate.functionFor(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoGuava.functionFor(V)</code>
+     * @see #functionFor(V)
+     * @see Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Function</code>
+     * @return a Guava <code>Function</code> object that wraps the method call or chain.
+     */
     public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<V> mode) {
-        return guavaDelegate.functionFor(proxiedMethodCall, (TypedMode<V>) mode);
+        return guavaDelegate.functionFor(proxiedMethodCall, mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoGuava.functionFor(V)</code>
+     * @see #functionFor(V)
+     * @see Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Function</code>
+     * @return a Guava <code>Function</code> object that wraps the method call or chain.
+     */
     public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode mode) {
         return guavaDelegate.functionFor(proxiedMethodCall, mode);
     }
@@ -139,13 +154,31 @@ public class FuncitoGuava {
      */
     // TODO: should this be deprecated?
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, boolean defaultForNull) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
+        return guavaDelegate.predicateFor(proxiedMethodCall, Modes.tailDefault(defaultForNull));
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoGuava.predicateFor(V)</code>
+     * @see #predicateFor(Boolean)
+     * @see Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
+     * @return a Guava <code>Predicate</code> object that wraps the method call or chain.
+     */
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
-        return guavaDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)mode);
+        return guavaDelegate.predicateFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoGuava.predicateFor(V)</code>
+     * @see #predicateFor(Boolean)
+     * @see Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
+     * @return a Guava <code>Predicate</code> object that wraps the method call or chain.
+     */
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode mode) {
         return guavaDelegate.predicateFor(proxiedMethodCall, mode);
     }
