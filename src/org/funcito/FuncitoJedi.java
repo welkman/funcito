@@ -142,7 +142,7 @@ public class FuncitoJedi {
      * @see #filterFor(Boolean)
      * @see org.funcito.mode.Modes
      * @see TypedMode
-     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoJedi</code> proxy object
      * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Filter</code>
      * @return a Jedi <code>Filter</code> object that wraps the method call or chain.
      */
@@ -155,7 +155,7 @@ public class FuncitoJedi {
      * @see #filterFor(Boolean)
      * @see org.funcito.mode.Modes
      * @see Mode
-     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoJedi</code> proxy object
      * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Filter</code>
      * @return a Jedi <code>Filter</code> object that wraps the method call or chain.
      */
@@ -230,9 +230,10 @@ public class FuncitoJedi {
 
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
-     * <strong>Jedi</strong> <code>Command</code> object.  Use of this method is paired with a following
-     * execution of the void-generating methods ({@link #voidCommand()}. Resulting <code>Command</code> is as
-     * thread-safe as the method/chain itself.  Example usage is:
+     * <strong>Jedi</strong> <code>Command</code> object.  Use of this method must be followed with
+     * execution of one of the void-Command methods: {@link #voidCommand()}, {@link #voidCommand(TypedMode)},
+     * {@link #voidCommand(Mode)}. Resulting <code>Command</code> is as thread-safe as the method/chain itself.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -271,8 +272,7 @@ public class FuncitoJedi {
      * Generates a <strong>Jedi</strong> <code>Command</code> object that wraps a method call or method chain.  Resulting
      * <code>Command</code> is as thread-safe as the method/chain itself.  This Command generator is only  appropriate for
      * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
-     * Command is assigned to an appropriately type-constrained Command.  Example usage is:
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>

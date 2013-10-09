@@ -89,13 +89,28 @@ public class FuncitoRxJava {
         return rxJavaDelegate.func1For(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoRxJava.func1For(V)</code>
+     * @see #func1For(V)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Func1</code>
+     * @return a RxJava <code>Func1</code> object that wraps the method call or chain.
+     */
     public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, TypedMode<V> mode) {
         return rxJavaDelegate.func1For(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoRxJava.func1For(V)</code>
+     * @see #func1For(V)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Func1</code>
+     * @return a RxJava <code>Func1</code> object that wraps the method call or chain.
+     */
     public static <T,V> Func1<T,V> func1For(V proxiedMethodCall, Mode mode) {
         return rxJavaDelegate.func1For(proxiedMethodCall, mode);
     }
@@ -139,19 +154,38 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.action1For(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoRxJava.action1For(Object)</code>
+     * @see #action1For(Object)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Action1</code>
+     * @return a RxJava <code>Action1</code> object that wraps the method call or chain.
+     */
     public static <T> Action1<T> action1For(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoRxJava.action1For(Object)</code>
+     * @see #action1For(Object)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Action1</code>
+     * @return a RxJava <code>Action1</code> object that wraps the method call or chain.
+     */
     public static <T> Action1<T> action1For(Object proxiedMethodCall, Mode mode) {
         return     rxJavaDelegate.action1For(proxiedMethodCall, mode);
     }
 
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of an
-     * <strong>RxJava</strong> <code>Action1</code> object.  Use of this method is paired with a following
-     * execution of the void-generating method ({@link #voidAction1()}. Resulting <code>Action1</code> is as
-     * thread-safe as the method/chain itself.  Example usage is:
+     * <strong>RxJava</strong> <code>Action1</code> object.  Use of this method must be followed with
+     * execution of one of the void-Action1 methods: {@link #voidAction1()}, {@link #voidAction1(TypedMode)},
+     * {@link #voidAction1(Mode)}. Resulting <code>Action1</code> is as thread-safe as the method/chain itself.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -190,8 +224,7 @@ public class FuncitoRxJava {
      * Generates a <strong>RxJava</strong> <code>Action1</code> object that wraps a method call or method chain.  Resulting
      * <code>Action1</code> is as thread-safe as the method/chain itself.  This Action1 generator is only  appropriate for
      * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
-     * Action1 is assigned to an appropriately type-constrained Action1.  Example usage is:
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
@@ -206,10 +239,26 @@ public class FuncitoRxJava {
         return     rxJavaDelegate.voidAction1();
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoRxJava.voidAction1()</code>
+     * @see #voidAction1()
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Action1</code>
+     * @return a RxJava <code>Action1</code> object that wraps the method call or chain.
+     */
     public static <T> Action1<T> voidAction1(TypedMode<Void> mode) {
         return     rxJavaDelegate.voidAction1(mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoRxJava.voidAction1()</code>
+     * @see #voidAction1()
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Action1</code>
+     * @return a RxJava <code>Action1</code> object that wraps the method call or chain.
+     */
     public static <T> Action1<T> voidAction1(Mode mode) {
         return     rxJavaDelegate.voidAction1(mode);
     }

@@ -91,13 +91,28 @@ public class FuncitoCollectGen {
         return collectGenDelegate.transformerFor(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoCollectGen.transformerFor(V)</code>
+     * @see #transformerFor(V)
+     * @see Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Transformer</code>
+     * @return a collections-generic <code>Transformer</code> object that wraps the method call or chain.
+     */
     public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, TypedMode<V> mode) {
         return collectGenDelegate.transformerFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoCollectGen.transformerFor(V)</code>
+     * @see #transformerFor(V)
+     * @see Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Transformer</code>
+     * @return a collections-generic <code>Transformer</code> object that wraps the method call or chain.
+     */
     public static <T,V> Transformer<T,V> transformerFor(V proxiedMethodCall, Mode mode) {
         return collectGenDelegate.transformerFor(proxiedMethodCall, mode);
     }
@@ -144,10 +159,28 @@ public class FuncitoCollectGen {
         return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)Modes.tailDefault(defaultForNull));
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoCollectGen.predicateFor(Boolean)</code>
+     * @see #predicateFor(Boolean)
+     * @see Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
+     * @return a collections-generic <code>Predicate</code> object that wraps the method call or chain.
+     */
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, TypedMode<Boolean> mode) {
         return collectGenDelegate.predicateFor(proxiedMethodCall, (TypedMode<Boolean>)mode);
     }
 
+    /**
+     * Untyped<code>Mode</code> version of <code>FuncitoCollectGen.predicateFor(Boolean)</code>
+     * @see #predicateFor(Boolean)
+     * @see Modes
+     * @see Mode
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
+     * @return a collections-generic <code>Predicate</code> object that wraps the method call or chain.
+     */
     public static <T> Predicate<T> predicateFor(Boolean proxiedMethodCall, Mode mode) {
         return collectGenDelegate.predicateFor(proxiedMethodCall, mode);
     }
@@ -191,19 +224,38 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.closureFor(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoCollectGen.closureFor(Object)</code>
+     * @see #closureFor(Object)
+     * @see Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Closure</code>
+     * @return a collections-generic <code>Closure</code> object that wraps the method call or chain.
+     */
     public static <T> Closure<T> closureFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     collectGenDelegate.closureFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoCollectGen.closureFor(Object)</code>
+     * @see #closureFor(Object)
+     * @see Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Closure</code>
+     * @return a collections-generic <code>Closure</code> object that wraps the method call or chain.
+     */
     public static <T> Closure<T> closureFor(Object proxiedMethodCall, Mode mode) {
         return     collectGenDelegate.closureFor(proxiedMethodCall, mode);
     }
 
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
-     * <strong>Collections-Generic</strong> <code>Closure</code> object.  Use of this method is paired with a following
-     * execution of the void-generating method ({@link #voidClosure()} . Resulting <code>Closure</code> is as
-     * thread-safe as the method/chain itself.  Example usage is:
+     * <strong>Collections-Generic</strong> <code>Closure</code> object.  Use of this method must be followed with
+     * execution of one of the void-Closure methods: {@link #voidClosure()}, {@link #voidClosure(TypedMode)},
+     * {@link #voidClosure(Mode)}. Resulting <code>Closure</code> is as thread-safe as the method/chain itself.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -241,9 +293,8 @@ public class FuncitoCollectGen {
     /**
      * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
      * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator is only  appropriate for
-     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
-     * Closure is assigned to an appropriately type-constrained Closure.  Example usage is:
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(T)}.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
@@ -258,10 +309,26 @@ public class FuncitoCollectGen {
         return     collectGenDelegate.voidClosure();
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoCollectGen.voidClosure()</code>
+     * @see #voidClosure()
+     * @see Modes
+     * @see TypedMode
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Closure</code>
+     * @return a collections-generic <code>Closure</code> object that wraps the method call or chain.
+     */
     public static <T> Closure<T> voidClosure(TypedMode<Void> mode) {
         return     collectGenDelegate.voidClosure(mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoCollectGen.voidClosure()</code>
+     * @see #voidClosure()
+     * @see Modes
+     * @see Mode
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Closure</code>
+     * @return a collections-generic <code>Closure</code> object that wraps the method call or chain.
+     */
     public static <T> Closure<T> voidClosure(Mode mode) {
         return     collectGenDelegate.voidClosure(mode);
     }

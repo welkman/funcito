@@ -92,13 +92,28 @@ public class FuncitoFJ {
         return fjDelegate.fFor(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoFJ.fFor(V)</code>
+     * @see #fFor(V)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>F</code>
+     * @return a FuncitoFJ <code>F</code> object that wraps the method call or chain.
+     */
     public static <T,V> F<T,V> fFor(V proxiedMethodCall, TypedMode<V> mode) {
         return fjDelegate.fFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoFJ.fFor(V)</code>
+     * @see #fFor(V)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>F</code>
+     * @return a FuncitoFJ <code>F</code> object that wraps the method call or chain.
+     */
     public static <T,V> F<T,V> fFor(V proxiedMethodCall, Mode mode) {
         return fjDelegate.fFor(proxiedMethodCall, mode);
     }
@@ -142,19 +157,38 @@ public class FuncitoFJ {
         return fjDelegate.effectFor(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoFJ.effectFor(Object)</code>
+     * @see #effectFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Effect</code>
+     * @return a FuncitoFJ <code>Effect</code> object that wraps the method call or chain.
+     */
     public static <T> Effect<T> effectFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return fjDelegate.effectFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoFJ.effectFor(Object)</code>
+     * @see #effectFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Effect</code>
+     * @return a FuncitoFJ <code>Effect</code> object that wraps the method call or chain.
+     */
     public static <T> Effect<T> effectFor(Object proxiedMethodCall, Mode mode) {
         return fjDelegate.effectFor(proxiedMethodCall, mode);
     }
 
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
-     * <strong>Functional Java</strong> <code>Effect</code> object.  Use of this method is paired with a following
-     * execution of the void-generating method ({@link #voidEffect()}. Resulting <code>Effect</code> is as thread-safe
-     * as the method/chain itself.  Example usage is:
+     * <strong>Functional Java</strong> <code>Effect</code> object.  Use of this method must be followed with
+     * execution of one of the void-Effect methods: {@link #voidEffect()}, {@link #voidEffect(TypedMode)},
+     * {@link #voidEffect(Mode)}. Resulting <code>Effect</code> is as thread-safe as the method/chain itself.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -192,9 +226,8 @@ public class FuncitoFJ {
     /**
      * Generates a <strong>Functional Java</strong> <code>Effect</code> object that wraps a method call or method chain.  Resulting
      * <code>Effect</code> is as thread-safe as the method/chain itself.  This Effect generator is only  appropriate for
-     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
-     * Effect is assigned to an appropriately type-constrained Effect.  Example usage is:
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(T)}.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
@@ -209,10 +242,26 @@ public class FuncitoFJ {
         return fjDelegate.voidEffect();
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoFJ.voidEffect()</code>
+     * @see #voidEffect()
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Effect</code>
+     * @return a FuncitoFJ <code>Effect</code> object that wraps the method call or chain.
+     */
     public static <T> Effect<T> voidEffect(TypedMode<Void> mode) {
         return fjDelegate.voidEffect(mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoFJ.voidEffect()</code>
+     * @see #voidEffect()
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Effect</code>
+     * @return a FuncitoFJ <code>Effect</code> object that wraps the method call or chain.
+     */
     public static <T> Effect<T> voidEffect(Mode mode) {
         return fjDelegate.voidEffect(mode);
     }

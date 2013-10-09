@@ -162,7 +162,7 @@ public class FuncitoGuava {
      * @see #predicateFor(Boolean)
      * @see Modes
      * @see TypedMode
-     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> proxy object
      * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
      * @return a Guava <code>Predicate</code> object that wraps the method call or chain.
      */
@@ -175,7 +175,7 @@ public class FuncitoGuava {
      * @see #predicateFor(Boolean)
      * @see Modes
      * @see Mode
-     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
+     * @param proxiedMethodCall is the Boolean return value from a method call to a <code>FuncitoGuava</code> proxy object
      * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Predicate</code>
      * @return a Guava <code>Predicate</code> object that wraps the method call or chain.
      */

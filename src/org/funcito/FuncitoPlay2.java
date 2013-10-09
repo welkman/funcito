@@ -89,13 +89,28 @@ public class FuncitoPlay2 {
         return play2Delegate.functionFor(proxiedMethodCall);
     }
 
-    // TODO: javadoc
-    @SuppressWarnings("unchecked")
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoPlay2.functionFor(V)</code>
+     * @see #functionFor(V)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Function</code>
+     * @return a Play! 2 <code>Function</code> object that wraps the method call or chain.
+     */
     public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, TypedMode<V> mode) {
         return play2Delegate.functionFor(proxiedMethodCall, (TypedMode<V>) mode);
     }
 
-    // TODO: javadoc
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoPlay2.functionFor(V)</code>
+     * @see #functionFor(V)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Function</code>
+     * @return a Play! 2 <code>Function</code> object that wraps the method call or chain.
+     */
     public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode mode) {
         return play2Delegate.functionFor(proxiedMethodCall, mode);
     }
@@ -139,19 +154,38 @@ public class FuncitoPlay2 {
         return     play2Delegate.callbackFor(proxiedMethodCall);
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoPlay2.callbackFor(Object)</code>
+     * @see #callbackFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Callback</code>
+     * @return a Play! 2 <code>Callback</code> object that wraps the method call or chain.
+     */
     public static <T> Callback<T> callbackFor(Object proxiedMethodCall, TypedMode<Void> mode) {
         return     play2Delegate.callbackFor(proxiedMethodCall, mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoPlay2.callbackFor(Object)</code>
+     * @see #callbackFor(Object)
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Callback</code>
+     * @return a Play! 2 <code>Callback</code> object that wraps the method call or chain.
+     */
     public static <T> Callback<T> callbackFor(Object proxiedMethodCall, Mode mode) {
         return     play2Delegate.callbackFor(proxiedMethodCall, mode);
     }
 
     /**
      * Prepares a method-call or method-chain call that terminates with a void return type, for generation of a
-     * <strong>Play! 2</strong> <code>Callback</code> object.  Use of this method is paired with a following
-     * execution of one of the void-generating methods ({@link #voidCallback()} or {@link #voidCallback(Class)}). Resulting
-     * <code>Callback</code> is as thread-safe as the method/chain itself.  Example usage is:
+     * <strong>Play! 2</strong> <code>Callback</code> object.  Use of this method must be followed with execution
+     * of one of the void-Callback methods: {@link #voidCallback()}, {@link #voidCallback(TypedMode)},
+     * {@link #voidCallback(Mode)}. Resulting <code>Callback</code> is as thread-safe as the method/chain itself.
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();
@@ -190,8 +224,7 @@ public class FuncitoPlay2 {
      * Generates a <strong>Play! 2</strong> <code>Callback</code> object that wraps a method call or method chain.  Resulting
      * <code>Callback</code> is as thread-safe as the method/chain itself.  This Callback generator is only  appropriate for
      * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
-     * There is a safer overloaded form of this method that uses a target Class type to validate that the generated
-     * Callback is assigned to an appropriately type-constrained Callback.  Example usage is:
+     * Example usage is:
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).methodWithVoidReturnType();<br/>
@@ -206,10 +239,26 @@ public class FuncitoPlay2 {
         return     play2Delegate.voidCallback();
     }
 
+    /**
+     * <code>TypedMode</code> version of <code>FuncitoPlay2.voidCallback()</code>
+     * @see #voidCallback()
+     * @see org.funcito.mode.Modes
+     * @see TypedMode
+     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Callback</code>
+     * @return a Play! 2 <code>Callback</code> object that wraps the method call or chain.
+     */
     public static <T> Callback<T> voidCallback(TypedMode<Void> mode) {
         return     play2Delegate.voidCallback(mode);
     }
 
+    /**
+     * Untyped <code>Mode</code> version of <code>FuncitoPlay2.voidCallback()</code>
+     * @see #voidCallback()
+     * @see org.funcito.mode.Modes
+     * @see Mode
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Callback</code>
+     * @return a Play! 2 <code>Callback</code> object that wraps the method call or chain.
+     */
     public static <T> Callback<T> voidCallback(Mode mode) {
         return     play2Delegate.voidCallback(mode);
     }
