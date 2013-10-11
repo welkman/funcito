@@ -24,7 +24,9 @@ import org.funcito.internal.InvokableState;
 import static org.funcito.internal.WrapperType.GUAVA_PREDICATE;
 import static org.funcito.internal.WrapperType.GUAVA_FUNCTION;
 
-// TODO: javadoc class
+/**
+ *
+ */
 public class GuavaDelegate extends FuncitoDelegate {
 
     /**

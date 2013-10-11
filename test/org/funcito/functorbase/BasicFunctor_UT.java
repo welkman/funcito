@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class BasicFunctor_UT extends FunctorBaseTestBase {
 
     @Override
-    protected <T,V> BasicFunctor<T, V> makeFunctorForTest() {
+    protected <T,V> AbstractFunctorBase<T, V> makeFunctorForTest() {
         return new BasicFunctor<T, V>(getState());
     }
 

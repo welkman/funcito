@@ -119,7 +119,7 @@ public class Funcito {
     /**
      * Delegate method used to help differentiate RxJava from other Funcito supported functional frameworks
      * @return a delegate with all of the same methods as the static versions in {@link FuncitoRxJava}.
-     * @see FuncitoCollectGen
+     * @see FuncitoRxJava
      */
     public static RxJavaDelegate rxJava() { return FuncitoRxJava.delegate(); }
 }

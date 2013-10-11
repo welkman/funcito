@@ -20,7 +20,7 @@ import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
+public class SafeNavFunctor<T,V> extends AbstractFunctorBase<T,V> {
     final private Object nullNavDefault;
 
     public SafeNavFunctor(InvokableState state, V nullNavDefault) {
@@ -28,6 +28,7 @@ public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
         this.nullNavDefault = nullNavDefault;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public V applyImpl(T from) {
         if (from==null) {
@@ -39,7 +40,6 @@ public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
             return (V) nullNavDefault;
         }
         if (unchained) {
-            validateReturnValue(retVal); // TODO: determine if needed, & whether to deprecate NullValidatingPredicate
             return (V)retVal;
         }
         Iterator<Invokable> iter = state.iterator();
@@ -50,7 +50,6 @@ public class SafeNavFunctor<T,V> extends BasicFunctor<T,V> {
                 return (V) nullNavDefault;
             }
         }
-        validateReturnValue(retVal); // TODO: determine if needed
         return (V)retVal;
     }
 

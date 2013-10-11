@@ -11,7 +11,7 @@ public class SafeNavFunctor_UT extends BasicFunctor_UT {
 
     // This is what differentiates execution of inherited tests from parent test class BasicFunctor_UT
     @Override
-    protected <T, V> BasicFunctor<T, V> makeFunctorForTest() {
+    protected <T, V> AbstractFunctorBase<T, V> makeFunctorForTest() {
         return new SafeNavFunctor<T, V>(getState(), null);
     }
 

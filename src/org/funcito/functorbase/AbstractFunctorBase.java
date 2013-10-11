@@ -20,30 +20,17 @@ import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
-public class BasicFunctor<T, V> extends AbstractFunctorBase<T,V> {
-//    final protected InvokableState state;
-//    final protected Invokable<T,?> firstInvokable;
-//    final protected boolean unchained;
+public abstract class AbstractFunctorBase<T,V> implements FunctorBase<T,V> {
+    final protected InvokableState state;
+    final protected Invokable<T,?> firstInvokable;
+    final protected boolean unchained;
 
     @SuppressWarnings("unchecked")
-    public BasicFunctor(InvokableState state) {
-        super(state);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public V applyImpl(T from) {
-        // unroll the first loop, to provide performance for the "90%": unchained wrapped methods
-        Object retVal = firstInvokable.invoke(from);
-        if (unchained) {
-            return (V)retVal;
-        }
+    public AbstractFunctorBase(InvokableState state) {
+        this.state = state;
         Iterator<Invokable> iter = state.iterator();
-        iter.next(); // skip the head which has already been processed
-        while (iter.hasNext()) {
-            retVal = iter.next().invoke(retVal);
-        }
-        return (V)retVal;
+        // for performance of unchained invocations, extract ahead of time
+        firstInvokable = iter.next();
+        unchained = !iter.hasNext();
     }
-
 }
