@@ -18,7 +18,11 @@ package org.funcito.mode;
 import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
 
-// TODO: Javadoc
+/**
+ * The execution of every functor object created by a Funcito factory method is guided by an instance of either a standard
+ * <code>Mode</code> (this interface) or its sibling <code>TypedMode</code>.  Where no <code>Mode</code> or
+ * <code>TypedMode</code> is provided to a factory method, the <code>NoOp</code> mode is used.
+ */
 public interface Mode {
     FunctorBase<?,?> makeBase(InvokableState invokableState);
 }

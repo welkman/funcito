@@ -18,7 +18,11 @@ package org.funcito.collectionsgeneric;
 import org.funcito.internal.InvokableState;
 import org.funcito.mode.TailDefault;
 
-// TODO: document the deprecation, also add independent unit tests
+/**
+ * @deprecated Use a <code>CollectGenPredicate</code> with a <code>TailDefault</code> mode instead
+ * @see CollectGenPredicate
+ * @see TailDefault
+ */
 @Deprecated
 public class CollectGenDefaultablePredicate<T> extends CollectGenPredicate<T> {
 

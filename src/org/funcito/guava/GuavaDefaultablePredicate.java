@@ -18,7 +18,11 @@ package org.funcito.guava;
 import org.funcito.internal.InvokableState;
 import org.funcito.mode.TailDefault;
 
-// TODO: More documentation about deprecation, also add independent unit tests
+/**
+ * @deprecated Use a <code>GuavaPredicate</code> with a <code>TailDefault</code> mode instead
+ * @see GuavaPredicate
+ * @see TailDefault
+ */
 @Deprecated
 public class GuavaDefaultablePredicate<T> extends GuavaPredicate<T> {
 
