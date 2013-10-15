@@ -15,26 +15,44 @@
  */
 package org.funcito.mode;
 
-// TODO: Javadoc
+/**
+ * A convenience class of static methods for creating/providing Modes and TypedModes.
+ */
 public class Modes {
 
-    // TODO: Javadoc
+    /**
+     * @return a basic untyped <code>Mode</code> that provides a plain <code>BasicFunctor</code>
+     * @see org.funcito.functorbase.BasicFunctor
+     */
     public static Mode noOp() {
         return NoOp.NO_OP;
     }
 
-    // TODO: Javadoc
-    public static <T,V> TypedMode<V> safeNav(V v) {
-        return new TypedSafeNav<V>(v);
+    /**
+     * @param defaultForNull the typed value to be provided as a default for safe-navigation operation
+     * @return a <code>TypedMode</code> that provides a <code>SafeNavFunctor</code>
+     * @see #safeNav()
+     * @see org.funcito.functorbase.SafeNavFunctor
+     */
+    public static <V> TypedMode<V> safeNav(V defaultForNull) {
+        return new TypedSafeNav<V>(defaultForNull);
     }
 
-    // TODO: Javadoc
+    /**
+     * @return an untyped <code>Mode</code> that provides a <code>SafeNavFunctor</code> with a default value of <code>null</code>
+     * @see #safeNav(Object)
+     * @see org.funcito.functorbase.SafeNavFunctor
+     */
     public static Mode safeNav() {
         return SafeNav.SAFE_NAV;
     }
 
-    // TODO: Javadoc
-    public static <T,V> TypedMode<V> tailDefault(V defaultForNull) {
+    /**
+     * @param defaultForNull the typed value to be provided as a default when null is the tail-value at evaluation
+     * @return a <code>TypedMode</code> that provides a <code>TailDefaultFunctor</code>
+     * @see org.funcito.functorbase.TailDefaultFunctor
+     */
+    public static <V> TypedMode<V> tailDefault(V defaultForNull) {
         return new TailDefault<V>(defaultForNull);
     }
 
