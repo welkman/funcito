@@ -19,7 +19,10 @@ import org.funcito.internal.InvokableState;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.SafeNavFunctor;
 
-// TODO: Javadoc
+/**
+ * This <code>Mode</code> provides a <code>SafeNavFunctor</code> with an implicit null default value
+ * @see SafeNavFunctor
+ */
 public class SafeNav implements Mode {
 
     public static final SafeNav SAFE_NAV = new SafeNav();

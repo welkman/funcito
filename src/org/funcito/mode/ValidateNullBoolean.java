@@ -21,10 +21,22 @@ import org.funcito.internal.InvokableState;
 
 import java.lang.reflect.Method;
 
+/**
+ * This mode is internally used by Funcito for 3rd party APIs with primitive <code>boolean</code>-returning predicates,
+ * returning a <code>NullValidatingPredicate</code> that will help diagnose execution problems rather than simply throwing
+ * NullPointerException deep in the Funcito internals.  It is unlikely that Funcito users will explicitly use this mode
+ * but rather only implicitly through special predicate factory methods.
+ * @see org.funcito.FuncitoGuava#predicateFor(Boolean)
+ * @see org.funcito.FuncitoCollectGen#predicateFor(Boolean)
+ */
 public class ValidateNullBoolean implements Mode {
     private Class<?> apiPredicateClass;
     private Method altMethod;
 
+    /**
+     * @param apiPredicateClass 3rd party predicate class that is using this, provided here to make diagnostic failure messages more meaningful.
+     * @param altMethod recommended alternative factory method, provided here to also enhance diagnostic falure messages
+     */
     public ValidateNullBoolean(Class<?> apiPredicateClass, Method altMethod) {
         this.apiPredicateClass = apiPredicateClass;
         this.altMethod = altMethod;

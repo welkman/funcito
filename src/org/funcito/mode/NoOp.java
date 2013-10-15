@@ -19,7 +19,10 @@ import org.funcito.functorbase.BasicFunctor;
 import org.funcito.functorbase.FunctorBase;
 import org.funcito.internal.InvokableState;
 
-// TODO: Javadoc
+/**
+ * This <code>Mode</code> provides a plain, unadorned <code>BasicFunctor</code>
+ * @see BasicFunctor
+ */
 public class NoOp implements Mode {
     public static final Mode NO_OP = new NoOp();
 

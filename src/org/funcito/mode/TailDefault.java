@@ -19,6 +19,10 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.TailDefaultFunctor;
 import org.funcito.internal.InvokableState;
 
+/**
+ * This <code>TypedMode</code> provides a typed <code>TailDefaultFunctor</code> with an explicit default value
+ * @see TailDefaultFunctor
+ */
 public class TailDefault<V> implements TypedMode<V> {
 
     private V defaultForNull;

@@ -19,7 +19,10 @@ import org.funcito.functorbase.FunctorBase;
 import org.funcito.functorbase.SafeNavFunctor;
 import org.funcito.internal.InvokableState;
 
-// TODO: Javadoc
+/**
+ * This <code>TypedMode</code> provides a typed <code>SafeNavFunctor</code> with an explicit default value
+ * @see SafeNavFunctor
+ */
 public class TypedSafeNav<V> implements TypedMode<V> {
     private V nullNavDefault;
 
