@@ -92,7 +92,7 @@ public class FuncitoGuava {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoGuava.functionFor(V)</code>
-     * @see #functionFor(V)
+     * @see #functionFor(Object)
      * @see Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
@@ -105,7 +105,7 @@ public class FuncitoGuava {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoGuava.functionFor(V)</code>
-     * @see #functionFor(V)
+     * @see #functionFor(Object)
      * @see Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object

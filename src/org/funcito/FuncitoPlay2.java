@@ -91,7 +91,7 @@ public class FuncitoPlay2 {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoPlay2.functionFor(V)</code>
-     * @see #functionFor(V)
+     * @see #functionFor(Object)
      * @see org.funcito.mode.Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object
@@ -104,7 +104,7 @@ public class FuncitoPlay2 {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoPlay2.functionFor(V)</code>
-     * @see #functionFor(V)
+     * @see #functionFor(Object)
      * @see org.funcito.mode.Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoPlay2</code> proxy object

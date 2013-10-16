@@ -38,19 +38,22 @@ import org.funcito.rxjava.RxJavaDelegate;
  *     import fj.F;
  *     import play.libs.F.Function;
  *     import org.apache.commons.collections15.Transformer;
+ *     import rx.util.functions.Func1;
  *
  *     Function&lt;MyClass,RetType&gt;    function = guava().functionFor( callsTo(MyClass.class).someMethod());
  *     Functor&lt;MyClass,RetType&gt;     functor  = jedi().functorFor( callsTo(MyClass.class).someMethod());
  *     F&lt;MyClass,RetType&gt;           f        = fj().fFor( callsTo(MyClass.class).someMethod());
  *     F.Function&lt;MyClass,RetType&gt;  function = play2().functionFor( callsTo(MyClass.class).someMethod());
  *     Transformer&lt;MyClass,RetType&gt; xform    = collectGen().transformerFor( callsTo(MyClass.class).someMethod());
+ *     Func1&lt;MyClass,RetType&gt; func1    = rxJava().func1For( callsTo(MyClass.class).someMethod());
  * </code>
  * </pre>
- * @see FuncitoGuava
+ * @see FuncitoCollectGen
  * @see FuncitoFJ
+ * @see FuncitoGuava
  * @see FuncitoJedi
  * @see FuncitoPlay2
- * @see FuncitoCollectGen
+ * @see FuncitoRxJava
  */
 public class Funcito {
 

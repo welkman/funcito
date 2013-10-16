@@ -85,7 +85,7 @@ public class Play2Delegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoPlay2.prepareVoid(T)</code>
-     * @see org.funcito.FuncitoPlay2#prepareVoid(T)
+     * @see org.funcito.FuncitoPlay2#prepareVoid(Object)
      */
     public <T> T prepareVoid(T t) { return t; }
 

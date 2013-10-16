@@ -91,7 +91,7 @@ public class FuncitoRxJava {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoRxJava.func1For(V)</code>
-     * @see #func1For(V)
+     * @see #func1For(Object)
      * @see org.funcito.mode.Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object
@@ -104,7 +104,7 @@ public class FuncitoRxJava {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoRxJava.func1For(V)</code>
-     * @see #func1For(V)
+     * @see #func1For(Object)
      * @see org.funcito.mode.Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoRxJava</code> proxy object

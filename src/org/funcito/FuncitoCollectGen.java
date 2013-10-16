@@ -93,7 +93,7 @@ public class FuncitoCollectGen {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoCollectGen.transformerFor(V)</code>
-     * @see #transformerFor(V)
+     * @see #transformerFor(Object)
      * @see Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
@@ -106,7 +106,7 @@ public class FuncitoCollectGen {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoCollectGen.transformerFor(V)</code>
-     * @see #transformerFor(V)
+     * @see #transformerFor(Object)
      * @see Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoCollectGen</code> proxy object
@@ -293,7 +293,7 @@ public class FuncitoCollectGen {
     /**
      * Generates a <strong>Collections-Generic</strong> <code>Closure</code> object that wraps a method call or method chain.  Resulting
      * <code>Closure</code> is as thread-safe as the method/chain itself.  This Closure generator is only  appropriate for
-     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(T)}.
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
      * Example usage is:
      * <p>
      * <code>

@@ -42,7 +42,7 @@ public class JediDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoJedi.functorFor(V,TypedMode)</code>
-     * @see org.funcito.FuncitoJedi#functorFor(Object, TypedMode)
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.TypedMode)
      */
     public <T,V> Functor<T,V> functorFor(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
@@ -51,7 +51,7 @@ public class JediDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoJedi.functorFor(V,Mode)</code>
-     * @see org.funcito.FuncitoJedi#functorFor(Object, Mode)
+     * @see org.funcito.FuncitoJedi#functorFor(Object, org.funcito.mode.Mode)
      */
     public <T,V> Functor<T,V> functorFor(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(JEDI_FUNCTOR);
@@ -114,7 +114,7 @@ public class JediDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoJedi.prepareVoid(T)</code>
-     * @see org.funcito.FuncitoJedi#prepareVoid(T)
+     * @see org.funcito.FuncitoJedi#prepareVoid(Object)
      */
     public <T> T prepareVoid(T t) { return t; }
 

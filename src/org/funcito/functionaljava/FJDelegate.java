@@ -31,7 +31,7 @@ public class FJDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoFJ.fFor(V)</code>
-     * @see org.funcito.FuncitoFJ#fFor(V)
+     * @see org.funcito.FuncitoFJ#fFor(Object)
      */
     public <T,V> F<T,V> fFor(V ignoredRetVal) {
         InvokableState state = extractInvokableState(FJ_F);
@@ -40,7 +40,7 @@ public class FJDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoFJ.functionFor(V,TypedMode)</code>
-     * @see org.funcito.FuncitoFJ#fFor(V, org.funcito.mode.TypedMode)
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.TypedMode)
      */
     public <T,V> F<T,V> fFor(V ignoredRetVal, TypedMode<V> mode) {
         final InvokableState state = extractInvokableState(FJ_F);
@@ -49,7 +49,7 @@ public class FJDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoFJ.fFor(V,Mode)</code>
-     * @see org.funcito.FuncitoFJ#fFor(V, org.funcito.mode.Mode)
+     * @see org.funcito.FuncitoFJ#fFor(Object, org.funcito.mode.Mode)
      */
     public <T,V> F<T,V> fFor(V ignoredRetVal, Mode mode) {
         final InvokableState state = extractInvokableState(FJ_F);
@@ -85,7 +85,7 @@ public class FJDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoFJ.prepareVoid(T)</code>
-     * @see org.funcito.FuncitoFJ#prepareVoid(T)
+     * @see org.funcito.FuncitoFJ#prepareVoid(Object)
      */
     public <T> T prepareVoid(T t) { return t; }
 

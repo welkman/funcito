@@ -94,7 +94,7 @@ public class FuncitoFJ {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoFJ.fFor(V)</code>
-     * @see #fFor(V)
+     * @see #fFor(Object)
      * @see org.funcito.mode.Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
@@ -107,7 +107,7 @@ public class FuncitoFJ {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoFJ.fFor(V)</code>
-     * @see #fFor(V)
+     * @see #fFor(Object)
      * @see org.funcito.mode.Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoFJ</code> proxy object
@@ -226,7 +226,7 @@ public class FuncitoFJ {
     /**
      * Generates a <strong>Functional Java</strong> <code>Effect</code> object that wraps a method call or method chain.  Resulting
      * <code>Effect</code> is as thread-safe as the method/chain itself.  This Effect generator is only  appropriate for
-     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(T)}.
+     * method calls/chains with a void return type, and it requires previous usage of {@link #prepareVoid(Object)}.
      * Example usage is:
      * <p>
      * <code>

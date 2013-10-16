@@ -83,7 +83,7 @@ public class RxJavaDelegate extends FuncitoDelegate {
 
     /**
      * Delegated version of <code>FuncitoRxJava.prepareVoid(T)</code>
-     * @see org.funcito.FuncitoRxJava#prepareVoid(T)
+     * @see org.funcito.FuncitoRxJava#prepareVoid(Object)
      */
     public <T> T prepareVoid(T t) { return t; }
 

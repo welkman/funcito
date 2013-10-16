@@ -93,7 +93,7 @@ public class FuncitoJedi {
 
     /**
      * <code>TypedMode</code> version of <code>FuncitoJedi.functorFor(V)</code>
-     * @see #functorFor(V)
+     * @see #functorFor(Object)
      * @see org.funcito.mode.Modes
      * @see TypedMode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
@@ -106,7 +106,7 @@ public class FuncitoJedi {
 
     /**
      * Untyped <code>Mode</code> version of <code>FuncitoJedi.functorFor(V)</code>
-     * @see #functorFor(V)
+     * @see #functorFor(Object)
      * @see org.funcito.mode.Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoJedi</code> proxy object
