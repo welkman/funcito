@@ -21,7 +21,9 @@ import org.funcito.internal.InvokableState;
 import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
 
-// TODO: javadoc class
+/**
+ * Used by the constructors of the Funcito wrapper-classes for each 3rd party functor class
+ */
 public class FunctorFactory {
     private static final FunctorFactory INSTANCE = new FunctorFactory();
 
@@ -33,7 +35,7 @@ public class FunctorFactory {
     public static FunctorFactory instance() { return INSTANCE; }
 
     /**
-     * Used by the constructors for the Funcito wrapper-classes for each 3rd party functor class
+     * Factory method for functors which use a <code>TypedMode</code>
      * @param state the captured and extracted invokable state to be transformed into a FunctorBase
      * @param mode the TypedMode that determines how the FunctorBase will behave
      * @param <T> the target (input) type of the resulting FunctorBase
@@ -49,7 +51,7 @@ public class FunctorFactory {
     }
 
     /**
-     * Used by the constructors for the Funcito wrapper-classes for each 3rd party functor class
+     * Factory method for functors which use an untyped <code>Mode</code>
      * @param state the captured and extracted invokable state to be transformed into a FunctorBase
      * @param mode the  untyped Mode that determines how the FunctorBase will behave
      * @param <T> the target (input) type of the resulting FunctorBase
