@@ -17,10 +17,28 @@ package org.funcito.functorbase;
 
 import org.funcito.internal.InvokableState;
 
+/**
+ * This functor modifies basic execution of the InvokableState, by checking the final computed return value to see if
+ * it is null and providing an alternate default value instead.  It is internally used by predicates in 3rd party APIs
+ * that have non-primitive Boolean return types.  Since predicates by nature are 2-state for filtering actions, the 3rd
+ * possible state of null is undesirable, and this functor provides a way to ensure that a suitable default can
+ * substitute for null.  The <code>tailDefault()</code> TypedMode can also be used explicitly to provide this functor
+ * implementation for <em>any</em> functor, whether or not it is a predicate.
+ * <p/>
+ * Note that this is different from the <code>SafeNavFunctor</code>, which checks not only the tail-result for null, but
+ * also any intermediate null values in method-chains.
+ * @param <T> The target (input) type of the functor
+ * @param <V> The output type of the functor
+ * @see SafeNavFunctor
+ */
 public class TailDefaultFunctor<T,V> extends BasicFunctor<T,V> {
 
     private V defaultForNull;
 
+    /**
+     * @param state the invokable state
+     * @param defaultForNull the default value to be returned in case the final method return value is null.
+     */
     public TailDefaultFunctor(InvokableState state, V defaultForNull) {
             super(state);
             this.defaultForNull = defaultForNull;

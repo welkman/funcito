@@ -27,10 +27,20 @@ public class FunctorFactory {
 
     private FunctorFactory() {}
 
-    // TODO: javadoc method
+    /**
+     * Retrieves the singleton FunctorFactory
+     */
     public static FunctorFactory instance() { return INSTANCE; }
 
-    // TODO: javadoc method
+    /**
+     * Used by the constructors for the Funcito wrapper-classes for each 3rd party functor class
+     * @param state the captured and extracted invokable state to be transformed into a FunctorBase
+     * @param mode the TypedMode that determines how the FunctorBase will behave
+     * @param <T> the target (input) type of the resulting FunctorBase
+     * @param <V> the resulting (output) type of the resulting FunctorBase
+     * @return a FunctorBase that will execute/replay the captured InvokableState of method calls
+     */
+    @SuppressWarnings("unchecked")
     public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, TypedMode<V> mode) {
         if (mode != null) {
             return (FunctorBase<T, V>) mode.makeBase(state);
@@ -38,7 +48,14 @@ public class FunctorFactory {
         return new BasicFunctor<T,V>(state);
     }
 
-    // TODO: javadoc method
+    /**
+     * Used by the constructors for the Funcito wrapper-classes for each 3rd party functor class
+     * @param state the captured and extracted invokable state to be transformed into a FunctorBase
+     * @param mode the  untyped Mode that determines how the FunctorBase will behave
+     * @param <T> the target (input) type of the resulting FunctorBase
+     * @param <V> the resulting (output) type of the resulting FunctorBase
+     * @return a FunctorBase that will execute/replay the captured InvokableState of method calls
+     */
     @SuppressWarnings("unchecked")
     public <T,V> FunctorBase<T,V> makeFunctionalBase(InvokableState state, Mode mode) {
         if (mode != null) {

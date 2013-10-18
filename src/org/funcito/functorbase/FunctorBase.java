@@ -15,7 +15,16 @@
  */
 package org.funcito.functorbase;
 
+/**
+ * The general Funcito functor-interface used internally for every variety of functor operation.
+ * @param <T> The target (input) type fo the functor
+ * @param <V> The output type of the functor
+ */
 public interface FunctorBase<T, V> {
-    @SuppressWarnings("unchecked")
+    /**
+     * The execution method for applying the functor to an input
+     * @param from the target (input) value to apply the functor to
+     * @return the result of applying the functor
+     */
     V applyImpl(T from);
 }

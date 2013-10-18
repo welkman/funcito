@@ -22,6 +22,13 @@ import org.funcito.internal.InvokableState;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+/**
+ * This functor is intended for use by predicate-classes from 3rd party APIs, which have a primitive boolean return type.
+ * Since these functors could potentially end up trying to return a null Boolean value, this would result in an
+ * exception.  This NullValidatingPredicate checks for this condition before returning, and instead throws a
+ * FuncitoException with diagnostic advice about the problem, and recommendations for alternative uses of Funcito to
+ * alleviate this as a runtime problem.
+ */
 public class NullValidatingPredicate extends BasicFunctor<Object,Boolean> {
     private String apiPredicateClass;
     private String altMethod;

@@ -20,16 +20,25 @@ import org.funcito.internal.InvokableState;
 
 import java.util.Iterator;
 
+/**
+ * A basic implementation of the FunctorBase interface, with optimizations for an InvokableState of a single
+ * non-chained method call.  This is the functor variety produced by the <code>NoOp</code> mode.  It does not alter
+ * or intervene in the natural execution of the InvokableState, and so it is also the most efficient of the Funcito
+ * provided functors.
+ * @param <T> The target (input) type of the functor
+ * @param <V> The output type of the functor
+ */
 public class BasicFunctor<T, V> extends AbstractFunctorBase<T,V> {
-//    final protected InvokableState state;
-//    final protected Invokable<T,?> firstInvokable;
-//    final protected boolean unchained;
 
     @SuppressWarnings("unchecked")
     public BasicFunctor(InvokableState state) {
         super(state);
     }
 
+    /**
+     * @param from the target (input) value to apply the functor to
+     * @return the result of applying the functor
+     */
     @Override
     @SuppressWarnings("unchecked")
     public V applyImpl(T from) {
