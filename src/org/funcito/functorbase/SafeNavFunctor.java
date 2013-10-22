@@ -21,14 +21,17 @@ import org.funcito.internal.InvokableState;
 import java.util.Iterator;
 
 /**
- * This functor modifies basic execution of the InvokableState, by checking the final computed return value to see if
- * it is null and providing an alternate default value instead.  It is internally used by predicates in 3rd party APIs
- * that have non-primitive Boolean return types.  Since predicates by nature are 2-state for filtering actions, the 3rd
- * possible state of null is undesirable, and this functor provides a way to ensure that a suitable default can
- * substitute for null.  The <code>tailDefault()</code> TypedMode can also be used explicitly to provide this functor
- * implementation for <em>any</em> functor, whether or not it is a predicate.
+ * This functor is roughly modelled after the Groovy language safe-navigation operator: <b>?.</b>  The main difference
+ * is that once-applied to the head of a method call-chain, it implicitly applies to all remaining chained elements in
+ * the expression as well.
  * <p/>
- * Note that this is different from the <code>TailDefaultFunctor</code>, which only checks the tail-result for null, but
+ * This functor modifies basic execution of the InvokableState, by checking each intermediate term in a wrapped call-chain
+ * to see if it results in null.  If so rather than letting that null cause a NullPointerException when chained by a
+ * subsequent method call, it instead safely returns an alternative default value.  Note that this is not implemented as
+ * a NullPointerException checker.  So a NullPointerException that is thrown internally to any of the methods in the
+ * chain will still propagate out.
+ * <p/>
+ * Note that this differs from the <code>TailDefaultFunctor</code>, which only checks the tail-result for null, but
  * <em>not</em> any intermediate null values in method-chains.
  * @param <T> The target (input) type of the functor
  * @param <V> The output type of the functor

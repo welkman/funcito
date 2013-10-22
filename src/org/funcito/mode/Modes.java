@@ -16,7 +16,19 @@
 package org.funcito.mode;
 
 /**
- * A convenience class of static methods for creating/providing Modes and TypedModes.
+ * A convenience class of static methods for creating/providing Modes and TypedModes.  Use these modes in the functor
+ * factory methods to provide customized behaviors for the resulting functors.  Example usages are:
+ * <p>
+ * <code>
+ *     final MyClass MY_CLASS = callsTo(MyClass.class);<br>
+ * <br/>
+ *     // The following returns null instead of NPE when either the MyClass instance or the someMethod() call is null
+ *     Function&lt;MyClass,RetType1&gt; func1 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), Modes.safeNav() );<br>
+ * <br/>
+ *     // The following returns a default value when the chainedRetType1() call results in null<br/>
+ *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), Modes.tailDefault(DEFAULT_RET1) );<br>
+ * </code>
+ * <p>
  */
 public class Modes {
 
