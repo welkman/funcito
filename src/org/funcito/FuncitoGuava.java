@@ -36,15 +36,17 @@ public class FuncitoGuava {
      * be used for any other purposes.  It is a convenience pass-thru to
      * {@link org.funcito.internal.FuncitoDelegate#callsTo(Class)}.  Example usages are:
      * <p>
+     * <pre>
      * <code>
-     *     // inlined: <br>
-     *     Function&lt;MyClass,RetType1&gt; func = functionFor( callsTo(MyClass.class).methodWithRetType1() );<br>
-     *     <br>
-     *     // or extracted for repeat usage<br>
-     *     final MyClass CALLS_TO = callsTo(MyClass.class);<br>
-     *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( CALLS_TO.method1WithRetType1() );<br>
-     *     Function&lt;MyClass,RetType2&gt; func3 = functionFor( CALLS_TO.method2WithRetType2() );<br>
+     *     // inlined:
+     *     Function&lt;MyClass,RetType1&gt; func = functionFor( callsTo(MyClass.class).methodWithRetType1() );
+     *
+     *     // or extracted for repeat usage
+     *     final MyClass CALLS_TO = callsTo(MyClass.class);
+     *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( CALLS_TO.method1WithRetType1() );
+     *     Function&lt;MyClass,RetType2&gt; func3 = functionFor( CALLS_TO.method2WithRetType2() );
      * </code>
+     * </pre>
      * <p>
      * Stubs are cached, so this method can be called multiple times for the same class without penalty.  But a single proxy
      * can also be reused for creating multiple Guava <code>Function</code> or <code>Predicate</code> objects.

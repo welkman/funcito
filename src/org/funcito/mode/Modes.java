@@ -19,21 +19,23 @@ package org.funcito.mode;
  * A convenience class of static methods for creating/providing Modes and TypedModes.  Use these modes in the functor
  * factory methods to provide customized behaviors for the resulting functors.  Example usages are:
  * <p>
+ * <pre>
  * <code>
- *     final MyClass MY_CLASS = callsTo(MyClass.class);<br>
- * <br/>
+ *     final MyClass MY_CLASS = callsTo(MyClass.class);
+ *
  *     // The following returns null instead of NPE when either the MyClass instance or the someMethod() call is null
- *     Function&lt;MyClass,RetType1&gt; func1 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), Modes.safeNav() );<br>
- * <br/>
- *     // The following returns a default value when the chainedRetType1() call results in null<br/>
- *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), Modes.tailDefault(DEFAULT_RET1) );<br>
+ *     Function&lt;MyClass,RetType1&gt; func1 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), safeNav() );
+ *
+ *     // The following returns a default value when the chainedRetType1() call results in null
+ *     Function&lt;MyClass,RetType1&gt; func2 = functionFor( MY_CLASS.someMethod().chainedWithRetType1(), tailDefault(DEFAULT_RET1) );
  * </code>
+ * </pre>
  * <p>
  */
 public class Modes {
 
     /**
-     * @return a basic untyped <code>Mode</code> that provides a plain <code>BasicFunctor</code>
+     * Returns a basic untyped <code>Mode</code> that provides a plain <code>BasicFunctor</code>
      * @see org.funcito.functorbase.BasicFunctor
      */
     public static Mode noOp() {
@@ -41,8 +43,8 @@ public class Modes {
     }
 
     /**
+     * Returns a <code>TypedMode</code> that provides a <code>SafeNavFunctor</code>
      * @param defaultForNull the typed value to be provided as a default for safe-navigation operation
-     * @return a <code>TypedMode</code> that provides a <code>SafeNavFunctor</code>
      * @see #safeNav()
      * @see org.funcito.functorbase.SafeNavFunctor
      */
@@ -51,7 +53,7 @@ public class Modes {
     }
 
     /**
-     * @return an untyped <code>Mode</code> that provides a <code>SafeNavFunctor</code> with a default value of <code>null</code>
+     * Returns an untyped <code>Mode</code> that provides a <code>SafeNavFunctor</code> with a default value of <code>null</code>
      * @see #safeNav(Object)
      * @see org.funcito.functorbase.SafeNavFunctor
      */
@@ -60,8 +62,8 @@ public class Modes {
     }
 
     /**
+     * Returns a <code>TypedMode</code> that provides a <code>TailDefaultFunctor</code>
      * @param defaultForNull the typed value to be provided as a default when null is the tail-value at evaluation
-     * @return a <code>TypedMode</code> that provides a <code>TailDefaultFunctor</code>
      * @see org.funcito.functorbase.TailDefaultFunctor
      */
     public static <V> TypedMode<V> tailDefault(V defaultForNull) {

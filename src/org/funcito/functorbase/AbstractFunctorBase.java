@@ -21,8 +21,8 @@ import org.funcito.internal.InvokableState;
 import java.util.Iterator;
 
 /**
- * An abstract partial implementation of the FunctorBase interface, with the machinery for optimizations of derivative
- * InvokableState for single non-chained method call.  It is used as the base for all of Funcito's provided basic
+ * An abstract partial implementation of the FunctorBase interface, with internal state useful for optimizing
+ * executing a single non-chained method call.  It is used as the base for all of Funcito's provided basic
  * functor implementations.
  * @param <T> The target (input) type of the functor
  * @param <V> The output type of the functor

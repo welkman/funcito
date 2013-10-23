@@ -37,15 +37,17 @@ public class FuncitoJedi {
      * be used for any other purposes.  It is a convenience pass-thru to
      * {@link org.funcito.internal.FuncitoDelegate#callsTo(Class)}.  Example usages are:
      * <p>
+     * <pre>
      * <code>
-     *     // inlined: <br>
-     *     Functor&lt;MyClass,RetType1&gt; func = functorFor( callsTo(MyClass.class).methodWithRetType1() );<br>
-     *     <br>
-     *     // or extracted for repeat usage<br>
-     *     final MyClass CALLS_TO = callsTo(MyClass.class);<br>
-     *     Functor&lt;MyClass,RetType1&gt; func2 = functorFor( CALLS_TO.method1WithRetType1() );<br>
-     *     Functor&lt;MyClass,RetType2&gt; func3 = functorFor( CALLS_TO.method2WithRetType2() );<br>
+     *     // inlined:
+     *     Functor&lt;MyClass,RetType1&gt; func = functorFor( callsTo(MyClass.class).methodWithRetType1() );
+     *
+     *     // or extracted for repeat usage
+     *     final MyClass CALLS_TO = callsTo(MyClass.class);
+     *     Functor&lt;MyClass,RetType1&gt; func2 = functorFor( CALLS_TO.method1WithRetType1() );
+     *     Functor&lt;MyClass,RetType2&gt; func3 = functorFor( CALLS_TO.method2WithRetType2() );
      * </code>
+     * </pre>
      * <p>
      * Stubs are cached, so this method can be called multiple times for the same class without penalty.  But a single proxy
      * can also be reused for creating multiple Jedi <code>Functor</code> or <code>Filter</code> objects.

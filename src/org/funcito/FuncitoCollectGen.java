@@ -37,15 +37,17 @@ public class FuncitoCollectGen {
      * be used for any other purposes.  It is a convenience pass-thru to
      * {@link org.funcito.internal.FuncitoDelegate#callsTo(Class)}.  Example usages are:
      * <p>
+     * <pre>
      * <code>
-     *     // inlined: <br>
-     *     Transformer&lt;MyClass,RetType1&gt; xform = transformerFor( callsTo(MyClass.class).methodWithRetType1() );<br>
-     *     <br>
-     *     // or extracted for repeat usage<br>
-     *     final MyClass CALLS_TO = callsTo(MyClass.class);<br>
-     *     Transformer&lt;MyClass,RetType1&gt; xform2 = transformerFor( CALLS_TO.method1WithRetType1() );<br>
-     *     Transformer&lt;MyClass,RetType2&gt; xform3 = transformerFor( CALLS_TO.method2WithRetType2() );<br>
+     *     // inlined:
+     *     Transformer&lt;MyClass,RetType1&gt; xform = transformerFor( callsTo(MyClass.class).methodWithRetType1() );
+     *
+     *     // or extracted for repeat usage
+     *     final MyClass CALLS_TO = callsTo(MyClass.class);
+     *     Transformer&lt;MyClass,RetType1&gt; xform2 = transformerFor( CALLS_TO.method1WithRetType1() );
+     *     Transformer&lt;MyClass,RetType2&gt; xform3 = transformerFor( CALLS_TO.method2WithRetType2() );
      * </code>
+     * </pre>
      * <p>
      * Stubs are cached, so this method can be called multiple times for the same class without penalty.  But a single proxy
      * can also be reused for creating multiple Collections-Generic <code>Transformer</code> or <code>Predicate</code> objects.
