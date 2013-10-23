@@ -196,7 +196,7 @@ public class FuncitoRxJava {
      * <p>
      * <code>
      *     prepareVoid(callsTo(MyClass.class)).voidMethodWithArgs("abc", 123L);<br/>
-     *     // all invocations of callback will use "abc" and 123L as the arguments to voidMethodWithArgs
+     *     // all invocations of Action1 will use "abc" and 123L as the arguments to voidMethodWithArgs
      * </code>
      * <p>
      * It is also possible to wrap method call chains, with some restrictions:

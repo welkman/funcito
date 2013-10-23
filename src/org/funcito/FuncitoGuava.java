@@ -109,7 +109,7 @@ public class FuncitoGuava {
      * @see Modes
      * @see Mode
      * @param proxiedMethodCall is the return value from a method call to a <code>FuncitoGuava</code> proxy object
-     * @param mode is the <code>TypedMode</code> that modifies the mode of execution of the resulting <code>Function</code>
+     * @param mode is the <code>Mode</code> that modifies the mode of execution of the resulting <code>Function</code>
      * @return a Guava <code>Function</code> object that wraps the method call or chain.
      */
     public static <T,V> Function<T,V> functionFor(V proxiedMethodCall, Mode mode) {
