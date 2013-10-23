@@ -44,7 +44,7 @@ public class ProxyUtils {
         if (foundCglib) {
             if (foundJavassist) {
                 // if both code-gen libs available on classpath, Funcito defaults to Cglib
-                logger.warning("Found both CgLib and Javassist on classpath. Using CgLib: "
+                logger.info("Found both CgLib and Javassist on classpath. Using CgLib: "
                         + "set System property '" + Funcito.FUNCITO_PROXY_PROVIDER_PROP + "' to change.");
             }
             return new CglibProxyFactory();

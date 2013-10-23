@@ -27,6 +27,13 @@ public abstract class ProxyFactory {
     private static ProxyUtils proxyUtils = new ProxyUtils();
     private Map<Class, Object> proxyCache = new HashMap<Class, Object>();
 
+    /**
+     * Singleton method for obtaining <code>ProxyFactory</code> instance.  If value has not been set explicitly, it
+     * looks to the <code>FUNCITO_PROXY_PROVIDER_PROP</code> system property for a string value to select one of the
+     * three pre-defined proxy providers: "CGLIB", "JAVASSIST", or "JAVAPROXY".  If the system property is not defined,
+     * the classpath is checked first in priority for CGLIB, then for Javassist, finaly falling back to the less capable
+     * native Java dynamic proxies.
+     */
     public static ProxyFactory instance() {
         if (instance == null) {
             instance = proxyUtils.getOverrideBySystemProperty();
@@ -38,7 +45,18 @@ public abstract class ProxyFactory {
     }
 
     /**
-     * Exists for benchmarks suite, to try with different proxy providers
+     * This method can be used to set custom ProxyFactory implementations.  The only recommended use is if the program
+     * environment cannot define a system property or it cannot be accessed from within the program.  Also, it
+     * should only be called once per program, or else results will be unpredictable.
+     * @param factory The one-time provided factory for the program instantiation.
+     * @see org.funcito.Funcito#setProxyProviderProperty(String)
+     */
+    public static void setInstance(ProxyFactory factory) {
+        instance = factory;
+    }
+
+    /**
+     * Exists for benchmarks suite, to try with different proxy providers.  DO NOT USE IN REAL PROGRAMS!
      */
     public static void reset() {
         instance = null;
