@@ -128,12 +128,12 @@ public class Funcito {
     public static RxJavaDelegate rxJava() { return FuncitoRxJava.delegate(); }
 
     /**
-     * For setting the <code>FUNCITO_PROXY_PROVIDER_PROP</code> system property value which determines an override
-     * value for choosing a pre-defined proxy provider rather than searching in a priority-based order in the classpath
-     * for a known and supported one.  This is an alternative to externally setting the property in the application
-     * execution environment.  The first time the property is parsed by your program, changes to the value will have no
-     * further effect on determining which proxy provider will be used.  Only one proxy provider should be used for
-     * the lifetime of a program's execution, though it can readily be set per execution instance.
+     * For setting the <code>FUNCITO_PROXY_PROVIDER_PROP</code> system property value.  This property determines an
+     * override value for choosing a pre-defined proxy provider rather than searching in a priority-based order in the
+     * classpath for a known and supported one.  This is an alternative to externally setting the property in the
+     * application execution environment.  The first time the property is parsed by your program, changes to the value
+     * will have no further effect on determining which proxy provider will be used.  Only one proxy provider should be
+     * used for the lifetime of a program's execution, though it can readily be set per execution instance.
      * @param proxyProviderPropertyVal one of "CGLIB", "JAVASSIST", or "JAVAPROXY"
      */
     public static void setProxyProviderProperty(String proxyProviderPropertyVal) {
@@ -141,8 +141,8 @@ public class Funcito {
     }
 
     /**
-     * This method can be used to set custom ProxyFactory implementations.  The only recommended use is if the program
-     * environment cannot define a system property or it cannot be accessed from within the program.  Also, it
+     * This method can be used to set custom ProxyFactory implementations.  The only other recommended use is if the
+     * program environment cannot define a system property or it cannot be accessed from within the program.  Also, it
      * should only be called once per program, or else results will be unpredictable.
      * @param factory The one-time provided factory for the program instantiation.
      * @see #setProxyProviderProperty(String)
