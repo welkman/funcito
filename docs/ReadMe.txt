@@ -2,6 +2,17 @@ Funcito
 
 Version History:
 
+1.3    22-Oct-2013  Support for Netflix RxJava framework, including both Func1 and Action1 types
+                    "Command"-like functor support in Jedi, Functional Java, Collection-generic, Play!, and RxJava
+                    Modes and TypedModes, including SafeNav (like the Groovy operator), TailDefault and others
+                    Users can define and use their own custom modes
+                    Mode and TypedMode versions of all factory methods
+                    Alternative static access to set ProxyFactory (proxy provider)
+                    ProxyFactory log message downgraded from warning to info
+                    Upgraded Javadoc format (Java 7 generator)
+                    upgrade of Gradle build to 1.6
+                    improved tests and improved test coverage
+
 1.2    26-Oct-2012  Support for Play! Framework 2 F.Function
                     Support for collections-generic (generified fork of Jakarta commons-collections) Transformer and Predicate
                     Upgraded to Gradle version 1.1
