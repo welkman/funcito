@@ -48,16 +48,6 @@ public class FuncitoDelegate {
         return manager;
     }
 
-    protected <T> void validatePreparedVoidCall(Class<T> validationTargetClass, WrapperType genType) {
-        Invokable head = getManager().peekInvokable();
-        Class invokableTargetClass = head.getTarget().getClass();
-        if (!validationTargetClass.isAssignableFrom(invokableTargetClass)) {
-            throw new FuncitoException("Failed to create " + genType + " with validating void generator, because " +
-                    "validationTargetClass " + validationTargetClass.getName() + " is not assignable from the head " +
-                    "of the prepared invokable state.");
-        }
-    }
-
     //-------------------- Funcito Core -------------------------
 
     public void putInvokable(Invokable invokable) {
@@ -66,6 +56,7 @@ public class FuncitoDelegate {
 
     public InvokableState extractInvokableState(WrapperType wrapperType) {
         InvokableState state = getManager().extractState();
+        invocationManager.remove(); // clean up ThreadLocal, in case servlet (etc.) reuses this thread
         if (state.isEmpty()) {
             throw new FuncitoException("Failed to create a " + wrapperType + ".  No call to a Funcito proxy object was registered.");
         }
