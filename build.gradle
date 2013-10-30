@@ -9,9 +9,13 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
 }
 
-idea.project.ipr {
-    withXml { provider ->
-        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+idea {
+    // in IDEA config files, use "$USER_HOME$" in place of path segments that are equal to user.home system property value
+    pathVariables USER_HOME: file(System.getProperty("user.home"))
+    project.ipr {
+        withXml { provider ->
+            provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+        }
     }
 }
 
@@ -38,7 +42,7 @@ dependencies {
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
-    compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
+    compile group: 'org.objenesis', name: 'objenesis', version: '2.1'
     compile group: 'org.javassist', name: 'javassist', version: '3.14.0-GA'
 
     // test

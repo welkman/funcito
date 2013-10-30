@@ -92,11 +92,11 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.objenesis/objenesis/1.2/jar/bfcb0539a071a4c5a30690388903ac48c0667f2a/objenesis-1.2.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.objenesis/objenesis/2.1/jar/87c0ea803b69252868d09308b4618f766f135a96/objenesis-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.objenesis/objenesis/1.2/source/71909ee0264af468fe26f0a2467d01bcb85f6fa9/objenesis-1.2-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.objenesis/objenesis/2.1/source/611a57d836e2c320d59f9851d4ad587f3c8472e/objenesis-2.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
