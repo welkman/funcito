@@ -35,3 +35,20 @@ gradle jar
 gradle uploadArchives
     - signs artifacts, and uploads to Sonatype OSSRH staging area (requires PGP secret keyring)
 
+Release Notes:
+For non-Maven distribution, use jars in build/libs (verify main jar has .../thirdparty/ dir of classes)
+For Maven distribution:
+-- see following for hints:
+  > http://theholyjava.wordpress.com/2010/02/07/releasing-a-project-to-maven-centr/  (mvn - centric)
+  > https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
+Highlights from above links
+-- call "gradle uploadArchives" (or gradlew) (signs and stages in Sonatype OSS)
+  > above requires signing info in personal user-dir\.gradle\gradle.properties
+  > gradle.properties above points to secret signing info file on your hard disk (created using GPG)
+-- log into Sonatype OSS (http://oss.sonatype.org)
+-- go to Staging Repositories, filter by "com.googlecode.funcito" (filter was in upper right)
+-- select appropriate Funcito element (likely only one at any given time)
+-- navigate tree and download/verify each jar is OK
+-- s/b button bar at top (same row as filter): perform "close" to mark staging area as complete (can be undone later)
+-- on same button bar: perform "release"
+-- wait a while (hours, or up to a day)
