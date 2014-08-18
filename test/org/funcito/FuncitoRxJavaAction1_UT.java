@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import rx.util.functions.Action1;
+import rx.functions.Action1;
 
 import static org.funcito.FuncitoRxJava.*;
 import static org.funcito.mode.Modes.safeNav;

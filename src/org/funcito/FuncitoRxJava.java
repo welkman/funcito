@@ -18,8 +18,8 @@ package org.funcito;
 import org.funcito.mode.Mode;
 import org.funcito.mode.TypedMode;
 import org.funcito.rxjava.RxJavaDelegate;
-import rx.util.functions.Action1;
-import rx.util.functions.Func1;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * This class is the static entry point of the Funcito API for the Netflix RxJava framework.

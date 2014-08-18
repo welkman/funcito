@@ -20,7 +20,7 @@ import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.Mode;
 import org.funcito.mode.TypedMode;
-import rx.util.functions.Func1;
+import rx.functions.Func1;
 
 public class RxJavaFunc1<T, V> implements Func1<T,V> {
 

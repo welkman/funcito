@@ -10,7 +10,7 @@ import org.funcito.internal.stub.javaproxy.JavaProxyProxyFactory;
 import org.funcito.internal.stub.javassist.JavassistProxyFactory;
 import org.junit.Before;
 import org.junit.Test;
-import rx.util.functions.Func1;
+import rx.functions.Func1;
 
 import static org.funcito.Funcito.*;
 import static org.junit.Assert.*;

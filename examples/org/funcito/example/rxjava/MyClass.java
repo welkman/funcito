@@ -16,8 +16,8 @@
 package org.funcito.example.rxjava;
 
 import rx.Observable;
-import rx.util.functions.Action1;
-import rx.util.functions.Func1;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,7 @@ public class MyClass {
     public static final Func1<MyClass, Integer> getOther = func1For(stubbedCallsTo.getOther());
     
     // alternative single line syntax
-    public static final Func1<Observable<MyClass>, String> getMyStringF2 = func1For(callsTo(MyClass.class).getMyString());
+    public static final Func1<MyClass, String> getMyStringF2 = func1For(callsTo(MyClass.class).getMyString());
 
     // These demonstrate not only predicates, but also method argument binding
     public static final Func1<MyClass, Boolean> isLengthGT1 = func1For(stubbedCallsTo.isLengthGreaterThan(1));

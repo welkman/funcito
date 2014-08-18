@@ -70,11 +70,11 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/com.netflix.rxjava/rxjava-core/0.9.1/jar/952607f860270f709f6e6cd7a2d67cece960a0ce/rxjava-core-0.9.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/com.netflix.rxjava/rxjava-core/0.19.6/jar/b18f01b635f39f0a6af7ae792f07cb003a51e6a2/rxjava-core-0.19.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/com.netflix.rxjava/rxjava-core/0.9.1/source/849d6bcebcea4db2b523f2d5c999d38e7955cc7/rxjava-core-0.9.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/com.netflix.rxjava/rxjava-core/0.19.6/source/1b9e25d6073fc6b96b661ae94e172781c81f9eec/rxjava-core-0.19.6-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

@@ -20,8 +20,8 @@ import org.funcito.internal.InvokableState;
 import org.funcito.mode.TypedMode;
 import org.funcito.mode.NoOp;
 import org.funcito.mode.Mode;
-import rx.util.functions.Action1;
-import rx.util.functions.Func1;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import static org.funcito.internal.WrapperType.*;
 

@@ -3,11 +3,22 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'idea'
 
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
 group = 'com.googlecode.funcito'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
 }
+/*
+* To execute the 'uploadArchives' task, the following properties must be specified
+* in an external 'gradle.properties' file:
+* - (signing properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html)
+* - sonatypeUsername
+* - sonatypePassword
+*/
+if (!project.hasProperty("sonatypeUsername")) sonatypeUsername = ""
+if (!project.hasProperty("sonatypePassword")) sonatypePassword = ""
 
 idea {
     // in IDEA config files, use "$USER_HOME$" in place of path segments that are equal to user.home system property value
@@ -23,7 +34,7 @@ repositories {
     mavenCentral()
 //    mavenRepo urls: "https://oss.sonatype.org/content/groups/public/"
     maven {
-            url 'http://repo.typesafe.com/typesafe/repo'
+            url 'http://repo.typesafe.com/typesafe/releases/'
     }
 }
 
@@ -38,7 +49,7 @@ dependencies {
     compile group: 'org.codehaus.jedi', name: 'jedi-core', version: '3.0.5', transitive: false
     compile group: 'play', name: 'play_2.9.1', version: '2.0', transitive: false
     compile group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01', transitive: false
-    compile group: 'com.netflix.rxjava', name: 'rxjava-core', version: '0.9.1', transitive: false
+    compile group: 'com.netflix.rxjava', name: 'rxjava-core', version: '0.19.6', transitive: false
 
     // internals
     compile group: 'cglib', name: 'cglib-nodep', version: '2.2'

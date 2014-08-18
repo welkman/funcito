@@ -20,7 +20,7 @@ import org.funcito.internal.InvokableState;
 import org.funcito.functorfactory.FunctorFactory;
 import org.funcito.mode.TypedMode;
 import org.funcito.mode.Mode;
-import rx.util.functions.Action1;
+import rx.functions.Action1;
 
 public class RxJavaAction1<T> implements Action1<T> {
 

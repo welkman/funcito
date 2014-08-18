@@ -19,7 +19,7 @@ package org.funcito;
 import org.funcito.internal.WrapperType;
 import org.junit.After;
 import org.junit.Test;
-import rx.util.functions.Func1;
+import rx.functions.Func1;
 
 import static org.funcito.FuncitoRxJava.*;
 import static org.funcito.mode.Modes.safeNav;
