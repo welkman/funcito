@@ -357,20 +357,22 @@ uploadArchives {
                    }
                }
             }
-            //mess with the generated pom to set the 'packaging' tag
-            pom.withXml { XmlProvider xmlProvider ->
-               def xml = xmlProvider.asString()
-               def pomXml = new XmlParser().parse(new ByteArrayInputStream(xml.toString().bytes))
-
-               pomXml.version[0] + { packaging('jar') }
-
-               def newXml = new StringWriter()
-               def printer = new XmlNodePrinter(new PrintWriter(newXml))
-               printer.preserveWhitespace = true
-               printer.print(pomXml)
-               xml.setLength(0)
-               xml.append(newXml.toString())
-            }
+// Author comments at http://jedicoder.blogspot.com/2011/11/automated-gradle-project-deployment-to.html indicate
+// all of the following may not be required anymore, so I am going to see if the upload works without this:
+//            //mess with the generated pom to set the 'packaging' tag
+//            pom.withXml { XmlProvider xmlProvider ->
+//               def xml = xmlProvider.asString()
+//               def pomXml = new XmlParser().parse(new ByteArrayInputStream(xml.toString().bytes))
+//
+//               pomXml.version[0] + { packaging('jar') }
+//
+//               def newXml = new StringWriter()
+//               def printer = new XmlNodePrinter(new PrintWriter(newXml))
+//               printer.preserveWhitespace = true
+//               printer.print(pomXml)
+//               xml.setLength(0)
+//               xml.append(newXml.toString())
+//            }
         }
     }
 }
