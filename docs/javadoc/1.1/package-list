@@ -1,0 +1,14 @@
+org.funcito
+org.funcito.example.FJ
+org.funcito.example.Jedi
+org.funcito.example.guava
+org.funcito.functionaljava
+org.funcito.google.guava.common.base
+org.funcito.guava
+org.funcito.internal
+org.funcito.internal.stub
+org.funcito.internal.stub.cglib
+org.funcito.internal.stub.javaproxy
+org.funcito.internal.stub.javassist
+org.funcito.internal.stub.utils
+org.funcito.jedi

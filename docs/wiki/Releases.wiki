@@ -1,0 +1,18 @@
+#summary The following table lists the releases and their details.
+
+= Release Details and Links =
+
+Links to Issues fixed may not be exhaustive list of updates and changes.  For example, most releases include improvements to documentation and tests.
+
+*NOTE: Due to Googlecode no longer permitting binary downloads, all further jar file updates beginning with release 1.3.1 are only available offsite, either thru [http://search.maven.org/#search|ga|1|a%3A%22funcito%22 Maven Central], or [https://bintray.com/welkomatic/maven/com.googlecode.funcito%3Afuncito/view Bintray].
+
+If you still wish to see the original Googlecode downloads page with statistics, it is still available [http://code.google.com/p/funcito/downloads/list here]
+
+|| *Release Date* || *Version* || *Download* || *Maven* || *Issues Fixed* || *Highlighted Features* ||
+|| 19-AUG-2014 || 1.3.1 || [https://bintray.com/welkomatic/maven/com.googlecode.funcito%3Afuncito/1.3.1/view Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.3.1|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=milestone=R1.3.1 Issues] || RxJava maintenance release ||
+|| 30-OCT-2013 || 1.3.0 || [http://code.google.com/p/funcito/downloads/list?can=1&q=1.3.0 Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.3.0|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=milestone=R1.3 Issues] || RxJava framework, [http://code.google.com/p/funcito/wiki/UsageNotes#Commands Command-functors], [http://code.google.com/p/funcito/wiki/UsageNotes#Safe_Navigation_and_other_Modes Safe Navigation, Modes] ||
+|| 26-OCT-2012 || 1.2.0 || [http://code.google.com/p/funcito/downloads/list?can=1&q=1.2.0 Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.2.0|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=milestone=R1.2 Issues] || Play! 2 Framework and collections-generic ||
+|| 24-JUL-2012 || 1.1.0 || [http://code.google.com/p/funcito/downloads/list?can=1&q=1.1.0 Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.1.0|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=milestone=R1.1 Issues] || [http://code.google.com/p/funcito/wiki/UsageNotes#Method_Chaining Method chaining], [http://code.google.com/p/funcito/wiki/UsageNotes#Methods_With_Arguments Methods with parameters] ||
+|| 02-APR-2012 || 1.0.2 || [http://code.google.com/p/funcito/downloads/list?can=1&q=1.0.2 Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.0.2|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=Milestone%3DR1.0.2 Issues] || Removed runtime dependency on Guava ||
+|| 20-MAR-2012 || 1.0.1 || [http://code.google.com/p/funcito/downloads/list?can=2&q=1.0.1%2B-1.0.2%2B-0.jar Download Here] || [http://search.maven.org/#artifactdetails|com.googlecode.funcito|funcito|1.0.1|jar Maven Central] || [http://code.google.com/p/funcito/issues/list?can=1&q=milestone=R1.0.1 Issues] || Maven Support ||
+|| 31-JAN-2012 || 1.0 || [http://code.google.com/p/funcito/downloads/list?can=2&q=1.0%2B-1.0.2%2B-1.0.1 Download Here] || _not available_ ||  || Initial Release ||

@@ -1,0 +1,24 @@
+#summary Support the Funcito Project
+
+Funcito is offered 100% free for use or modification, no strings attached.  But if you appreciate Funcito and would like to make a contribution to the project there are a few ways you can do that.
+
+== Make a Financial Contribution ==
+I have to eat, and time is money, and my wife would sure appreciate knowing that the time I have invested in this is not a complete black hole.
+
+|| *Amount* || *Effect* || *Pay* || *Currency Conversion* ||
+|| $5 USD || My wife gets a Starbucks || [https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TCKRPTTWG3WPQ http://www.paypal.com/en_US/i/btn/x-click-but04.gif] || [http://www.google.com/search?hl=en&q=5+usd+in+eur EUR], [http://www.google.com/search?hl=en&q=5+usd+in+gbp GBP], [http://www.google.com/search?hl=en&q=5+usd+in+chf CHF] ||
+|| $10 USD || Wife buys chick flick DVD (very happy!) || [https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P8F68NTPCYMV2 http://www.paypal.com/en_US/i/btn/x-click-but04.gif] || [http://www.google.com/search?hl=en&q=10+usd+in+eur EUR], [http://www.google.com/search?hl=en&q=10+usd+in+gbp GBP], [http://www.google.com/search?hl=en&q=10+usd+in+chf CHF] ||
+|| $25 USD || I buy wife roses (major brownie points) || [https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BZRMV4CVTCF9J http://www.paypal.com/en_US/i/btn/x-click-but04.gif] || [http://www.google.com/search?hl=en&q=25+usd+in+eur EUR], [http://www.google.com/search?hl=en&q=25+usd+in+gbp GBP], [http://www.google.com/search?hl=en&q=25+usd+in+chf CHF] ||
+|| $50 USD || Wife and I go to dinner, marriage saved! || [https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FNFXQ8EKK8J9J http://www.paypal.com/en_US/i/btn/x-click-but04.gif] || [http://www.google.com/search?hl=en&q=50+usd+in+eur EUR], [http://www.google.com/search?hl=en&q=50+usd+in+gbp GBP], [http://www.google.com/search?hl=en&q=50+usd+in+chf CHF] ||
+
+== How Else? ==
+
+Time is priceless and if you have some to spare then there is no other better way to help an open source project than to get involved at one level or another. Contributions are appreciated and needed in any of the following ways:
+
+  * Help diagnose and [http://code.google.com/p/funcito/issues/list report problems]
+  * Suggest fixes by [http://www.hanselman.com/blog/GetInvolvedInOpenSourceTodayHowToContributeAPatchToAGitHubHostedOpenSourceProjectLikeCode52.aspx sending in patches]
+  * Improve the code
+  * Help with unit and end-to-end testing
+  * Provide peer support on [http://groups.google.com/group/funcito mailing lists, forums or newsgroups]
+  * Publish an article on your blog (send the link) or elsewhere (e.g., community sites) to educate others regarding some aspect of the project
+  * Help with missing documentation
